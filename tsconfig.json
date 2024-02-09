@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",      // or src folder
+    "paths": {
+      "@/*":["src/*"]    // alies imports
+    }
+  },
+  "extends": "expo/tsconfig.base"
+}
