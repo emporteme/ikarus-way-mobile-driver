@@ -67,18 +67,19 @@ function RootLayoutNav() {
                 navigationBarColor: '#FFF'
             }}
 
-            // Hide splash screen after initial render
-            // onLayout={onLayoutRootView}                             // Hope this one will not crush my code
+        // Hide splash screen after initial render
+        // onLayout={onLayoutRootView}                             // Hope this one will not crush my code
         >
-            {/* Auth screen */}
-            <Stack.Screen
-                name="auth"
-                options={{ headerShown: false }}
-            />
 
             {/* Onboarding screen */}
             <Stack.Screen
                 name="onboarding"
+                options={{ headerShown: false }}
+            />
+
+            {/* Auth screen */}
+            <Stack.Screen
+                name="auth"
                 options={{ headerShown: false }}
             />
 

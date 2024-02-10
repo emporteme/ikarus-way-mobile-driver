@@ -3,6 +3,7 @@ import onboarding1 from "../../assets/images/onboarding_1.png"
 import onboarding2 from "../../assets/images/onboarding_2.png"
 import onboarding3 from "../../assets/images/onboarding_3.png"
 import profile from "../../assets/images/profile.png"
+import logo_light from "../../assets/images/logo_light.png"
 
 export default {
     notFound,
@@ -10,4 +11,5 @@ export default {
     onboarding2,
     onboarding3,
     profile,
+    logo_light,
 }
