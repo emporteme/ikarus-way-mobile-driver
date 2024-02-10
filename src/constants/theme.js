@@ -1,15 +1,7 @@
 const COLORS = {
-    primary: "#138AEF",
-    secondary: "#138AEF",
-    tertiary: "#138AEF",
-
-    white: "#F3F9FF",
-    lightWhite: "#FAFAFC",
-
-    black: "#13161C",
-
-    gray: "#83829A",
-    gray2: "#C1C0C8",
+    primary: "#F8C513",
+    dark: "#333333",
+    white: "#ffffff",
 }
 
 const FONT = {                      // Perfect list:
@@ -29,7 +21,7 @@ const SIZES = {
     medium: 16,
     large: 20,
     xLarge: 24,
-    xxLarge: 32,
+    xxLarge: 28,
 };
 
 export { COLORS, FONT, SIZES };

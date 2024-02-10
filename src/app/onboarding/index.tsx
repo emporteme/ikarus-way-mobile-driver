@@ -24,15 +24,13 @@ const OnboardingPage = () => {
             style={styles.backgroundImage}
         >
             <View style={styles.pageContent}>
-                <Image
-                    src='../../../assets/images/logo_light.png'
-                    alt='light logo'
-                    height={50}
-                    width={120}
+                <Image 
+                source={images.logo_light} 
+                style={styles.logo}
                 />
-                <View>
-                    <Text style={styles.title}></Text>
-                    <Text style={styles.description}></Text>
+                <View style={styles.footer}>
+                    <Text style={styles.title}>Efficient Logistics at Your Fingertips</Text>
+                    <Text style={styles.description}>Watch your delivery journey on the map in real-time, from the warehouse to your doorstep</Text>
                     <View style={styles.buttonRow}>
                         <View style={styles.progress}>
                             <View style={styles.inActive} />
@@ -41,7 +39,7 @@ const OnboardingPage = () => {
                         </View>
                         <Link href={'/pages'}>
                             <Pressable style={styles.button}>
-                                <Text style={styles.buttonText}></Text>
+                                <Text style={styles.buttonText}>Next</Text>
                             </Pressable>
                         </Link>
                     </View>

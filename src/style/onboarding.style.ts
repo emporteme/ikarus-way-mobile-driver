@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
-
-import { FONT } from "@/constants";
+import { FONT, COLORS, SIZES } from "@/constants";
 
 const styles = StyleSheet.create({
     backgroundImage: {
@@ -13,14 +12,19 @@ const styles = StyleSheet.create({
         padding: 20,
         flex: 1,
     },
-    title:{},
-    description:{},
-    buttonRow:{},
-    progress:{},
-    inActive:{},
-    active:{},
-    button:{},
-    buttonText:{},
+    logo: {
+        width: 120,
+        height: 50,
+    },
+    footer: {},
+    title: {},
+    description: {},
+    buttonRow: {},
+    progress: {},
+    inActive: {},
+    active: {},
+    button: {},
+    buttonText: {},
 })
 
 export default styles
