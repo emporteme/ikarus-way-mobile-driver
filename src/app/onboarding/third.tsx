@@ -17,10 +17,10 @@ import { images, icons } from '@/constants';
 
 
 // Main component
-const Onboarding2Page = () => {
+const Onboarding3Page = () => {
     return (
         <ImageBackground
-            source={images.onboarding1}
+            source={images.onboarding3}
             style={styles.backgroundImage}
         >
             <View style={styles.pageContent}>
@@ -29,17 +29,17 @@ const Onboarding2Page = () => {
                     style={styles.logo}
                 />
                 <View style={styles.footer}>
-                    <Text style={styles.title}>Efficient Logistics at Your Fingertips</Text>
-                    <Text style={styles.description}>Watch your delivery journey on the map in real-time, from the warehouse to your doorstep</Text>
+                    <Text style={styles.title}>Every Detail, Every Destination</Text>
+                    <Text style={styles.description}>Navigate efficiently, record payments, and ensure a seamless delivery process. Complete orders with ease.</Text>
                     <View style={styles.buttonRow}>
                         <View style={styles.progress}>
+                            <View style={styles.inActive} />
+                            <View style={styles.inActive} />
                             <View style={styles.active} />
-                            <View style={styles.inActive} />
-                            <View style={styles.inActive} />
                         </View>
                         <Link href={'/pages'} asChild>
                             <Pressable style={styles.button}>
-                                <Text style={styles.buttonText}>Next</Text>
+                                <Text style={styles.buttonText}>Get started</Text>
                                 <Image
                                     source={icons.arrow}
                                     style={styles.icon}
@@ -53,4 +53,4 @@ const Onboarding2Page = () => {
     );
 }
 
-export default Onboarding2Page;
+export default Onboarding3Page;

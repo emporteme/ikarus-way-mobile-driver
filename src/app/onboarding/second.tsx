@@ -17,10 +17,10 @@ import { images, icons } from '@/constants';
 
 
 // Main component
-const Onboarding3Page = () => {
+const Onboarding2Page = () => {
     return (
         <ImageBackground
-            source={images.onboarding1}
+            source={images.onboarding2}
             style={styles.backgroundImage}
         >
             <View style={styles.pageContent}>
@@ -29,15 +29,15 @@ const Onboarding3Page = () => {
                     style={styles.logo}
                 />
                 <View style={styles.footer}>
-                    <Text style={styles.title}>Efficient Logistics at Your Fingertips</Text>
-                    <Text style={styles.description}>Watch your delivery journey on the map in real-time, from the warehouse to your doorstep</Text>
+                    <Text style={styles.title}>Your Task, Your Control</Text>
+                    <Text style={styles.description}>Manage orders, communicate seamlessly, and personalize your profile—all in one place.</Text>
                     <View style={styles.buttonRow}>
                         <View style={styles.progress}>
+                            <View style={styles.inActive} />
                             <View style={styles.active} />
                             <View style={styles.inActive} />
-                            <View style={styles.inActive} />
                         </View>
-                        <Link href={'/pages'} asChild>
+                        <Link href={'/onboarding/third'} asChild>
                             <Pressable style={styles.button}>
                                 <Text style={styles.buttonText}>Next</Text>
                                 <Image
@@ -53,4 +53,4 @@ const Onboarding3Page = () => {
     );
 }
 
-export default Onboarding3Page;
+export default Onboarding2Page;

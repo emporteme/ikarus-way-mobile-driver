@@ -37,7 +37,7 @@ const OnboardingPage = () => {
                             <View style={styles.inActive} />
                             <View style={styles.inActive} />
                         </View>
-                        <Link href={'/pages'} asChild>
+                        <Link href={'/onboarding/second'} asChild>
                             <Pressable style={styles.button}>
                                 <Text style={styles.buttonText}>Next</Text>
                                 <Image
