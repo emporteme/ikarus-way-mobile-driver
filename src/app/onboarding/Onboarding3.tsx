@@ -17,7 +17,7 @@ import { images, icons } from '@/constants';
 
 
 // Main component
-const OnboardingPage = () => {
+const Onboarding3Page = () => {
     return (
         <ImageBackground
             source={images.onboarding1}
@@ -53,4 +53,4 @@ const OnboardingPage = () => {
     );
 }
 
-export default OnboardingPage;
+export default Onboarding3Page;

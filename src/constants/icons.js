@@ -18,6 +18,9 @@ import stock from "../../assets/icons/stock.png";
 import team from "../../assets/icons/team.png";
 import history from "../../assets/icons/history.png";
 
+// NEW WORLD
+import arrow from "../../assets/icons/arrow.png";
+
 export default {
     back,
     calendar,
@@ -37,4 +40,7 @@ export default {
     stock,
     team,
     history,
+
+    // NEW WORLD
+    arrow,
 };
