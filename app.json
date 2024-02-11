@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "tms_v3",
-    "slug": "tms_v3",
-    "scheme": "tms_v3-deeplink",
+    "name": "Ikarus Way mobile ^ Driver",
+    "slug": "ikarus-way-mobile-driver",
+    "scheme": "tms-deeplink",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -33,6 +33,15 @@
     ],
     "experiments": {
       "tsconfigPaths": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "3786c1df-7dd8-43d7-98e6-97a2b2b80b77"
+      }
+    },
+    "owner": "emporteme"
   }
 }
