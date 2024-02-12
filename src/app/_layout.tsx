@@ -64,7 +64,7 @@ function RootLayoutNav() {
             screenOptions={{
                 headerTintColor: "#13161C",
                 statusBarColor: '#F2F2F2',
-                navigationBarColor: '#FFF'
+                navigationBarColor: 'transparent'
             }}
 
         // Hide splash screen after initial render
