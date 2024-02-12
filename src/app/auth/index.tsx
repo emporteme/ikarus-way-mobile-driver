@@ -120,7 +120,7 @@ const Auth = () => {
                     <Text style={styles.bottomText}>
                         By clicking on the "Login" button, you accept the terms of the
                         <Link href={'auth/privacy'}>
-                            <Text style={styles.privacyText}>privacy policy</Text>
+                            <Text style={styles.privacyText}> privacy policy</Text>
                         </Link>
                     </Text>
                 </View>

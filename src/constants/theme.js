@@ -2,6 +2,7 @@ const COLORS = {
     primary: "#F8C513",
     dark: "#333333",
     white: "#ffffff",
+    grey: '#333333'
 }
 
 const FONT = {                      // Perfect list:
@@ -18,8 +19,9 @@ const FONT = {                      // Perfect list:
 const SIZES = {
     xSmall: 10,
     small: 12,
+    semiMedium: 14,
     medium: 16,
-    semdLarge:18,
+    semiLarge: 18,
     large: 20,
     xLarge: 24,
     xxLarge: 28,
