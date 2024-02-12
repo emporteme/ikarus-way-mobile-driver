@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import {
     View,
     Text,
-    StyleSheet,
     SafeAreaView,
     TouchableOpacity,
     TextInput
@@ -27,13 +26,13 @@ const Auth = () => {
     const router = useRouter()
 
     return (
-        <SafeAreaView style={{ flex: 1, paddingHorizontal: 20 }}>
+        <SafeAreaView>
             <Stack.Screen
                 options={{
                     headerShown: false
                 }}
             />
-            <View style={styles.auth}>
+            {/* <View style={styles.auth}>
                 <Text style={{
                     color: '#13161C',
                     fontFamily: FONT.bold,
@@ -76,9 +75,6 @@ const Auth = () => {
                         onPress={() => {
                             router.push('/pages')
                         }}
-                    // {/* onPress={() => {
-                    //     router.push('/pages')
-                    // }} */}
                     >
                         <Text
                             style={styles.loginText}>
@@ -87,7 +83,7 @@ const Auth = () => {
                     </TouchableOpacity>
                 </View>
                 <Text style={styles.policyText}>By clicking on the "Login" button, you accept the terms of the <Text style={styles.policyBoldText}>privacy policy</Text></Text>
-            </View>
+            </View> */}
         </SafeAreaView>
     );
 }
