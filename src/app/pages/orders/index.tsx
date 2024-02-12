@@ -9,22 +9,9 @@ import { Stack, Link } from "expo-router";
 import Account from '@/components/home/account/Account';
 import QuickActions from '@/components/home/quick/Quick';
 
-const HomePage = () => {
+const OrdersPage = () => {
     return (
         <SafeAreaView style={{ flex: 1, marginTop: 50, marginLeft: 20, marginRight: 20 }}>
-            <Stack.Screen
-                options={{
-                    // headerShadowVisible: false,
-                    // headerLeft: () => (
-                    //     <Feather name="notifications-outline" size={24} color="black" />
-                    // ),
-                    // headerRight: () => (
-                    //     <Ionicons name="notifications-outline" size={24} color="black" />
-                    // ),
-                    headerShown: false,
-                    title: 'Home'
-                }}
-            />
             <ScrollView>
                 <View>
                     <Account />
@@ -57,4 +44,4 @@ const HomePage = () => {
     );
 }
 
-export default HomePage;
+export default OrdersPage;

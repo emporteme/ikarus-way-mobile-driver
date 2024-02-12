@@ -70,6 +70,14 @@ function RootLayoutNav() {
         // Hide splash screen after initial render
         // onLayout={onLayoutRootView}                             // Hope this one will not crush my code
         >
+
+            {/* Main pages screen  */}
+            <Stack.Screen
+                name="pages"
+                options={{ headerShown: false }}
+            />
+
+            
             {/* Auth screen */}
             <Stack.Screen
                 name="auth"
@@ -79,12 +87,6 @@ function RootLayoutNav() {
             {/* Onboarding screen */}
             <Stack.Screen
                 name="onboarding"
-                options={{ headerShown: false }}
-            />
-
-            {/* Main pages screen  */}
-            <Stack.Screen
-                name="pages"
                 options={{ headerShown: false }}
             />
         </Stack>

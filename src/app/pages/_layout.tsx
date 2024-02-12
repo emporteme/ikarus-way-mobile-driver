@@ -2,7 +2,7 @@
 import { Tabs } from "expo-router";
 // import { AntDesign, Entypo } from '@expo/vector-icons';
 import { Image } from "react-native";
-import { FONT, icons } from "@/constants";
+import { FONT, COLORS, icons } from "@/constants";
 
 export default () => {
 
@@ -12,7 +12,7 @@ export default () => {
             screenOptions={{
                 tabBarInactiveBackgroundColor: '#FFFFFF',
                 tabBarInactiveTintColor: '#13161C40',
-                tabBarActiveTintColor: '#138AEF',
+                tabBarActiveTintColor: COLORS.primary,
                 tabBarStyle: {
                     borderRadius: 25,
                     paddingTop: 5,
