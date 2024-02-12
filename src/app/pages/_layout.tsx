@@ -21,11 +21,11 @@ export default () => {
             }}
         >
 
-            {/* Home tab */}
+            {/* Orders tab */}
             <Tabs.Screen
-                name="home"
+                name="orders"
                 options={{
-                    title: 'Home',
+                    title: 'Orders',
                     headerShown: false,
                     // <ScreenHeaderBtn iconUrl={icons.menu} dimension='60%' />
                     tabBarIcon: ({ color }) => (
@@ -39,13 +39,8 @@ export default () => {
                     tabBarLabelStyle: {
                         fontFamily: FONT.regular,
                         fontSize: 10,
-                        // marginTop: 10
-                        // marginVertical: 5,
-                        // borderWidth: 1
                     },
                     tabBarItemStyle: {
-                        // borderWidth: 1,
-                        // paddingTop: 10,
                     }
                 }}
             />
