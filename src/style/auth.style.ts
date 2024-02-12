@@ -1,10 +1,30 @@
 import { StyleSheet } from "react-native";
 
-import { FONT,COLORS, SIZES } from "@/constants";
+import { FONT, COLORS, SIZES } from "@/constants";
 
 const styles = StyleSheet.create({
-
-
+    page: {
+        flex: 1,
+        paddingHorizontal: 20
+    },
+    body: {},
+    top: {},
+    iconIkarus: {
+        width: 20,
+        height: 22,
+    },
+    regularText: {},
+    boldText: {},
+    middle: {},
+    inputText: {},
+    forgot: {},
+    forgotText: {},
+    bottom: {},
+    button: {},
+    buttonText: {},
+    iconArrow: {},
+    bottomText: {},
+    privacyText: {},
 
 
 

@@ -89,8 +89,8 @@ const Auth = () => {
             <View style={styles.body}>
                 <View style={styles.top}>
                     <Image source={icons.ikarus} style={styles.iconIkarus} />
-                    <Text>Welcome to</Text>
-                    <Text>IKARUS WAY</Text>
+                    <Text style={styles.regularText}>Welcome to</Text>
+                    <Text style={styles.boldText}>IKARUS WAY</Text>
                 </View>
                 <View style={styles.middle}>
                     <TextInput
@@ -117,10 +117,10 @@ const Auth = () => {
                             <Image source={icons.arrow} style={styles.iconArrow} />
                         </Pressable>
                     </Link>
-                    <Text style={bottomText}>
+                    <Text style={styles.bottomText}>
                         By clicking on the "Login" button, you accept the terms of the
                         <Link href={'auth/privacy'}>
-                            <Text style={privacyText}>privacy policy</Text>
+                            <Text style={styles.privacyText}>privacy policy</Text>
                         </Link>
                     </Text>
                 </View>
