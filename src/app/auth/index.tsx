@@ -5,7 +5,9 @@ import {
     Text,
     SafeAreaView,
     TouchableOpacity,
-    TextInput
+    TextInput,
+    Image,
+    Pressable
 } from 'react-native';
 
 // Nagivation imports
@@ -13,7 +15,7 @@ import { Link, Stack, useRouter } from 'expo-router';
 
 // Styles
 import styles from '../../style/auth.style';
-import { FONT } from '@/constants';
+import { FONT, icons } from '@/constants';
 
 // Main component
 const Auth = () => {
@@ -26,7 +28,7 @@ const Auth = () => {
     const router = useRouter()
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.page}>
             <Stack.Screen
                 options={{
                     headerShown: false
@@ -84,6 +86,45 @@ const Auth = () => {
                 </View>
                 <Text style={styles.policyText}>By clicking on the "Login" button, you accept the terms of the <Text style={styles.policyBoldText}>privacy policy</Text></Text>
             </View> */}
+            <View style={styles.body}>
+                <View style={styles.top}>
+                    <Image source={icons.ikarus} style={styles.iconIkarus} />
+                    <Text>Welcome to</Text>
+                    <Text>IKARUS WAY</Text>
+                </View>
+                <View style={styles.middle}>
+                    <TextInput
+                        placeholder="Email"
+                        value={email}
+                        onChangeText={text => setEmail(text)}
+                        style={styles.inputText}
+                    />
+                    <TextInput
+                        placeholder="Password"
+                        secureTextEntry={true}
+                        value={password}
+                        onChangeText={text => setPassword(text)}
+                        style={styles.inputText}
+                    />
+                    <Link href={'/auth/forgot'} style={styles.forgot}>
+                        <Text style={styles.forgotText}>Do not remember password?</Text>
+                    </Link>
+                </View>
+                <View style={styles.bottom}>
+                    <Link href={'/pages'} asChild>
+                        <Pressable style={styles.button}>
+                            <Text style={styles.buttonText}>LOGIN</Text>
+                            <Image source={icons.arrow} style={styles.iconArrow} />
+                        </Pressable>
+                    </Link>
+                    <Text style={bottomText}>
+                        By clicking on the "Login" button, you accept the terms of the
+                        <Link href={'auth/privacy'}>
+                            <Text style={privacyText}>privacy policy</Text>
+                        </Link>
+                    </Text>
+                </View>
+            </View>
         </SafeAreaView>
     );
 }
