@@ -13,7 +13,9 @@ const styles = StyleSheet.create({
         width: 20,
         height: 22,
     },
-    regularText: {},
+    regularText: {
+        fontSize: SIZES.medium,
+    },
     boldText: {},
     middle: {},
     inputText: {},
