@@ -21,6 +21,8 @@ import history from "../../assets/icons/history.png";
 // NEW WORLD
 import arrow from "../../assets/icons/arrow.png";
 import ikarus from "../../assets/icons/ikarus.png";
+import eyeOpened from "../../assets/icons/eye_opened.png"
+import eyeClosed from "../../assets/icons/eye-closed.png"
 
 export default {
     back,
@@ -45,4 +47,6 @@ export default {
     // NEW WORLD
     arrow,
     ikarus,
+    eyeOpened,
+    eyeClosed
 };

@@ -23,9 +23,11 @@ const Auth = () => {
     // useState constants for login page
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
-    // router
-    const router = useRouter()
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     return (
         <SafeAreaView style={styles.page}>
@@ -97,15 +99,39 @@ const Auth = () => {
                         placeholder="Email"
                         value={email}
                         onChangeText={text => setEmail(text)}
-                        style={styles.inputText}
+                        style={styles.emailText}
                     />
-                    <TextInput
-                        placeholder="Password"
-                        secureTextEntry={true}
-                        value={password}
-                        onChangeText={text => setPassword(text)}
-                        style={styles.inputText}
-                    />
+                    <View style={styles.passwordContainer}>
+                        <TextInput
+                            placeholder="Password"
+                            secureTextEntry={!showPassword}
+                            value={password}
+                            onChangeText={(text) => setPassword(text)}
+                            style={styles.passwordText}
+                        />
+                        <TouchableOpacity
+                            // style={styles.eyeIconContainer}
+                            onPress={togglePasswordVisibility}
+                        >
+                            <Image
+                                source={
+                                    showPassword ? icons.eyeOpened : icons.eyeClosed
+                                }
+                                style={styles.iconEye}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    {/* <>
+                        <TextInput
+                            placeholder="Password"
+                            secureTextEntry={true}
+                            value={password}
+                            onChangeText={text => setPassword(text)}
+                            style={styles.inputText}
+                        />
+                        <Image source={icons.eyeOpened} style={styles.iconEye} />
+                        <Image source={icons.eyeClosed} style={styles.iconEye} />
+                    </> */}
                     <Link href={'/auth/forgot'} style={styles.forgot}>
                         <Text style={styles.forgotText}>Do not remember password?</Text>
                     </Link>
