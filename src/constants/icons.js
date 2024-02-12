@@ -20,6 +20,7 @@ import history from "../../assets/icons/history.png";
 
 // NEW WORLD
 import arrow from "../../assets/icons/arrow.png";
+import ikarus from "../../assets/icons/ikarus.png";
 
 export default {
     back,
@@ -43,4 +44,5 @@ export default {
 
     // NEW WORLD
     arrow,
+    ikarus,
 };
