@@ -45,7 +45,7 @@ const ForgotPage = () => {
                     />
                 </View>
                 <View style={styles.bottom}>
-                    <Link href={'/auth'} asChild>
+                    <Link href={'/auth/new'} asChild>
                         <Pressable style={styles.button}>
                             <Text style={styles.buttonText}>SEND</Text>
                             <Image source={icons.arrow} style={styles.iconArrow} />
