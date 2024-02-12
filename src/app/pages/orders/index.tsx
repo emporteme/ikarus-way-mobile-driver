@@ -12,7 +12,7 @@ import QuickActions from '@/components/home/quick/Quick';
 
 
 const FirstRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
+    <View style={{ flex: 1, backgroundColor: 'red' }} />
 );
 
 const SecondRoute = () => (
