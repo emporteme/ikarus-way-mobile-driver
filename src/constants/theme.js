@@ -2,7 +2,7 @@ const COLORS = {
     primary: "#F8C513",
     dark: "#333333",
     white: "#ffffff",
-    grey: '#333333'
+    grey: '#33333380'
 }
 
 const FONT = {                      // Perfect list:

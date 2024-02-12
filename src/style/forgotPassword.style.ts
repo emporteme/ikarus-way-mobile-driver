@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 20,
         justifyContent: 'center',
-        gap: 90,
+        gap: 40,
         // backgroundColor: 'red',
     },
     top: {
@@ -96,9 +96,6 @@ const styles = StyleSheet.create({
         width: 16,
         height: 16,
         tintColor: COLORS.white,
-    },
-    bottomTextWrapper: {
-        textAlign: 'center'
     },
     bottomText: {
         color: COLORS.grey,
