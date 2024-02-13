@@ -1,21 +1,9 @@
+// Interface for order data
+import { OrderType } from "@/types";
 
-interface Order {
-    pickupAddress: string;
-    dropOffAddress: string;
-    dateStart: string;
-    dateFinish: string;
-    timeStart: string;
-    timeEnd: string;
-    price: number;
-    status: string;
-    volume: number;
-    packageType: string;
-    weight: number;
-    distance: number;
-}
 
 // Mock data of orders
-export const orders: Order[] = [
+export const orders: OrderType[] = [
     {
         pickupAddress: "123 Main Street",
         dropOffAddress: "456 Elm Street",

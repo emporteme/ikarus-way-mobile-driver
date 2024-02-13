@@ -1,7 +1,5 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-
-interface Order {
+// Interface for order data
+export interface OrderType {
     pickupAddress: string;
     dropOffAddress: string;
     dateStart: string;
@@ -15,13 +13,3 @@ interface Order {
     weight: number;
     distance: number;
 }
-
-const Card = (order: Order) => {
-    return (
-        <View>
-            <Text>{order.weight}</Text>
-        </View>
-    )
-}
-
-export default Card
