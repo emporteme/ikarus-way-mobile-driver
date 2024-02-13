@@ -1,0 +1,159 @@
+
+interface Order {
+    pickupAddress: string;
+    dropOffAddress: string;
+    dateStart: string;
+    dateFinish: string;
+    timeStart: string;
+    timeEnd: string;
+    price: number;
+    status: string;
+    volume: number;
+    packageType: string;
+    weight: number;
+    distance: number;
+}
+
+// Mock data of orders
+export const orders: Order[] = [
+    {
+        pickupAddress: "123 Main Street",
+        dropOffAddress: "456 Elm Street",
+        dateStart: "2024-02-14",
+        dateFinish: "2024-02-15",
+        timeStart: "10:00 AM",
+        timeEnd: "12:00 PM",
+        price: 50.99,
+        status: "Pending",
+        volume: 2,
+        packageType: "Small",
+        weight: 5,
+        distance: 10
+    },
+    {
+        pickupAddress: "789 Oak Avenue",
+        dropOffAddress: "321 Pine Road",
+        dateStart: "2024-02-15",
+        dateFinish: "2024-02-16",
+        timeStart: "2:00 PM",
+        timeEnd: "4:00 PM",
+        price: 75.5,
+        status: "Completed",
+        volume: 3,
+        packageType: "Medium",
+        weight: 10,
+        distance: 15
+    },
+    {
+        pickupAddress: "987 Maple Lane",
+        dropOffAddress: "654 Cedar Court",
+        dateStart: "2024-02-16",
+        dateFinish: "2024-02-17",
+        timeStart: "9:00 AM",
+        timeEnd: "11:00 AM",
+        price: 35.25,
+        status: "Pending",
+        volume: 1,
+        packageType: "Small",
+        weight: 3,
+        distance: 8
+    },
+    {
+        pickupAddress: "456 Elm Street",
+        dropOffAddress: "123 Main Street",
+        dateStart: "2024-02-18",
+        dateFinish: "2024-02-19",
+        timeStart: "1:00 PM",
+        timeEnd: "3:00 PM",
+        price: 60.0,
+        status: "Completed",
+        volume: 2,
+        packageType: "Small",
+        weight: 5,
+        distance: 10
+    },
+    {
+        pickupAddress: "321 Pine Road",
+        dropOffAddress: "789 Oak Avenue",
+        dateStart: "2024-02-20",
+        dateFinish: "2024-02-21",
+        timeStart: "10:00 AM",
+        timeEnd: "12:00 PM",
+        price: 45.75,
+        status: "Pending",
+        volume: 1,
+        packageType: "Small",
+        weight: 3,
+        distance: 7
+    },
+    {
+        pickupAddress: "654 Cedar Court",
+        dropOffAddress: "987 Maple Lane",
+        dateStart: "2024-02-22",
+        dateFinish: "2024-02-23",
+        timeStart: "3:00 PM",
+        timeEnd: "5:00 PM",
+        price: 85.0,
+        status: "Completed",
+        volume: 4,
+        packageType: "Large",
+        weight: 15,
+        distance: 20
+    },
+    {
+        pickupAddress: "246 Oak Avenue",
+        dropOffAddress: "135 Pine Road",
+        dateStart: "2024-02-24",
+        dateFinish: "2024-02-25",
+        timeStart: "9:00 AM",
+        timeEnd: "11:00 AM",
+        price: 40.5,
+        status: "Pending",
+        volume: 1,
+        packageType: "Small",
+        weight: 3,
+        distance: 6
+    },
+    {
+        pickupAddress: "753 Elm Street",
+        dropOffAddress: "864 Main Street",
+        dateStart: "2024-02-26",
+        dateFinish: "2024-02-27",
+        timeStart: "11:00 AM",
+        timeEnd: "1:00 PM",
+        price: 70.25,
+        status: "Completed",
+        volume: 3,
+        packageType: "Medium",
+        weight: 10,
+        distance: 14
+    },
+    {
+        pickupAddress: "951 Maple Lane",
+        dropOffAddress: "852 Cedar Court",
+        dateStart: "2024-02-28",
+        dateFinish: "2024-02-29",
+        timeStart: "2:00 PM",
+        timeEnd: "4:00 PM",
+        price: 55.0,
+        status: "Pending",
+        volume: 2,
+        packageType: "Small",
+        weight: 5,
+        distance: 9
+    },
+    {
+        pickupAddress: "357 Pine Road",
+        dropOffAddress: "468 Oak Avenue",
+        dateStart: "2024-03-01",
+        dateFinish: "2024-03-02",
+        timeStart: "10:00 AM",
+        timeEnd: "12:00 PM",
+        price: 65.75,
+        status: "Completed",
+        volume: 2,
+        packageType: "Small",
+        weight: 5,
+        distance: 10
+    }
+];
