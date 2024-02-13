@@ -9,10 +9,10 @@ const styles = StyleSheet.create({
         borderRadius: SIZES.xxSmall,
         paddingVertical: SIZES.xSmall,
         paddingHorizontal: SIZES.medium,
-        gap: SIZES.xSmall,
+        gap: SIZES.small,
         shadowColor: COLORS.gray,
         shadowOpacity: 0.25,
-        shadowOffset: { width: 0, height: 4 },
+        shadowOffset: { width: 2, height: 4 },
         shadowRadius: 0,
         elevation: SIZES.xSmall,
     },
@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        gap: SIZES.small
+        gap: SIZES.small,
     },
     location: {
-        gap: 4,
+        gap: 0,
     },
     pickup: {
         flexDirection: 'row',
