@@ -1,22 +1,8 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import { OrderType } from '@/types';
 
-interface Order {
-    pickupAddress: string;
-    dropOffAddress: string;
-    dateStart: string;
-    dateFinish: string;
-    timeStart: string;
-    timeEnd: string;
-    price: number;
-    status: string;
-    volume: number;
-    packageType: string;
-    weight: number;
-    distance: number;
-}
-
-const Card = (order: Order) => {
+const Card = (order: OrderType) => {
     return (
         <View>
             <Text>{order.weight}</Text>
