@@ -3,114 +3,94 @@ import { StyleSheet } from "react-native";
 import { FONT, COLORS, SIZES } from "@/constants";
 
 const styles = StyleSheet.create({
-    page: {
+    card: {
         flex: 1,
-    },
-    body: {
-        flex: 1,
-        paddingHorizontal: 20,
-        justifyContent: 'center',
-        gap: 90,
-        // backgroundColor: 'red',
+        backgroundColor: COLORS.white,
+        borderRadius: SIZES.xxSmall,
+        paddingVertical: SIZES.xSmall,
+        paddingHorizontal: SIZES.medium,
+        gap: SIZES.xSmall,
+        shadowColor: COLORS.gray,
+        shadowOpacity: 0.25,
+        shadowOffset: { width: 0, height: 4 },
+        shadowRadius: 0,
+        elevation: SIZES.xSmall,
     },
     top: {
-        alignItems: 'center'
-    },
-    iconIkarus: {
-        width: 21,
-        height: 23,
-        marginBottom: 8,
-        tintColor: COLORS.primary,
-    },
-    regularText: {
-        fontSize: SIZES.semiLarge,
-        fontFamily: FONT.medium,
-        color: COLORS.primary,
-    },
-    boldText: {
-        fontSize: SIZES.semiLarge,
-        fontFamily: FONT.bold,
-        color: COLORS.primary,
-    },
-    middle: {},
-    emailText: {
-        color: COLORS.dark,
-        width: '100%',
-        fontSize: SIZES.medium,
-        fontFamily: FONT.regular,
-        borderBottomWidth: 1,
-        borderColor: 'rgba(19, 22, 28, 0.20)',
-        paddingVertical: 5,
-        paddingHorizontal: 4,
-        marginTop: 10
-    },
-    passwordContainer: {
-        width: '100%',
-        borderBottomWidth: 1,
-        borderColor: 'rgba(19, 22, 28, 0.20)',
-        paddingVertical: 5,
-        paddingHorizontal: 4,
-        marginTop: 10,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        gap: SIZES.small
     },
-    passwordText: {
-        color: COLORS.dark,
-        width: '90%',
-        fontSize: SIZES.medium,
-        fontFamily: FONT.regular,
+    location: {
+        gap: 4,
     },
-    iconEye: {
-        width: 24,
-        height: 24,
-        tintColor: COLORS.dark,
+    pickup: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: SIZES.medium
     },
-    forgot: {
-        marginTop: 10,
-        alignSelf: 'center',
+    drop: {
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        gap: SIZES.medium
     },
-    forgotText: {
+    address: {
         color: COLORS.dark,
         fontSize: SIZES.semiMedium,
+        fontFamily: FONT.medium,
+    },
+    iconArrow: {
+        width: 14,
+        height: 12
+    },
+    distanceText: {
+        color: COLORS.gray,
+        fontSize: SIZES.small,
+        fontFamily: FONT.medium,
+    },
+    status: {
+        backgroundColor: COLORS.primary,
+        paddingVertical: 4,
+        paddingHorizontal: 10,
+        borderRadius: 8
+    },
+    statusText: {
+        color: COLORS.white,
+        fontSize: SIZES.small,
         fontFamily: FONT.medium,
     },
     bottom: {
-        gap: 20,
-    },
-    button: {
-        paddingHorizontal: 16,
-        paddingVertical: 14,
-        borderRadius: 12,
-        backgroundColor: COLORS.primary,
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 10,
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        gap: SIZES.small
     },
-    buttonText: {
-        color: COLORS.white,
-        fontSize: SIZES.medium,
-        fontFamily: FONT.semiBold,
-    },
-    iconArrow: {
-        width: 16,
-        height: 16,
-        tintColor: COLORS.white,
-    },
-    bottomTextWrapper: {
-        textAlign: 'center'
-    },
-    bottomText: {
-        color: COLORS.grey,
-        fontSize: SIZES.semiMedium,
+    weightText: {
+        color: COLORS.gray2,
+        fontSize: SIZES.small,
         fontFamily: FONT.medium,
-        textAlign: 'center'
     },
-    privacyText: {
-        fontFamily: FONT.semiBold,
+    packageText: {
+        color: COLORS.gray2,
+        fontSize: SIZES.small,
+        fontFamily: FONT.regular,
     },
-
-
+    dateText: {
+        color: COLORS.gray2,
+        fontSize: SIZES.small,
+        fontFamily: FONT.medium,
+    },
+    volumeText: {
+        color: COLORS.gray2,
+        fontSize: SIZES.small,
+        fontFamily: FONT.regular,
+    },
+    priceText: {
+        color: COLORS.gray2,
+        fontSize: SIZES.small,
+        fontFamily: FONT.regular,
+    },
 })
 
 export default styles
