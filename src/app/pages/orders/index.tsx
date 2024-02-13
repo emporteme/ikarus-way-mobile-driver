@@ -2,12 +2,11 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, View, Text, useWindowDimensions } from "react-native";
 import { TabView, SceneMap } from 'react-native-tab-view';
-
-// Routing imports
-import { Stack, Link } from "expo-router";
+// Components imports
+import List from '@/components/orders/list/List';
 
 const FirstRoute = () => (
-    <View style={{ flex: 1, backgroundColor: 'red' }} />
+    <List />
 );
 
 const SecondRoute = () => (
