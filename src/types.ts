@@ -1,5 +1,6 @@
 // Interface for order data
 export interface OrderType {
+    id: number;
     pickupAddress: string;
     dropOffAddress: string;
     dateStart: string;

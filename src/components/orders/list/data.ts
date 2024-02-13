@@ -5,6 +5,7 @@ import { OrderType } from "@/types";
 // Mock data of orders
 export const orders: OrderType[] = [
     {
+        id: 1,
         pickupAddress: "123 Main Street",
         dropOffAddress: "456 Elm Street",
         dateStart: "2024-02-14",
@@ -19,6 +20,7 @@ export const orders: OrderType[] = [
         distance: 10
     },
     {
+        id: 2,
         pickupAddress: "789 Oak Avenue",
         dropOffAddress: "321 Pine Road",
         dateStart: "2024-02-15",
@@ -33,6 +35,7 @@ export const orders: OrderType[] = [
         distance: 15
     },
     {
+        id: 3,
         pickupAddress: "987 Maple Lane",
         dropOffAddress: "654 Cedar Court",
         dateStart: "2024-02-16",
@@ -47,6 +50,7 @@ export const orders: OrderType[] = [
         distance: 8
     },
     {
+        id: 4,
         pickupAddress: "456 Elm Street",
         dropOffAddress: "123 Main Street",
         dateStart: "2024-02-18",
@@ -61,6 +65,7 @@ export const orders: OrderType[] = [
         distance: 10
     },
     {
+        id: 5,
         pickupAddress: "321 Pine Road",
         dropOffAddress: "789 Oak Avenue",
         dateStart: "2024-02-20",
@@ -75,6 +80,7 @@ export const orders: OrderType[] = [
         distance: 7
     },
     {
+        id: 6,
         pickupAddress: "654 Cedar Court",
         dropOffAddress: "987 Maple Lane",
         dateStart: "2024-02-22",
@@ -89,6 +95,7 @@ export const orders: OrderType[] = [
         distance: 20
     },
     {
+        id: 7,
         pickupAddress: "246 Oak Avenue",
         dropOffAddress: "135 Pine Road",
         dateStart: "2024-02-24",
@@ -103,20 +110,7 @@ export const orders: OrderType[] = [
         distance: 6
     },
     {
-        pickupAddress: "753 Elm Street",
-        dropOffAddress: "864 Main Street",
-        dateStart: "2024-02-26",
-        dateFinish: "2024-02-27",
-        timeStart: "11:00 AM",
-        timeEnd: "1:00 PM",
-        price: 70.25,
-        status: "Completed",
-        volume: 3,
-        packageType: "Medium",
-        weight: 10,
-        distance: 14
-    },
-    {
+        id: 8,
         pickupAddress: "951 Maple Lane",
         dropOffAddress: "852 Cedar Court",
         dateStart: "2024-02-28",
@@ -131,6 +125,7 @@ export const orders: OrderType[] = [
         distance: 9
     },
     {
+        id: 9,
         pickupAddress: "357 Pine Road",
         dropOffAddress: "468 Oak Avenue",
         dateStart: "2024-03-01",
@@ -143,5 +138,20 @@ export const orders: OrderType[] = [
         packageType: "Small",
         weight: 5,
         distance: 10
-    }
+    },
+    {
+        id: 10,
+        pickupAddress: "753 Elm Street",
+        dropOffAddress: "864 Main Street",
+        dateStart: "2024-02-26",
+        dateFinish: "2024-02-27",
+        timeStart: "11:00 AM",
+        timeEnd: "1:00 PM",
+        price: 70.25,
+        status: "Completed",
+        volume: 3,
+        packageType: "Medium",
+        weight: 10,
+        distance: 14
+    },
 ];
