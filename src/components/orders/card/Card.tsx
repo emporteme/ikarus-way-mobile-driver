@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, Pressable } from 'react-native'
 import React from 'react'
 import { Link } from 'expo-router';
 import { OrderType } from '@/types';
@@ -8,7 +8,7 @@ import styles from './card.style'
 const Card = (order: OrderType) => {
     return (
         <Link href={`/pages/orders/${order.id}`} asChild>
-            <View style={styles.card}>
+            <Pressable style={styles.card}>
                 {/* <Text>{order.weight}</Text> */}
                 <View style={styles.top}>
                     <View style={styles.location}>
@@ -38,7 +38,7 @@ const Card = (order: OrderType) => {
                         <Text style={styles.detailsText}>{order.price} USD</Text>
                     </View>
                 </View>
-            </View>
+            </Pressable>
         </Link>
     )
 }
