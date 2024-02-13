@@ -14,8 +14,8 @@ export default () => {
                 tabBarInactiveTintColor: '#13161C40',
                 tabBarActiveTintColor: COLORS.primary,
                 tabBarStyle: {
-                    borderRadius: 25,
-                    paddingTop: 5,
+                    // borderRadius: 25,
+                    // paddingTop: 5,
                     // paddingBottom: 10
                 }
             }}
@@ -37,7 +37,7 @@ export default () => {
                     // tabBarInactiveBackgroundColor:           
                     tabBarLabelPosition: 'below-icon',
                     tabBarLabelStyle: {
-                        fontFamily: FONT.regular,
+                        fontFamily: FONT.medium,
                         fontSize: 10,
                     },
                     tabBarItemStyle: {
@@ -56,7 +56,7 @@ export default () => {
                     ),
                     tabBarLabelPosition: 'below-icon',
                     tabBarLabelStyle: {
-                        fontFamily: FONT.regular,
+                        fontFamily: FONT.medium,
                         fontSize: 10,
                     },
                     tabBarItemStyle: {},
@@ -77,7 +77,7 @@ export default () => {
                     ),
                     tabBarLabelPosition: 'below-icon',
                     tabBarLabelStyle: {
-                        fontFamily: FONT.regular,
+                        fontFamily: FONT.medium,
                         fontSize: 10,
                     },
                     tabBarItemStyle: {}
@@ -95,7 +95,7 @@ export default () => {
                     ),
                     tabBarLabelPosition: 'below-icon',
                     tabBarLabelStyle: {
-                        fontFamily: FONT.regular,
+                        fontFamily: FONT.medium,
                         fontSize: 10,
                     },
                     tabBarItemStyle: {}

@@ -1,6 +1,6 @@
 // Main imports
-import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, View, Text, useWindowDimensions } from "react-native";
+import React from 'react';
+import { View, useWindowDimensions } from "react-native";
 import { TabView, SceneMap } from 'react-native-tab-view';
 // Components imports
 import List from '@/components/orders/list/List';
@@ -10,11 +10,11 @@ const FirstRoute = () => (
 );
 
 const SecondRoute = () => (
-    <View style={{ flex: 1, backgroundColor: 'green' }} />
+    <List />
 );
 
 const ThirdRoute = () => (
-    <View style={{ flex: 1, backgroundColor: 'blue' }} />
+    <List />
 );
 
 const renderScene = SceneMap({
@@ -28,9 +28,9 @@ const OrdersPage = () => {
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
-        { key: 'first', title: 'First' },
-        { key: 'second', title: 'Second' },
-        { key: 'third', title: 'Third' },
+        { key: 'first', title: 'All' },
+        { key: 'second', title: 'Active' },
+        { key: 'third', title: 'Finished' },
     ]);
 
     return (

@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white
     },
     content: {
-        borderWidth: 1, // Later delete this Line!
+        // borderWidth: 1, // Later delete this Line!
         paddingVertical: 20,
         paddingHorizontal: 20,
         gap: SIZES.medium,
