@@ -6,22 +6,22 @@ import { TabView, SceneMap } from 'react-native-tab-view';
 // Routing imports
 import { Stack, Link } from "expo-router";
 
-// Components
-import Account from '@/components/home/account/Account';
-import QuickActions from '@/components/home/quick/Quick';
-
-
 const FirstRoute = () => (
     <View style={{ flex: 1, backgroundColor: 'red' }} />
 );
 
 const SecondRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
+    <View style={{ flex: 1, backgroundColor: 'green' }} />
+);
+
+const ThirdRoute = () => (
+    <View style={{ flex: 1, backgroundColor: 'blue' }} />
 );
 
 const renderScene = SceneMap({
     first: FirstRoute,
     second: SecondRoute,
+    third: ThirdRoute,
 });
 
 const OrdersPage = () => {
@@ -31,6 +31,7 @@ const OrdersPage = () => {
     const [routes] = React.useState([
         { key: 'first', title: 'First' },
         { key: 'second', title: 'Second' },
+        { key: 'third', title: 'Third' },
     ]);
 
     return (
