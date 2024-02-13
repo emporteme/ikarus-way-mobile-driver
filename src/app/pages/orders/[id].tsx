@@ -1,6 +1,6 @@
-import { View, Text } from 'react-native'
+import { View, Text, SafeAreaView } from 'react-native'
 import React from 'react'
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, Stack } from 'expo-router';
 import { orders } from '@/components/orders/list/data'
 import { OrderType } from '@/types'
 
@@ -8,9 +8,16 @@ const OrderDetail = () => {
     const { id } = useLocalSearchParams();
 
     return (
-        <View>
-            <Text>{id} USD</Text>
-        </View>
+        <SafeAreaView>
+            <Stack.Screen
+                options={{
+                    headerShown: true,
+                    title: `Order #${id}`,
+                    headerTitleAlign: 'center'
+                }}
+            />
+            <Text style={{ marginHorizontal: 'auto' }}>{id} USD</Text>
+        </SafeAreaView >
     );
 }
 
