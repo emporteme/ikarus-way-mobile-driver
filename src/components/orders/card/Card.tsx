@@ -11,12 +11,12 @@ const Card = (order: OrderType) => {
             <View style={styles.top}>
                 <View style={styles.location}>
                     <View style={styles.pickup}>
-                        <Text style={styles.address}>{order.pickupAddress}</Text>
+                        <Text style={styles.addressText}>{order.pickupAddress}</Text>
                         <Image source={icons.arrow} style={styles.iconArrow} />
                     </View>
                     <View style={styles.drop}>
-                        <Text style={styles.address}>{order.dropOffAddress}</Text>
-                        <Text style={styles.distanceText}>{order.distance}</Text>
+                        <Text style={styles.addressText}>{order.dropOffAddress}</Text>
+                        <Text style={styles.detailsText}>{order.distance} km</Text>
                     </View>
                 </View>
                 <View style={styles.status}>
@@ -26,14 +26,14 @@ const Card = (order: OrderType) => {
             <View style={styles.bottom}>
                 <View>
                     <Text>
-                        <Text style={styles.weightText}>{order.weight} kg, </Text>
+                        <Text style={styles.detailsText}>{order.weight} kg, </Text>
                         <Text style={styles.packageText}>{order.packageType}</Text>
                     </Text>
-                    <Text style={styles.dateText}>{order.dateStart} - {order.dateFinish}</Text>
+                    <Text style={styles.detailsText}>{order.dateStart}  ·  {order.dateFinish}</Text>
                 </View>
-                <View>
-                    <Text style={styles.volumeText}>{order.volume} m3</Text>
-                    <Text style={styles.priceText}>{order.price} USD</Text>
+                <View style={styles.last}>
+                    <Text style={styles.detailsText}>{order.volume} m3</Text>
+                    <Text style={styles.detailsText}>{order.price} USD</Text>
                 </View>
             </View>
         </View>

@@ -35,8 +35,13 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         gap: SIZES.medium
     },
-    address: {
+    addressText: {
         color: COLORS.dark,
+        fontSize: SIZES.medium,
+        fontFamily: FONT.medium,
+    },
+    detailsText: {
+        color: COLORS.gray2,
         fontSize: SIZES.semiMedium,
         fontFamily: FONT.medium,
     },
@@ -57,7 +62,7 @@ const styles = StyleSheet.create({
     },
     statusText: {
         color: COLORS.white,
-        fontSize: SIZES.small,
+        fontSize: SIZES.semiMedium,
         fontFamily: FONT.medium,
     },
     bottom: {
@@ -73,7 +78,7 @@ const styles = StyleSheet.create({
     },
     packageText: {
         color: COLORS.gray2,
-        fontSize: SIZES.small,
+        fontSize: SIZES.semiMedium,
         fontFamily: FONT.regular,
     },
     dateText: {
@@ -91,6 +96,9 @@ const styles = StyleSheet.create({
         fontSize: SIZES.small,
         fontFamily: FONT.regular,
     },
+    last:{
+        alignItems: 'flex-end',
+    }
 })
 
 export default styles
