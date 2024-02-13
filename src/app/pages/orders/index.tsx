@@ -1,9 +1,11 @@
 // Main imports
 import React from 'react';
-import { View, useWindowDimensions } from "react-native";
-import { TabView, SceneMap } from 'react-native-tab-view';
+import { View, useWindowDimensions, Text } from "react-native";
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 // Components imports
 import List from '@/components/orders/list/List';
+// Styles imports
+import styles from '@/style/orders.style';
 
 const FirstRoute = () => (
     <List />
@@ -40,6 +42,25 @@ const OrdersPage = () => {
                 renderScene={renderScene}
                 onIndexChange={setIndex}
                 initialLayout={{ width: layout.width }}
+                renderTabBar={props => <TabBar
+                    {...props}
+                    renderLabel={({ focused, route }) => {
+                        return (
+                            <Text
+                                style={{
+                                    fontSize: 16,
+                                    fontWeight: focused ? '500' : '500',
+                                    color: focused ? 'black' : '#33333340',
+                                    // backgroundColor:'red'
+                                }}
+                            >
+                                {route.title}
+                            </Text >
+                        );
+                    }}
+                    indicatorStyle={styles.indicatorStyle}
+                    style={styles.tabbar}
+                />} 
             />
         </>
     );
