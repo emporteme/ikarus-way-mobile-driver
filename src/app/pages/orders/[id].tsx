@@ -21,46 +21,153 @@ const OrderDetail = () => {
                         // Maybe I need to use router.back(), but for now this logic fits well.
                         // router.push('/pages/services')}
                         <View style={styles.status}>
-                            <Text style={styles.statusText}>Edit</Text>
+                            <Text style={styles.statusText}>Status</Text>
                         </View>
                     ),
                 }}
             />
-            <Text style={{ marginHorizontal: 'auto' }}>{id} USD</Text>
-            <ScrollView>
-                <View>
-                    <Text>Pickup</Text>
-                    <View>
-                        <Image source={icons.kz_flag} style={styles.iconFlag} />
-                        <View>
-                            <Text>
-                                <Text>Astana, KZ</Text>
-                                <Text>  ·  </Text>
-                                <Text>Tsetkinoy, bld. 79/А</Text>
-                            </Text>
-                            <Text>14 Jan 2024, 12:00</Text>
+            {/* <Text style={{ marginHorizontal: 'auto' }}>{id} USD</Text> */}
+            <View style={styles.body}>
+                <ScrollView style={styles.scroll}>
+                    <View style={styles.section}>
+                        <Text style={styles.title}>Pickup</Text>
+                        <View style={styles.row}>
+                            <Image source={icons.kz_flag} style={styles.iconFlag} />
+                            <View style={styles.column}>
+                                <Text style={styles.row}>
+                                    <Text style={styles.medSemiMedium}>Astana, KZ</Text>
+                                    <Text style={styles.medSemiMedium}>  ·  </Text>
+                                    <Text style={styles.regSemiMedium}>Tsetkinoy, bld. 79/А</Text>
+                                </Text>
+                                <Text style={styles.regSmall2}>14 Jan 2024, 12:00</Text>
+                            </View>
+                        </View>
+                        <View style={styles.row}>
+                            <Image source={icons.company} style={styles.iconFlag} />
+                            <View style={styles.column}>
+                                <Text style={styles.medSemiMedium}>Good supplies, LTD</Text>
+                                <Text style={styles.regSmall2}>+7 776 666 55 12</Text>
+                            </View>
+                        </View>
+                        <View style={styles.rowFull}>
+                            <View style={styles.row}>
+                                <Image source={icons.user} style={styles.iconFlag} />
+                                <View style={styles.column}>
+                                    <Text style={styles.medSemiMedium}>Ivan Ivanov</Text>
+                                    <Text style={styles.regSmall2}>+7 776 666 55 12</Text>
+                                </View>
+                            </View>
+                            <View style={styles.row}>
+                                <Image source={icons.phone} style={styles.iconFlag} />
+                                <Image source={icons.message} style={styles.iconFlag} />
+                            </View>
                         </View>
                     </View>
-                    <View>
-                        <Image source={icons.kz_flag} style={styles.iconFlag} />
-                        <View>
-                            <Text>Good supplies, LTD</Text>
-                            <Text>+7 776 666 55 12</Text>
+                    <View style={styles.section}>
+                        <Text style={styles.title}>Drop</Text>
+                        <View style={styles.row}>
+                            <Image source={icons.kz_flag} style={styles.iconFlag} />
+                            <View style={styles.column}>
+                                <Text style={styles.row}>
+                                    <Text style={styles.medSemiMedium}>ALmaty, KZ</Text>
+                                    <Text style={styles.medSemiMedium}>  ·  </Text>
+                                    <Text style={styles.regSemiMedium}>Auezov, bld. 79/А</Text>
+                                </Text>
+                                <Text style={styles.regSmall2}>17 Jan 2024, 12:00</Text>
+                            </View>
+                        </View>
+                        <View style={styles.row}>
+                            <Image source={icons.company} style={styles.iconFlag} />
+                            <View style={styles.column}>
+                                <Text style={styles.medSemiMedium}>BR Group</Text>
+                                <Text style={styles.regSmall2}>+7 776 666 55 12</Text>
+                            </View>
+                        </View>
+                        <View style={styles.rowFull}>
+                            <View style={styles.row}>
+                                <Image source={icons.user} style={styles.iconFlag} />
+                                <View style={styles.column}>
+                                    <Text style={styles.medSemiMedium}>Anton Antonov</Text>
+                                    <Text style={styles.regSmall2}>+7 776 666 55 12</Text>
+                                </View>
+                            </View>
+                            <View style={styles.row}>
+                                <Image source={icons.phone} style={styles.iconFlag} />
+                                <Image source={icons.message} style={styles.iconFlag} />
+                            </View>
                         </View>
                     </View>
-                    <View>
-                        <Image source={icons.kz_flag} style={styles.iconFlag} />
-                        <View>
-                            <Text>
-                                <Text>Astana, KZ</Text>
-                                <Text>  ·  </Text>
-                                <Text>Tsetkinoy, bld. 79/А</Text>
-                            </Text>
-                            <Text>14 Jan 2024, 12:00</Text>
+                    <View style={styles.lineH} />
+                    <View style={styles.section}>
+                        <Text style={styles.title}>Drop</Text>
+                        <View style={styles.row}>
+                            <Image source={icons.kz_flag} style={styles.iconFlag} />
+                            <View style={styles.column}>
+                                <Text style={styles.row}>
+                                    <Text style={styles.medSemiMedium}>ALmaty, KZ</Text>
+                                    <Text style={styles.medSemiMedium}>  ·  </Text>
+                                    <Text style={styles.regSemiMedium}>Auezov, bld. 79/А</Text>
+                                </Text>
+                                <Text style={styles.regSmall2}>17 Jan 2024, 12:00</Text>
+                            </View>
+                        </View>
+                        <View style={styles.row}>
+                            <Image source={icons.company} style={styles.iconFlag} />
+                            <View style={styles.column}>
+                                <Text style={styles.medSemiMedium}>BR Group</Text>
+                                <Text style={styles.regSmall2}>+7 776 666 55 12</Text>
+                            </View>
+                        </View>
+                        <View style={styles.rowFull}>
+                            <View style={styles.row}>
+                                <Image source={icons.user} style={styles.iconFlag} />
+                                <View style={styles.column}>
+                                    <Text style={styles.medSemiMedium}>Anton Antonov</Text>
+                                    <Text style={styles.regSmall2}>+7 776 666 55 12</Text>
+                                </View>
+                            </View>
+                            <View style={styles.row}>
+                                <Image source={icons.phone} style={styles.iconFlag} />
+                                <Image source={icons.message} style={styles.iconFlag} />
+                            </View>
                         </View>
                     </View>
-                </View>
-            </ScrollView>
+                    <View style={styles.section}>
+                        <Text style={styles.title}>Drop</Text>
+                        <View style={styles.row}>
+                            <Image source={icons.kz_flag} style={styles.iconFlag} />
+                            <View style={styles.column}>
+                                <Text style={styles.row}>
+                                    <Text style={styles.medSemiMedium}>ALmaty, KZ</Text>
+                                    <Text style={styles.medSemiMedium}>  ·  </Text>
+                                    <Text style={styles.regSemiMedium}>Auezov, bld. 79/А</Text>
+                                </Text>
+                                <Text style={styles.regSmall2}>17 Jan 2024, 12:00</Text>
+                            </View>
+                        </View>
+                        <View style={styles.row}>
+                            <Image source={icons.company} style={styles.iconFlag} />
+                            <View style={styles.column}>
+                                <Text style={styles.medSemiMedium}>BR Group</Text>
+                                <Text style={styles.regSmall2}>+7 776 666 55 12</Text>
+                            </View>
+                        </View>
+                        <View style={styles.rowFull}>
+                            <View style={styles.row}>
+                                <Image source={icons.user} style={styles.iconFlag} />
+                                <View style={styles.column}>
+                                    <Text style={styles.medSemiMedium}>Anton Antonov</Text>
+                                    <Text style={styles.regSmall2}>+7 776 666 55 12</Text>
+                                </View>
+                            </View>
+                            <View style={styles.row}>
+                                <Image source={icons.phone} style={styles.iconFlag} />
+                                <Image source={icons.message} style={styles.iconFlag} />
+                            </View>
+                        </View>
+                    </View>
+                </ScrollView>
+            </View>
         </SafeAreaView >
     );
 }

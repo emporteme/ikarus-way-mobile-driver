@@ -15,7 +15,8 @@ export default () => {
                 tabBarActiveTintColor: COLORS.primary,
                 tabBarStyle: {
                     // borderRadius: 25,
-                    paddingTop: 5,
+                    height: 70, // Increase the height as per your requirement
+                    paddingTop: 6,
                     // paddingBottom: 10
                 }
             }}
