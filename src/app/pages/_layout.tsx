@@ -73,7 +73,7 @@ export default () => {
                     title: 'Messages',
                     headerShown: false,
                     tabBarIcon: ({ color }) => (
-                        <Image source={icons.messages} style={{ width: 24, height: 24, tintColor: color }} />
+                        <Image source={icons.message} style={{ width: 24, height: 24, tintColor: color }} />
                     ),
                     tabBarLabelPosition: 'below-icon',
                     tabBarLabelStyle: {

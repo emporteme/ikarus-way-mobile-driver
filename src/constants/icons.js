@@ -24,6 +24,10 @@ import ikarus from "../../assets/icons/ikarus.png";
 import eyeOpened from "../../assets/icons/eye_opened.png"
 import eyeClosed from "../../assets/icons/eye-closed.png"
 import kz_flag from "../../assets/icons/kz_flag.png";
+import message from "../../assets/icons/message.png";
+import phone from "../../assets/icons/phone.png";
+import company from "../../assets/icons/company.png";
+import user from "../../assets/icons/user.png";
 
 export default {
     back,
@@ -50,5 +54,9 @@ export default {
     ikarus,
     eyeOpened,
     eyeClosed,
-    kz_flag
+    kz_flag,
+    message,
+    phone,
+    company,
+    user
 };
