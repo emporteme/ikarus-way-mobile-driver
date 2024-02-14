@@ -1,8 +1,9 @@
-import { View, Text, SafeAreaView, ScrollView } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, Image } from 'react-native'
 import React from 'react'
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { orders } from '@/components/orders/list/data'
 import { OrderType } from '@/types'
+import { icons } from '@/constants';
 import styles from '@/style/orderDetails.style';
 
 const OrderDetail = () => {
@@ -29,9 +30,35 @@ const OrderDetail = () => {
             <ScrollView>
                 <View>
                     <Text>Pickup</Text>
-                    <View></View>
-                    <View></View>
-                    <View></View>
+                    <View>
+                        <Image source={icons.kz_flag} style={styles.iconFlag} />
+                        <View>
+                            <Text>
+                                <Text>Astana, KZ</Text>
+                                <Text>  ·  </Text>
+                                <Text>Tsetkinoy, bld. 79/А</Text>
+                            </Text>
+                            <Text>14 Jan 2024, 12:00</Text>
+                        </View>
+                    </View>
+                    <View>
+                        <Image source={icons.kz_flag} style={styles.iconFlag} />
+                        <View>
+                            <Text>Good supplies, LTD</Text>
+                            <Text>+7 776 666 55 12</Text>
+                        </View>
+                    </View>
+                    <View>
+                        <Image source={icons.kz_flag} style={styles.iconFlag} />
+                        <View>
+                            <Text>
+                                <Text>Astana, KZ</Text>
+                                <Text>  ·  </Text>
+                                <Text>Tsetkinoy, bld. 79/А</Text>
+                            </Text>
+                            <Text>14 Jan 2024, 12:00</Text>
+                        </View>
+                    </View>
                 </View>
             </ScrollView>
         </SafeAreaView >

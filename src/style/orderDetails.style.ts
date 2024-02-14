@@ -13,6 +13,10 @@ const styles = StyleSheet.create({
         fontSize: SIZES.semiMedium,
         fontFamily: FONT.medium,
     },
+    iconFlag: {
+        width: 21,
+        height: 21,
+    }
 })
 
 export default styles
