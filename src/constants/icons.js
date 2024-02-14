@@ -23,6 +23,7 @@ import arrow from "../../assets/icons/arrow.png";
 import ikarus from "../../assets/icons/ikarus.png";
 import eyeOpened from "../../assets/icons/eye_opened.png"
 import eyeClosed from "../../assets/icons/eye-closed.png"
+import kz_flag from "../../assets/icons/kz_flag.png";
 
 export default {
     back,
@@ -48,5 +49,6 @@ export default {
     arrow,
     ikarus,
     eyeOpened,
-    eyeClosed
+    eyeClosed,
+    kz_flag
 };
