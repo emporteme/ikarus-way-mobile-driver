@@ -21,17 +21,31 @@ SplashScreen.preventAutoHideAsync();
 // Main App component
 export default function RootLayout() {
 
-    // Load custom fonts
+    // Load custom fonts || Poppins
+    // const [loaded, error] = useFonts({
+    //     mBlack: require("../../assets/fonts/Poppins-Black.ttf"),
+    //     mXBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
+    //     mBold: require("../../assets/fonts/Poppins-Bold.ttf"),
+    //     mSBold: require("../../assets/fonts/Poppins-SemiBold.ttf"),
+    //     mMedium: require("../../assets/fonts/Poppins-Medium.ttf"),
+    //     mRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
+    //     mLight: require("../../assets/fonts/Poppins-Light.ttf"),
+    //     mELight: require("../../assets/fonts/Poppins-ExtraLight.ttf"),
+    //     mThin: require("../../assets/fonts/Poppins-Thin.ttf"),
+    // });
+
+    
+    // Load custom fonts || Montserrat
     const [loaded, error] = useFonts({
-        mBlack: require("../../assets/fonts/Poppins-Black.ttf"),
-        mXBold: require("../../assets/fonts/Poppins-ExtraBold.ttf"),
-        mBold: require("../../assets/fonts/Poppins-Bold.ttf"),
-        mSBold: require("../../assets/fonts/Poppins-SemiBold.ttf"),
-        mMedium: require("../../assets/fonts/Poppins-Medium.ttf"),
-        mRegular: require("../../assets/fonts/Poppins-Regular.ttf"),
-        mLight: require("../../assets/fonts/Poppins-Light.ttf"),
-        mELight: require("../../assets/fonts/Poppins-ExtraLight.ttf"),
-        mThin: require("../../assets/fonts/Poppins-Thin.ttf"),
+        mBlack: require("../../assets/font/Montserrat-Black.ttf"),
+        mXBold: require("../../assets/font/Montserrat-ExtraBold.ttf"),
+        mBold: require("../../assets/font/Montserrat-Bold.ttf"),
+        mSBold: require("../../assets/font/Montserrat-SemiBold.ttf"),
+        mMedium: require("../../assets/font/Montserrat-Medium.ttf"),
+        mRegular: require("../../assets/font/Montserrat-Regular.ttf"),
+        mLight: require("../../assets/font/Montserrat-Light.ttf"),
+        mELight: require("../../assets/font/Montserrat-ExtraLight.ttf"),
+        mThin: require("../../assets/font/Montserrat-Thin.ttf"),
     });
 
     // Expo Router uses Error Boundaries to catch errors in the navigation tree.
