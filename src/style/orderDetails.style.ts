@@ -49,10 +49,10 @@ const styles = StyleSheet.create({
         gap: 4
     },
     medSemiMedium: {
-        fontSize: SIZES.semiMedium,
+        fontSize: SIZES.semiMedium,  // 14
         fontFamily: FONT.medium,
         color: COLORS.dark,
-        borderWidth: 1,
+        // borderWidth: 1,
         // includeFontPadding: true,
         textAlignVertical: 'center',
         padding: 0
