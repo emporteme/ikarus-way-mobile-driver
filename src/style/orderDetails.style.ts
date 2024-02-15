@@ -15,10 +15,11 @@ const styles = StyleSheet.create({
         paddingTop: 2
     },
     body: {
-        marginBottom: 20
+        flex: 1,
+        backgroundColor: COLORS.white,
     },
     scroll: {
-        padding: 20
+        padding: 20,
     },
     section: {
         gap: 10,
@@ -30,16 +31,32 @@ const styles = StyleSheet.create({
         color: COLORS.dark,
         paddingBottom: 6
     },
+    title2: {
+        fontSize: SIZES.semiMedium,
+        fontFamily: FONT.semiBold,
+        color: COLORS.dark,
+        marginBottom: -10
+    },
     row: {
         flexDirection: 'row',
         alignItems: 'flex-start',
         gap: 12,
     },
-    column: {},
+    column: {
+        gap: 0
+    },
+    column2: {
+        gap: 4
+    },
     medSemiMedium: {
         fontSize: SIZES.semiMedium,
         fontFamily: FONT.medium,
         color: COLORS.dark,
+        borderWidth: 1,
+        // includeFontPadding: true,
+        textAlignVertical: 'center',
+        padding: 0
+        // lineHeight: 20,
     },
     regSemiMedium: {
         fontSize: SIZES.semiMedium,
