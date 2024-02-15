@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         gap: SIZES.medium,
     },
+    column: {
+        gap: 10
+    }
 })
 
 export default styles

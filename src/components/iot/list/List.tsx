@@ -11,6 +11,8 @@ const List = () => {
             <FlatList
                 data={orders}
                 contentContainerStyle={styles.content}
+                columnWrapperStyle={styles.column}
+                numColumns={2}
                 renderItem={({ item }) => <Card {...item} />}
             />
         </View>
