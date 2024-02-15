@@ -46,27 +46,6 @@ export default () => {
                 }}
             />
 
-            {/* QR Scanner tab */}
-            <Tabs.Screen
-                name="qr"
-                options={{
-                    title: 'Ikarus QR',
-                    headerShown: false,
-                    tabBarIcon: ({ color }) => (
-                        <Image source={icons.qr} style={{ width: 24, height: 24, tintColor: color }} />
-                    ),
-                    tabBarLabelPosition: 'below-icon',
-                    tabBarLabelStyle: {
-                        fontFamily: FONT.medium,
-                        fontSize: 10,
-                    },
-                    tabBarItemStyle: {},
-                    tabBarStyle: {
-                        display: 'none'
-                    }
-                }}
-            />
-
             {/* IoT tab */}
             <Tabs.Screen
                 name="iot"
@@ -74,7 +53,7 @@ export default () => {
                     title: 'IoT',
                     headerShown: false,
                     tabBarIcon: ({ color }) => (
-                        <Image source={icons.qr} style={{ width: 24, height: 24, tintColor: color }} />
+                        <Image source={icons.iot} style={{ width: 26, height: 26, tintColor: color }} />
                     ),
                     tabBarLabelPosition: 'below-icon',
                     tabBarLabelStyle: {

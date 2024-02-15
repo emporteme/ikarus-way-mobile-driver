@@ -28,8 +28,23 @@ import message from "../../assets/icons/message.png";
 import phone from "../../assets/icons/phone.png";
 import company from "../../assets/icons/company.png";
 import user from "../../assets/icons/user.png";
+import iot from "../../assets/icons/iot.png";
 
 export default {
+
+    // NEW WORLD
+    arrow,
+    ikarus,
+    eyeOpened,
+    eyeClosed,
+    kz_flag,
+    message,
+    phone,
+    company,
+    user,
+    iot,
+
+    // Old icons
     back,
     calendar,
     exit,
@@ -48,15 +63,4 @@ export default {
     stock,
     team,
     history,
-
-    // NEW WORLD
-    arrow,
-    ikarus,
-    eyeOpened,
-    eyeClosed,
-    kz_flag,
-    message,
-    phone,
-    company,
-    user
 };
