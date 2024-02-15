@@ -13,6 +13,9 @@ const MessagesPage = () => {
             <Link href={'/auth'} style={{ marginTop: 50 }}>
                 <Text>Login page (Just for now) </Text>
             </Link>
+            <Link href={'/qr'} style={{ marginTop: 50 }}>
+                <Text>QR scan (Just for now) </Text>
+            </Link>
         </View>
     );
 }
