@@ -67,6 +67,27 @@ export default () => {
                 }}
             />
 
+            {/* IoT tab */}
+            <Tabs.Screen
+                name="iot"
+                options={{
+                    title: 'IoT',
+                    headerShown: false,
+                    tabBarIcon: ({ color }) => (
+                        <Image source={icons.qr} style={{ width: 24, height: 24, tintColor: color }} />
+                    ),
+                    tabBarLabelPosition: 'below-icon',
+                    tabBarLabelStyle: {
+                        fontFamily: FONT.medium,
+                        fontSize: 10,
+                    },
+                    tabBarItemStyle: {},
+                    tabBarStyle: {
+                        display: 'none'
+                    }
+                }}
+            />
+
             {/* Messages tab */}
             <Tabs.Screen
                 name="messages"
