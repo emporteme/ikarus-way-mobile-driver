@@ -14,8 +14,8 @@ export default () => {
                 tabBarInactiveTintColor: '#13161C40',
                 tabBarActiveTintColor: COLORS.primary,
                 tabBarStyle: {
-                    // borderRadius: 25,
-                    paddingTop: 5,
+                    height: 70, // Increase the height as per your requirement
+                    paddingTop: 6,
                     // paddingBottom: 10
                 }
             }}
@@ -45,14 +45,14 @@ export default () => {
                 }}
             />
 
-            {/* QR Scanner tab */}
+            {/* IoT tab */}
             <Tabs.Screen
-                name="qr"
+                name="iot"
                 options={{
-                    title: 'Ikarus QR',
+                    title: 'IoT',
                     headerShown: false,
                     tabBarIcon: ({ color }) => (
-                        <Image source={icons.qr} style={{ width: 24, height: 24, tintColor: color }} />
+                        <Image source={icons.iot} style={{ width: 26, height: 26, tintColor: color }} />
                     ),
                     tabBarLabelPosition: 'below-icon',
                     tabBarLabelStyle: {
@@ -73,7 +73,7 @@ export default () => {
                     title: 'Messages',
                     headerShown: false,
                     tabBarIcon: ({ color }) => (
-                        <Image source={icons.messages} style={{ width: 24, height: 24, tintColor: color }} />
+                        <Image source={icons.message} style={{ width: 24, height: 24, tintColor: color }} />
                     ),
                     tabBarLabelPosition: 'below-icon',
                     tabBarLabelStyle: {

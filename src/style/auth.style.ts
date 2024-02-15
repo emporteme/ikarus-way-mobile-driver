@@ -26,6 +26,8 @@ const styles = StyleSheet.create({
         fontSize: SIZES.semiLarge,
         fontFamily: FONT.medium,
         color: COLORS.primary,
+        textAlignVertical: 'auto',
+        marginBottom: -6
     },
     boldText: {
         fontSize: SIZES.semiLarge,

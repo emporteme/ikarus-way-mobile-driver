@@ -23,36 +23,38 @@ const styles = StyleSheet.create({
         gap: SIZES.small,
     },
     location: {
-        gap: 0,
+        gap: 2,
     },
     pickup: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: SIZES.medium
     },
-    drop: {
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-        gap: SIZES.medium
-    },
     addressText: {
         color: COLORS.dark,
-        fontSize: SIZES.medium,
+        fontSize: SIZES.semiMedium,
         fontFamily: FONT.medium,
+        paddingTop: 3
     },
     detailsText: {
         color: COLORS.gray2,
-        fontSize: SIZES.semiMedium,
+        fontSize: SIZES.small,
         fontFamily: FONT.medium,
+    },
+    flag: {
+        width: 20,
+        height: 20,
+        marginRight: -6,
     },
     iconArrow: {
         width: 14,
         height: 12
     },
     distanceText: {
-        color: COLORS.gray,
+        color: COLORS.gray2,
         fontSize: SIZES.small,
         fontFamily: FONT.medium,
+        paddingTop: 4
     },
     status: {
         backgroundColor: COLORS.primary,
@@ -62,8 +64,9 @@ const styles = StyleSheet.create({
     },
     statusText: {
         color: COLORS.white,
-        fontSize: SIZES.semiMedium,
+        fontSize: SIZES.small,
         fontFamily: FONT.medium,
+        paddingTop: 2
     },
     bottom: {
         flexDirection: 'row',
@@ -78,7 +81,7 @@ const styles = StyleSheet.create({
     },
     packageText: {
         color: COLORS.gray2,
-        fontSize: SIZES.semiMedium,
+        fontSize: SIZES.small,
         fontFamily: FONT.regular,
     },
     dateText: {
@@ -96,7 +99,7 @@ const styles = StyleSheet.create({
         fontSize: SIZES.small,
         fontFamily: FONT.regular,
     },
-    last:{
+    last: {
         alignItems: 'flex-end',
     }
 })

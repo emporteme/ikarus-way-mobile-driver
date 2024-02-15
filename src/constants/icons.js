@@ -23,8 +23,28 @@ import arrow from "../../assets/icons/arrow.png";
 import ikarus from "../../assets/icons/ikarus.png";
 import eyeOpened from "../../assets/icons/eye_opened.png"
 import eyeClosed from "../../assets/icons/eye-closed.png"
+import kz_flag from "../../assets/icons/kz_flag.png";
+import message from "../../assets/icons/message.png";
+import phone from "../../assets/icons/phone.png";
+import company from "../../assets/icons/company.png";
+import user from "../../assets/icons/user.png";
+import iot from "../../assets/icons/iot.png";
 
 export default {
+
+    // NEW WORLD
+    arrow,
+    ikarus,
+    eyeOpened,
+    eyeClosed,
+    kz_flag,
+    message,
+    phone,
+    company,
+    user,
+    iot,
+
+    // Old icons
     back,
     calendar,
     exit,
@@ -43,10 +63,4 @@ export default {
     stock,
     team,
     history,
-
-    // NEW WORLD
-    arrow,
-    ikarus,
-    eyeOpened,
-    eyeClosed
 };

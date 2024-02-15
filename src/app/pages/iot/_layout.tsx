@@ -7,7 +7,7 @@ export default () => {
                 {
                     headerShown: true,
                     headerShadowVisible: true,
-                    title: 'Orders',
+                    title: 'IoT devices',
                     headerTitleAlign: 'center'
                 }
             }

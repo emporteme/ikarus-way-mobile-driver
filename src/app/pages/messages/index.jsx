@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 // Routing imports
-import { Stack, Link } from "expo-router";
+import { Link } from "expo-router";
 
 const MessagesPage = () => {
     return (
@@ -12,6 +12,9 @@ const MessagesPage = () => {
             </Link>
             <Link href={'/auth'} style={{ marginTop: 50 }}>
                 <Text>Login page (Just for now) </Text>
+            </Link>
+            <Link href={'/qr'} style={{ marginTop: 50 }}>
+                <Text>QR scan (Just for now) </Text>
             </Link>
         </View>
     );

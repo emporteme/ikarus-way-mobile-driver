@@ -17,7 +17,7 @@ export const orders: OrderType[] = [
         volume: 2,
         packageType: "Small",
         weight: 5,
-        distance: 10
+        distance: 10000
     },
     {
         id: 2,
