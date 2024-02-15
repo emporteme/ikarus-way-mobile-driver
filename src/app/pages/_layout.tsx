@@ -60,9 +60,6 @@ export default () => {
                         fontSize: 10,
                     },
                     tabBarItemStyle: {},
-                    tabBarStyle: {
-                        display: 'none'
-                    }
                 }}
             />
 

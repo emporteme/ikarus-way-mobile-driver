@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
         color: COLORS.white,
         fontSize: SIZES.semiMedium,
         fontFamily: FONT.medium,
-        paddingTop: 2
+        // paddingTop: 2
     },
     body: {
         flex: 1,

@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         gap: SIZES.small,
     },
     location: {
-        gap: 2,
+        gap: 4,
     },
     pickup: {
         flexDirection: 'row',
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         color: COLORS.dark,
         fontSize: SIZES.semiMedium,
         fontFamily: FONT.medium,
-        paddingTop: 3
+        // paddingTop: 3
     },
     detailsText: {
         color: COLORS.gray2,
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         color: COLORS.gray2,
         fontSize: SIZES.small,
         fontFamily: FONT.medium,
-        paddingTop: 4
+        // paddingTop: 4
     },
     status: {
         backgroundColor: COLORS.primary,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         color: COLORS.white,
         fontSize: SIZES.small,
         fontFamily: FONT.medium,
-        paddingTop: 2
+        // paddingTop: 2
     },
     bottom: {
         flexDirection: 'row',
