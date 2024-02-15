@@ -5,15 +5,13 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal",
-      "image": "default"
+      "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal",
-      "image": "default"
+      "distribution": "internal"
     },
     "production": {
-      "image": "default"
+      "distribution": "internal"
     }
   },
   "submit": {
