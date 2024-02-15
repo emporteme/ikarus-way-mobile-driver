@@ -1,6 +1,6 @@
 // Main imports
 import React from 'react';
-import { View, useWindowDimensions, Text } from "react-native";
+import { useWindowDimensions, Text } from "react-native";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 // Components imports
 import List from '@/components/orders/list/List';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 // Routing imports
-import { Stack, Link } from "expo-router";
+import { Link } from "expo-router";
 
 const MessagesPage = () => {
     return (
