@@ -6,6 +6,7 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import List from '@/components/orders/list/List';
 // Styles imports
 import styles from '@/style/orders.style';
+import { FONT } from '@/constants';
 
 const FirstRoute = () => (
     <List />
@@ -49,9 +50,10 @@ const OrdersPage = () => {
                             <Text
                                 style={{
                                     fontSize: 16,
-                                    fontWeight: focused ? '500' : '500',
+                                    // fontWeight: focused ? '500' : '500',
                                     color: focused ? 'black' : '#33333340',
                                     // backgroundColor:'red'
+                                    fontFamily: FONT.medium
                                 }}
                             >
                                 {route.title}
