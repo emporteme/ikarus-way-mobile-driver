@@ -6,7 +6,8 @@ export default () => {
         <Stack
             screenOptions={
                 {
-                    headerTintColor: "#138AEF",
+                    headerShown: true,
+                    headerShadowVisible: true,
                     title: 'Messages',
                     headerTitleAlign: 'center'
                 }

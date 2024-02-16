@@ -1,25 +1,83 @@
+// Main imports
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-// Routing imports
+import { useWindowDimensions, Text, View, } from "react-native";
 import { Link } from "expo-router";
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+// Styles imports
+import styles from '@/style/orders.style';
+import { FONT } from '@/constants';
 
-const MessagesPage = () => {
+const Func = () => (
+    <View>
+        <Text>Messages page</Text>
+        <Link href={'/onboarding'} style={{ marginTop: 50 }}>
+            <Text>Onboarding page (Just for now) </Text>
+        </Link>
+        <Link href={'/auth'} style={{ marginTop: 50 }}>
+            <Text>Login page (Just for now) </Text>
+        </Link>
+        <Link href={'/qr'} style={{ marginTop: 50 }}>
+            <Text>QR scan (Just for now) </Text>
+        </Link>
+    </View>
+)
+
+const FirstRoute = () => (
+    <Func />
+);
+
+const SecondRoute = () => (
+    <Func />
+);
+
+const ThirdRoute = () => (
+    <Func />
+);
+
+const renderScene = SceneMap({
+    first: FirstRoute,
+    second: SecondRoute,
+    third: ThirdRoute,
+});
+
+const IoTPage = () => {
+    const layout = useWindowDimensions();
+
+    const [index, setIndex] = React.useState(0);
+    const [routes] = React.useState([
+        { key: 'first', title: 'All' },
+        { key: 'second', title: 'Sender' },
+        { key: 'third', title: 'Expeditor' },
+    ]);
+
     return (
-        <View>
-            <Text>Messages page</Text>
-            <Link href={'/onboarding'} style={{ marginTop: 50 }}>
-                <Text>Onboarding page (Just for now) </Text>
-            </Link>
-            <Link href={'/auth'} style={{ marginTop: 50 }}>
-                <Text>Login page (Just for now) </Text>
-            </Link>
-            <Link href={'/qr'} style={{ marginTop: 50 }}>
-                <Text>QR scan (Just for now) </Text>
-            </Link>
-        </View>
+        <>
+            <TabView
+                navigationState={{ index, routes }}
+                renderScene={renderScene}
+                onIndexChange={setIndex}
+                initialLayout={{ width: layout.width }}
+                renderTabBar={props => <TabBar
+                    {...props}
+                    renderLabel={({ focused, route }) => {
+                        return (
+                            <Text
+                                style={{
+                                    fontSize: 16,
+                                    color: focused ? 'black' : '#33333340',
+                                    fontFamily: FONT.medium
+                                }}
+                            >
+                                {route.title}
+                            </Text >
+                        );
+                    }}
+                    indicatorStyle={styles.indicatorStyle}
+                    style={styles.tabbar}
+                />}
+            />
+        </>
     );
 }
 
-const styles = StyleSheet.create({})
-
-export default MessagesPage;
+export default IoTPage;
