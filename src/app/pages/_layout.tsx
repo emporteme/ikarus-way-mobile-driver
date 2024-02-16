@@ -20,23 +20,7 @@ export default () => {
                 },
             }}
         >
-            {/* Services tab */}
-            <Tabs.Screen
-                name="account"
-                options={{
-                    title: 'Account',
-                    headerShown: false,
-                    tabBarIcon: ({ color }) => (
-                        <Image source={icons.profile} style={{ width: 24, height: 24, tintColor: color }} />
-                    ),
-                    tabBarLabelPosition: 'below-icon',
-                    tabBarLabelStyle: {
-                        fontFamily: FONT.medium,
-                        fontSize: 10,
-                    },
-                    tabBarItemStyle: {}
-                }}
-            />
+
             {/* Orders tab */}
             <Tabs.Screen
                 name="orders"
@@ -97,6 +81,23 @@ export default () => {
                 }}
             />
 
+            {/* Account tab */}
+            <Tabs.Screen
+                name="account"
+                options={{
+                    title: 'Account',
+                    headerShown: false,
+                    tabBarIcon: ({ color }) => (
+                        <Image source={icons.profile} style={{ width: 24, height: 24, tintColor: color }} />
+                    ),
+                    tabBarLabelPosition: 'below-icon',
+                    tabBarLabelStyle: {
+                        fontFamily: FONT.medium,
+                        fontSize: 10,
+                    },
+                    tabBarItemStyle: {}
+                }}
+            />
 
         </Tabs>
     )
