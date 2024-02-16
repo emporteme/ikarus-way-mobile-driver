@@ -30,7 +30,7 @@ export default () => {
                     // <ScreenHeaderBtn iconUrl={icons.menu} dimension='60%' />
                     tabBarIcon: ({ color }) => (
                         // <AntDesign name="home" size={24} color={color} />
-                        <Image source={icons.home} style={{ width: 24, height: 24, tintColor: color }} />
+                        <Image source={icons.order} style={{ width: 24, height: 24, tintColor: color }} />
                     ),
 
                     // This one for all other tabs too
