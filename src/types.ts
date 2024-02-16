@@ -1,3 +1,4 @@
+import { images } from '@/constants';
 // Interface for order data
 export interface OrderType {
     id: number;
@@ -13,4 +14,12 @@ export interface OrderType {
     packageType: string;
     weight: number;
     distance: number;
+}
+
+export interface IotType {
+    id: number,
+    name: string,
+    value: number, // maybe later to number?
+    unit: string,
+    icon: string
 }

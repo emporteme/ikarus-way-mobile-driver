@@ -3,7 +3,7 @@ import React from 'react';
 import { useWindowDimensions, Text } from "react-native";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 // Components imports
-import List from '@/components/orders/list/List';
+import List from '@/components/iot/list/List';
 // Styles imports
 import styles from '@/style/orders.style';
 import { FONT } from '@/constants';

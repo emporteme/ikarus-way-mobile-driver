@@ -1,7 +1,7 @@
 import { View, FlatList } from 'react-native'
 import React from 'react'
 import Card from '../card/Card'
-import { orders } from './data'
+import { orders } from '../../../api/orders'
 import styles from './list.style'
 
 
