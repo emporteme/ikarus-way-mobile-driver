@@ -29,6 +29,7 @@ import phone from "../../assets/icons/phone.png";
 import company from "../../assets/icons/company.png";
 import user from "../../assets/icons/user.png";
 import iot from "../../assets/icons/iot.png";
+import speed from "../../assets/icons/speed.png"
 
 export default {
 
@@ -43,7 +44,9 @@ export default {
     company,
     user,
     iot,
+    speed,
 
+    
     // Old icons
     back,
     calendar,

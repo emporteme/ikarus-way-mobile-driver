@@ -3,20 +3,20 @@ import { IotType } from "@/types";
 
 
 // Mock data of orders
-export const orders: IotType[] = [
+export const iots: IotType[] = [
     {
         id: 1,
         name: 'Speed',
         value: 60,
         unit: 'km/h',
-        icon: `speed`,
+        icon: 'speed',
     },
     {
         id: 2,
         name: 'RPM',
         value: 2500,
         unit: 'rpm',
-        icon: `rpm`,
+        icon: 'arrow',
     },
     {
         id: 3,

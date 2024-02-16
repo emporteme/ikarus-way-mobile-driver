@@ -1,7 +1,7 @@
 import { View, FlatList } from 'react-native'
 import React from 'react'
 import Card from '../card/Card'
-import { orders } from '../../../api/orders'
+import { iots } from '../../../api/iot'
 import styles from './list.style'
 
 
@@ -9,7 +9,7 @@ const List = () => {
     return (
         <View style={styles.body}>
             <FlatList
-                data={orders}
+                data={iots}
                 contentContainerStyle={styles.content}
                 columnWrapperStyle={styles.column}
                 numColumns={2}
