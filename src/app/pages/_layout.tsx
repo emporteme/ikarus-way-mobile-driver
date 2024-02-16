@@ -1,7 +1,7 @@
 // Import necessary components from Expo router and vector icons
 import { Tabs } from "expo-router";
 // import { AntDesign, Entypo } from '@expo/vector-icons';
-import { Image } from "react-native";
+import { Image} from "react-native";
 import { FONT, COLORS, icons } from "@/constants";
 
 export default () => {
@@ -17,7 +17,7 @@ export default () => {
                     height: 70, // Increase the height as per your requirement
                     paddingTop: 6,
                     // paddingBottom: 10
-                }
+                },
             }}
         >
 
