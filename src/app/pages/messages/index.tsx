@@ -40,7 +40,7 @@ const renderScene = SceneMap({
     third: ThirdRoute,
 });
 
-const IoTPage = () => {
+const MessagesPage: React.FC  = () => {
     const layout = useWindowDimensions();
 
     const [index, setIndex] = React.useState(0);
@@ -80,4 +80,4 @@ const IoTPage = () => {
     );
 }
 
-export default IoTPage;
+export default MessagesPage;

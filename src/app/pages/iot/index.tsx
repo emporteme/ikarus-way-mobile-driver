@@ -26,7 +26,7 @@ const renderScene = SceneMap({
     third: ThirdRoute,
 });
 
-const IoTPage = () => {
+const IoTPage: React.FC  = () => {
     const layout = useWindowDimensions();
 
     const [index, setIndex] = React.useState(0);

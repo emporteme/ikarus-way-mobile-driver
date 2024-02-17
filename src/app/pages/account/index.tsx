@@ -10,7 +10,7 @@ import { icons, images } from '@/constants';
 import styles from '@/style/account.style';
 
 
-const AccountPage = () => {
+const AccountPage: React.FC = () => {
     return (
         <SafeAreaView style={styles.safe}>
             <ScrollView style={styles.scroll}>

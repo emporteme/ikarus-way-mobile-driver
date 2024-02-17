@@ -5,7 +5,7 @@ import { OrderType } from '@/types';
 import { icons } from '@/constants';
 import styles from './card.style'
 
-const Card = (order: OrderType) => {
+const Card = (order: OrderType): React.JSX.Element => {
     return (
         <Link href={`/pages/orders/${order.id}`} asChild>
             <Pressable style={styles.card}>

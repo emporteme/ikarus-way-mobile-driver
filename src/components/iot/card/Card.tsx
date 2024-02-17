@@ -4,7 +4,7 @@ import { IotType } from '@/types';
 import { icons } from '@/constants';
 import styles from './card.style'
 
-const Card = (iot: IotType) => {
+const Card = (iot: IotType): React.JSX.Element => {
     const icon2 = iot.icon
     const icon3 = icons[icon2];
     return (

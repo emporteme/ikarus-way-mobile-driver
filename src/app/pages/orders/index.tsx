@@ -26,7 +26,7 @@ const renderScene = SceneMap({
     third: ThirdRoute,
 });
 
-const OrdersPage = () => {
+const OrdersPage: React.FC  = () => {
     const layout = useWindowDimensions();
 
     const [index, setIndex] = React.useState(0);

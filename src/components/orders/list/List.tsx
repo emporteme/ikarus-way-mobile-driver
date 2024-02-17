@@ -7,7 +7,7 @@ import styles from './list.style'
 // Mock data of orders
 
 
-const List = () => {
+const List: React.FC = () => {
     return (
         <View style={styles.body}>
             <FlatList

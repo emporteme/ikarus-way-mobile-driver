@@ -22,7 +22,7 @@ export default () => {
 
                 // This one just testing for possibility os border radius chnages
                 headerStyle: {
-                    borderRadius: 15,
+                    // borderRadius: 15,
                 },
 
                 headerRight: () => (

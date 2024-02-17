@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import React, { useState, useEffect } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function App() {
+const App: React.FC = () => {
 
 	// State to track if this is first app launch
 	const [isFirstLaunch, setIsFirstLaunch] = useState(null);
@@ -54,3 +54,4 @@ export default function App() {
 		</View>
 	);
 }
+export default App;

@@ -6,7 +6,7 @@ import { OrderType } from '@/types'
 import { icons } from '@/constants';
 import styles from '@/style/orderDetails.style';
 
-const OrderDetail = () => {
+const OrderDetail: React.FC  = () => {
     const { id } = useLocalSearchParams();
 
     return (

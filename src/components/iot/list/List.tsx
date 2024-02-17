@@ -5,7 +5,7 @@ import { iots } from '../../../api/iot'
 import styles from './list.style'
 
 
-const List = () => {
+const List: React.FC = () => {
     return (
         <View style={styles.body}>
             <FlatList
