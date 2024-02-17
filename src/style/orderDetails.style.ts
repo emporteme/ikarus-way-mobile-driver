@@ -108,7 +108,36 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.gray,
         opacity: 0.2,
         marginBottom: 20
-    }
+    },
+
+    // Button
+    button: {
+        // marginHorizontal: 20,
+        // marginBottom: 20,
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        borderRadius: 12,
+        gap: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: COLORS.primary,
+        position: 'absolute',
+        bottom: 20,
+        left: 20,
+        right: 20,
+        // padding: 16,
+    },
+    buttonText: {
+        color: COLORS.white,
+        fontFamily: FONT.semiBold,
+        fontSize: SIZES.medium
+    },
+    buttonIcon: {
+        width: 18,
+        height: 18,
+        tintColor: COLORS.white
+    },
 })
 
 export default styles

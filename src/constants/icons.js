@@ -32,6 +32,7 @@ import iot from "../../assets/icons/iot.png";
 import speed from "../../assets/icons/speed.png";
 import order from "../../assets/icons/order.png"
 import logOut from "../../assets/icons/logOut.png"
+import card from "../../assets/icons/card.png"
 
 export default {
 
@@ -49,8 +50,9 @@ export default {
     speed,
     order,
     logOut,
-    
-    
+    card,
+
+
     // Old icons
     back,
     calendar,
