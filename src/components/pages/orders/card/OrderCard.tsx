@@ -5,7 +5,7 @@ import { OrderType } from '@/types';
 import { icons } from '@/constants';
 import styles from './card.style'
 
-const Card = (order: OrderType): React.JSX.Element => {
+const OrderCard: React.FC<OrderType> = (order: OrderType) => {
     return (
         <Link href={`/pages/orders/${order.id}`} asChild>
             <Pressable style={styles.card}>
@@ -45,4 +45,4 @@ const Card = (order: OrderType): React.JSX.Element => {
     )
 }
 
-export default Card
+export default OrderCard

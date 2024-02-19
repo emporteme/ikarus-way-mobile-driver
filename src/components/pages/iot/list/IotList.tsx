@@ -1,11 +1,11 @@
 import { View, FlatList } from 'react-native'
 import React from 'react'
-import Card from '../card/Card'
-import { iots } from '../../../api/iot'
+import IotCard from '../card/IotCard'
+import { iots } from '@/api/iot'
 import styles from './list.style'
 
 
-const List: React.FC = () => {
+const IotList: React.FC = () => {
     return (
         <View style={styles.body}>
             <FlatList
@@ -13,10 +13,10 @@ const List: React.FC = () => {
                 contentContainerStyle={styles.content}
                 columnWrapperStyle={styles.column}
                 numColumns={2}
-                renderItem={({ item }) => <Card {...item} />}
+                renderItem={({ item }) => <IotCard {...item} />}
             />
         </View>
     )
 }
 
-export default List
+export default IotList
