@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack } from 'expo-router';
 
 export default () => {
     return (
@@ -11,6 +11,12 @@ export default () => {
                     headerTitleAlign: 'center'
                 }
             }
-        />
+        >
+            <Stack.Screen
+                name='expenses'
+                options={{
+                    headerShown: true,
+                }} />
+        </Stack>
     )
 }

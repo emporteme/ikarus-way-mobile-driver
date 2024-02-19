@@ -15,9 +15,6 @@ const OrderDetail: React.FC = () => {
                     title: `Order #${id}`,
                     headerTitleAlign: 'center',
                     headerRight: () => (
-
-                        // Maybe I need to use router.back(), but for now this logic fits well.
-                        // router.push('/pages/services')}
                         <View style={styles.status}>
                             <Text style={styles.statusText}>Status</Text>
                         </View>

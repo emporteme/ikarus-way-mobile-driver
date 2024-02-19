@@ -6,6 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { icons } from '@/constants';
 import { CustomDropdown } from '@/components';
 import { FileInput } from '@/components';
+import styles from '@/style/orderDetails.style';
 
 // const Expenses: React.FC = () => {
 //     const [email, setEmail] = useState('');
@@ -106,9 +107,21 @@ import { FileInput } from '@/components';
 // };
 const ExpensesPage: React.FC = () => {
     return (
-        <View>
+        <SafeAreaView>
+            <Stack.Screen
+                options={{
+                    headerShown: true,
+                    title: 'Expenses',
+                    headerTitleAlign: 'center',
+                    headerRight: () => (
+                        <View style={styles.status}>
+                            <Text style={styles.statusText}>Status</Text>
+                        </View>
+                    ),
+                }}
+            />
             <Text>Yo</Text>
-        </View>
+        </SafeAreaView>
     )
 }
 
