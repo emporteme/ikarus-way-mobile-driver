@@ -33,6 +33,8 @@ import speed from "../../assets/icons/speed.png";
 import order from "../../assets/icons/order.png"
 import logOut from "../../assets/icons/logOut.png"
 import card from "../../assets/icons/card.png"
+import time from "../../assets/icons/time.png"
+import attach from "../../assets/icons/attach.png"
 
 export default {
 
@@ -51,7 +53,9 @@ export default {
     order,
     logOut,
     card,
-
+    time,
+    attach,
+    
 
     // Old icons
     back,

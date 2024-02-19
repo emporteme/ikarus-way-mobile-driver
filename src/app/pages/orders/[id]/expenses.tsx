@@ -4,107 +4,11 @@ import { useLocalSearchParams, Stack, Link } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 // import * as DocumentPicker from 'expo-document-picker';
 import { icons } from '@/constants';
-import { FileInput } from '@/components';
 import styles from '@/style/expenses.style';
 import { OuterDropdown, InnerDropdown } from '@/components';
+import * as ImagePicker from 'expo-image-picker';
 
-// const Expenses: React.FC = () => {
-//     const [email, setEmail] = useState('');
-//     const [selectedDate, setSelectedDate] = useState(new Date());
-//     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-//     const [selectedTime, setSelectedTime] = useState(new Date());
-//     const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
-//     const [selectedFile, setSelectedFile] = useState<string | null>(null);
-//     const [selectedOption, setSelectedOption] = useState<string>('Option 1');
-//     const options = ['Option 1', 'Option 2', 'Option 3'];
 
-//     const showDatePicker = () => {
-//         setDatePickerVisibility(true);
-//     };
-
-//     const hideDatePicker = () => {
-//         setDatePickerVisibility(false);
-//     };
-
-//     const handleDateChange = (event: any, selectedDate: Date) => {
-//         if (selectedDate) {
-//             setSelectedDate(selectedDate);
-//         }
-//         hideDatePicker();
-//     };
-
-//     const showTimePicker = () => {
-//         setTimePickerVisibility(true);
-//     };
-
-//     const hideTimePicker = () => {
-//         setTimePickerVisibility(false);
-//     };
-
-//     const handleTimeChange = (event: any, selectedTime: Date) => {
-//         if (selectedTime) {
-//             setSelectedTime(selectedTime);
-//         }
-//         hideTimePicker();
-//     };
-
-//     return (
-//         <SafeAreaView>
-//             <ScrollView>
-//                 <CustomDropdown
-//                     options={['Expense 1', 'Expense 2', 'Expense 3']}
-//                     selectedOption={selectedOption}
-//                     onSelect={setSelectedOption}
-//                 />
-//                 <FileInput onSelectFile={(fileUri) => setSelectedFile(fileUri)} />
-//                 <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-//                     <TextInput
-//                         placeholder="Email"
-//                         value={email}
-//                         onChangeText={(text) => setEmail(text)}
-//                         style={{ flex: 1 }}
-//                     />
-//                     <CustomDropdown
-//                         options={['Expense 1', 'Expense 2', 'Expense 3']}
-//                         selectedOption={selectedOption}
-//                         onSelect={setSelectedOption}
-//                     />
-//                 </View>
-//                 <View style={{ padding: 10 }}>
-//                     <TextInput
-//                         placeholder="Email"
-//                         value={email}
-//                         onChangeText={(text) => setEmail(text)}
-//                     />
-//                     <TouchableOpacity onPress={showTimePicker}>
-//                         <Text>Selected Time: {selectedTime.toLocaleTimeString()}</Text>
-//                     </TouchableOpacity>
-//                     {isTimePickerVisible && (
-//                         <DateTimePicker
-//                             value={selectedTime}
-//                             mode="time"
-//                             is24Hour={true}
-//                             display="default"
-//                             onChange={handleTimeChange}
-//                         />
-//                     )}
-//                     <TouchableOpacity onPress={showDatePicker}>
-//                         <Text>Selected Date: {selectedDate.toDateString()}</Text>
-//                     </TouchableOpacity>
-//                     {isDatePickerVisible && (
-//                         <DateTimePicker
-//                             value={selectedDate}
-//                             mode="date"
-//                             display="default"
-//                             onChange={handleDateChange}
-//                         />
-//                     )}
-//                     <Button title="Submit" onPress={() => console.log('Form submitted')} />
-//                 </View>
-//             </ScrollView>
-//         </SafeAreaView>
-//     );
-// };
 const ExpensesPage: React.FC = () => {
     const [selectedOption, setSelectedOption] = useState<string>('Select an expenses');
     const [selectedCurrency, setSelectedCurrency] = useState<string>('USD');
@@ -144,6 +48,33 @@ const ExpensesPage: React.FC = () => {
         hideTimePicker();
     };
 
+    const selectFile = async () => {
+        try {
+            const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+            if (permissionResult.granted === false) {
+                alert("Permission to access camera roll is required!");
+                return;
+            }
+
+            const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                quality: 1,
+            });
+            console.log(result);
+            // // THIS PART IS NOT WORKING || FIND A SOLUTION
+
+            // if (!result.cancelled) {
+            //     // Here you can do something with the selected image
+            //     console.log(result.uri);
+            // }
+        } catch (error) {
+            console.log('Error picking image: ', error);
+        }
+    };
+
+
     return (
         <SafeAreaView style={styles.body}>
             <Stack.Screen
@@ -182,7 +113,8 @@ const ExpensesPage: React.FC = () => {
                     <>
                         {/* Date input */}
                         <TouchableOpacity onPress={showDatePicker} style={styles.dateContainer}>
-                            <Text style={styles.dateText}>Selected Date: {selectedDate.toDateString()}</Text>
+                            <Text style={styles.dateText}>{selectedDate.toDateString()}</Text>
+                            <Image source={icons.calendar} style={styles.icon} />
                         </TouchableOpacity>
                         {isDatePickerVisible && (
                             <DateTimePicker
@@ -194,7 +126,8 @@ const ExpensesPage: React.FC = () => {
                         )}
                         {/* Time input */}
                         <TouchableOpacity onPress={showTimePicker} style={styles.dateContainer}>
-                            <Text style={styles.dateText}>Selected Time: {selectedTime.toLocaleTimeString()}</Text>
+                            <Text style={styles.dateText}>{selectedTime.toLocaleTimeString()}</Text>
+                            <Image source={icons.time} style={styles.icon} />
                         </TouchableOpacity>
                         {isTimePickerVisible && (
                             <DateTimePicker
@@ -205,7 +138,11 @@ const ExpensesPage: React.FC = () => {
                                 onChange={handleTimeChange}
                             />
                         )}
-
+                        {/* File input */}
+                        <TouchableOpacity onPress={selectFile} style={styles.dateContainer}>
+                            <Text style={styles.dateText}>Select File</Text>
+                            <Image source={icons.attach} style={styles.icon} />
+                        </TouchableOpacity>
                     </>
                 </View>
             </ScrollView>

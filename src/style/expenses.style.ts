@@ -40,13 +40,41 @@ const styles = StyleSheet.create({
         color: COLORS.primary,
         lineHeight: 24,
         marginTop: '3.8%',
-        // paddingVertical: 14,
         paddingHorizontal: 20,
     },
 
+
     // Date and Time styles
-    dateContainer: {},
-    dateText: {},
+    dateContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 20,
+        borderColor: COLORS.primary,
+        borderWidth: 2,
+        borderRadius: 12,
+    },
+    dateText: {
+        flex: 1,
+        fontFamily: FONT.medium,
+        fontSize: 16,
+        color: COLORS.primary,
+        lineHeight: 24,
+        paddingHorizontal: 20,
+        paddingVertical: 12
+    },
+    icon: {
+        height: 20,
+        width: 20,
+        marginRight: 20,
+        tintColor: COLORS.primary
+    },
+
+
+    // File input styles
+    fileContainer: {},
+    fileText: {},
+
     // Button
     button: {
         // marginHorizontal: 20,
