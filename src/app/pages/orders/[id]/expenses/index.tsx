@@ -6,13 +6,6 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { icons } from '@/constants';
 import { CustomDropdown } from '@/components';
 import { FileInput } from '@/components';
-import styles from '@/style/orderDetails.style';
-
-interface DropdownProps {
-    options: string[];
-    selectedOption: string;
-    onSelect: (option: string) => void;
-}
 
 const Expenses: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -56,21 +49,6 @@ const Expenses: React.FC = () => {
 
     return (
         <SafeAreaView>
-            <Stack.Screen
-                options={{
-                    headerShown: true,
-                    title: `Expenses`,
-                    headerTitleAlign: 'center',
-                    headerRight: () => (
-
-                        // Maybe I need to use router.back(), but for now this logic fits well.
-                        // router.push('/pages/services')}
-                        <View style={styles.status}>
-                            <Text style={styles.statusText}>Status</Text>
-                        </View>
-                    ),
-                }}
-            />
             <ScrollView>
                 <CustomDropdown
                     options={['Expense 1', 'Expense 2', 'Expense 3']}
