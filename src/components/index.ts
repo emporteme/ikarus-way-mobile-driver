@@ -2,6 +2,8 @@
 // import Header from "./home/header/Header";
 
 // Core Components
+import CustomDropdown from "./core/dropdown";
+import FileInput from "./core/FileInput";
 
 export {
 
@@ -9,4 +11,6 @@ export {
     // Header,
 
     // Core Components
+    CustomDropdown,
+    FileInput,
 };
