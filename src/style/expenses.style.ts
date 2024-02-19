@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
         color: COLORS.white,
         fontSize: SIZES.semiMedium,
         fontFamily: FONT.medium,
+        // borderWidth: 1
         // paddingTop: 2
     },
     body: {
@@ -21,94 +22,28 @@ const styles = StyleSheet.create({
     scroll: {
         padding: 20,
     },
-    section: {
-        gap: 10,
-        marginBottom: 20,
-    },
-    title: {
-        fontSize: SIZES.semiMedium,
-        fontFamily: FONT.semiBold,
-        color: COLORS.dark,
-        paddingBottom: 6
-    },
-    title2: {
-        fontSize: SIZES.semiMedium,
-        fontFamily: FONT.semiBold,
-        color: COLORS.dark,
-        marginBottom: -10
-    },
-    row: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        gap: 12,
-    },
-    column: {
-        gap: 0
-    },
-    column2: {
-        gap: 4
-    },
-    medSemiMedium: {
-        fontSize: SIZES.semiMedium,  // 14
-        fontFamily: FONT.medium,
-        color: COLORS.dark,
-        // borderWidth: 1,
-        // includeFontPadding: true,
-        textAlignVertical: 'center',
-        padding: 0
-        // lineHeight: 20,
-    },
-    regSemiMedium: {
-        fontSize: SIZES.semiMedium,
-        fontFamily: FONT.regular,
-        color: COLORS.dark,
-    },
-    medSmall: {
-        fontSize: SIZES.small,
-        fontFamily: FONT.medium,
-        color: COLORS.dark,
-    },
-    regSmall: {
-        fontSize: SIZES.small,
-        fontFamily: FONT.regular,
-        color: COLORS.dark,
-    },
-    medSemiMedium2: {
-        fontSize: SIZES.semiMedium,
-        fontFamily: FONT.medium,
-        color: COLORS.gray,
-    },
-    regSemiMedium2: {
-        fontSize: SIZES.semiMedium,
-        fontFamily: FONT.regular,
-        color: COLORS.gray,
-    },
-    medSmall2: {
-        fontSize: SIZES.small,
-        fontFamily: FONT.medium,
-        color: COLORS.gray,
-    },
-    regSmall2: {
-        fontSize: SIZES.small,
-        fontFamily: FONT.regular,
-        color: COLORS.gray,
-    },
-    rowFull: {
+
+    // Cost container
+    costContainer: {
         flexDirection: 'row',
         alignItems: 'flex-start',
         justifyContent: 'space-between',
-        gap: 10,
+        marginVertical: 20,
+        borderColor: COLORS.primary,
+        borderWidth: 2,
+        borderRadius: 12,
     },
-    iconFlag: {
-        width: 22,
-        height: 22,
+    costText: {
+        flex: 1,
+        fontFamily: FONT.medium,
+        fontSize: 16,
+        color: COLORS.primary,
+        lineHeight: 24,
+        marginTop: '3.8%',
+        // paddingVertical: 14,
+        paddingHorizontal: 20,
     },
-    lineH: {
-        height: 1,
-        backgroundColor: COLORS.gray,
-        opacity: 0.2,
-        marginBottom: 20
-    },
+
 
     // Button
     button: {

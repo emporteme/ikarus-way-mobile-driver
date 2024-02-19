@@ -7,6 +7,7 @@ import IotCard from "./pages/iot/card/IotCard";
 // Core Components
 import CustomDropdown from "./core/dropdown";
 import OuterDropdown from "./core/dropdowns/OuterDropdown";
+import InnerDropdown from "./core/dropdowns/InnerDropdown";
 import FileInput from "./core/FileInput";
 
 export {
@@ -20,5 +21,7 @@ export {
     // Core Components
     CustomDropdown,
     OuterDropdown,
+    InnerDropdown,
     FileInput,
+    
 };

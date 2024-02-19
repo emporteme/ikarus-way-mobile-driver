@@ -11,12 +11,6 @@ export default () => {
                     headerTitleAlign: 'center'
                 }
             }
-        >
-            <Stack.Screen
-                name='expenses'
-                options={{
-                    headerShown: true,
-                }} />
-        </Stack>
+        />
     )
 }

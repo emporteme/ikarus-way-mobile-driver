@@ -6,7 +6,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { icons } from '@/constants';
 import { CustomDropdown } from '@/components';
 import { FileInput } from '@/components';
-import styles from '@/style/orderDetails.style';
+import styles from '@/style/expenses.style';
+import { OuterDropdown, InnerDropdown } from '@/components';
 
 // const Expenses: React.FC = () => {
 //     const [email, setEmail] = useState('');
@@ -106,8 +107,11 @@ import styles from '@/style/orderDetails.style';
 //     );
 // };
 const ExpensesPage: React.FC = () => {
+    const [selectedOption, setSelectedOption] = useState<string>('Select an expenses');
+    const [selectedCurrency, setSelectedCurrency] = useState<string>('USD');
+    const [cost, setCost] = useState<string>('');
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.body}>
             <Stack.Screen
                 options={{
                     headerShown: true,
@@ -120,7 +124,30 @@ const ExpensesPage: React.FC = () => {
                     ),
                 }}
             />
-            <Text>Yo</Text>
+            <ScrollView>
+                <View style={styles.scroll}>
+                    <Text>Yo</Text>
+                    <OuterDropdown
+                        options={['Food', 'Hotel', 'Heating']}
+                        selectedOption={selectedOption}
+                        onSelect={setSelectedOption}
+                    />
+                    <View style={styles.costContainer}>
+                        <TextInput
+                            placeholder="Cost..."
+                            value={cost}
+                            onChangeText={(text) => setCost(text)}
+                            style={styles.costText}
+                        />
+                        <InnerDropdown
+                            options={['USD', 'RUB', 'EUR']}
+                            selectedOption={selectedCurrency}
+                            onSelect={setSelectedCurrency}
+                        />
+                    </View>
+                </View>
+            </ScrollView>
+
         </SafeAreaView>
     )
 }

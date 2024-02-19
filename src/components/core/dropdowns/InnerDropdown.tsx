@@ -10,7 +10,7 @@ interface DropdownProps {
     onSelect: (option: string) => void;
 }
 
-const OuterDropdown: React.FC<DropdownProps> = ({ options, selectedOption, onSelect }) => {
+const InnerDropdown: React.FC<DropdownProps> = ({ options, selectedOption, onSelect }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleDropdown = () => {
@@ -23,7 +23,7 @@ const OuterDropdown: React.FC<DropdownProps> = ({ options, selectedOption, onSel
     };
 
     return (
-        <View style={styles.container}>
+        <View>
             <TouchableOpacity style={styles.header} onPress={toggleDropdown}>
                 <Text style={styles.text}>{selectedOption}</Text>
                 <MaterialIcons name={isOpen ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={24} color={COLORS.primary} />
@@ -43,4 +43,4 @@ const OuterDropdown: React.FC<DropdownProps> = ({ options, selectedOption, onSel
     );
 };
 
-export default OuterDropdown;
+export default InnerDropdown;
