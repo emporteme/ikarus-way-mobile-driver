@@ -4,8 +4,8 @@ import styles from '@/style/orderDetails.style';
 
 export default () => {
     return (
-        <Stack.Screen
-            options={{
+        <Stack
+            screenOptions={{
                 headerShown: true,
                 title: 'Expenses',
                 headerTitleAlign: 'center',
