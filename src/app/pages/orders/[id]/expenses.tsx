@@ -83,7 +83,7 @@ const Expenses: React.FC = () => {
                         placeholder="Email"
                         value={email}
                         onChangeText={(text) => setEmail(text)}
-                        style={{ flex: 1}}
+                        style={{ flex: 1 }}
                     />
                     <CustomDropdown
                         options={['Expense 1', 'Expense 2', 'Expense 3']}
