@@ -44,7 +44,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
 
-
+    // Date and Time styles
+    dateContainer: {},
+    dateText: {},
     // Button
     button: {
         // marginHorizontal: 20,

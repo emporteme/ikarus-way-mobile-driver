@@ -4,7 +4,6 @@ import { useLocalSearchParams, Stack, Link } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 // import * as DocumentPicker from 'expo-document-picker';
 import { icons } from '@/constants';
-import { CustomDropdown } from '@/components';
 import { FileInput } from '@/components';
 import styles from '@/style/expenses.style';
 import { OuterDropdown, InnerDropdown } from '@/components';
@@ -110,6 +109,41 @@ const ExpensesPage: React.FC = () => {
     const [selectedOption, setSelectedOption] = useState<string>('Select an expenses');
     const [selectedCurrency, setSelectedCurrency] = useState<string>('USD');
     const [cost, setCost] = useState<string>('');
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [selectedTime, setSelectedTime] = useState(new Date());
+    const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+    const handleDateChange = (event: any, selectedDate: Date) => {
+        if (selectedDate) {
+            setSelectedDate(selectedDate);
+        }
+        hideDatePicker();
+    };
+
+    const showTimePicker = () => {
+        setTimePickerVisibility(true);
+    };
+
+    const hideTimePicker = () => {
+        setTimePickerVisibility(false);
+    };
+
+    const handleTimeChange = (event: any, selectedTime: Date) => {
+        if (selectedTime) {
+            setSelectedTime(selectedTime);
+        }
+        hideTimePicker();
+    };
+
     return (
         <SafeAreaView style={styles.body}>
             <Stack.Screen
@@ -145,6 +179,34 @@ const ExpensesPage: React.FC = () => {
                             onSelect={setSelectedCurrency}
                         />
                     </View>
+                    <>
+                        {/* Date input */}
+                        <TouchableOpacity onPress={showDatePicker} style={styles.dateContainer}>
+                            <Text style={styles.dateText}>Selected Date: {selectedDate.toDateString()}</Text>
+                        </TouchableOpacity>
+                        {isDatePickerVisible && (
+                            <DateTimePicker
+                                value={selectedDate}
+                                mode="date"
+                                display="default"
+                                onChange={handleDateChange}
+                            />
+                        )}
+                        {/* Time input */}
+                        <TouchableOpacity onPress={showTimePicker} style={styles.dateContainer}>
+                            <Text style={styles.dateText}>Selected Time: {selectedTime.toLocaleTimeString()}</Text>
+                        </TouchableOpacity>
+                        {isTimePickerVisible && (
+                            <DateTimePicker
+                                value={selectedTime}
+                                mode="time"
+                                is24Hour={true}
+                                display="default"
+                                onChange={handleTimeChange}
+                            />
+                        )}
+
+                    </>
                 </View>
             </ScrollView>
 
