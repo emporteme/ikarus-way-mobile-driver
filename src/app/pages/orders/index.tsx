@@ -3,21 +3,21 @@ import React from 'react';
 import { useWindowDimensions, Text } from "react-native";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 // Components imports
-import List from '@/components/orders/list/List';
+import { OrderList } from '@/components';
 // Styles imports
 import styles from '@/style/orders.style';
 import { FONT } from '@/constants';
 
 const FirstRoute = () => (
-    <List />
+    <OrderList />
 );
 
 const SecondRoute = () => (
-    <List />
+    <OrderList />
 );
 
 const ThirdRoute = () => (
-    <List />
+    <OrderList />
 );
 
 const renderScene = SceneMap({
@@ -26,7 +26,7 @@ const renderScene = SceneMap({
     third: ThirdRoute,
 });
 
-const OrdersPage: React.FC  = () => {
+const OrdersPage: React.FC = () => {
     const layout = useWindowDimensions();
 
     const [index, setIndex] = React.useState(0);
@@ -62,7 +62,7 @@ const OrdersPage: React.FC  = () => {
                     }}
                     indicatorStyle={styles.indicatorStyle}
                     style={styles.tabbar}
-                />} 
+                />}
             />
         </>
     );

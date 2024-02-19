@@ -3,21 +3,21 @@ import React from 'react';
 import { useWindowDimensions, Text } from "react-native";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 // Components imports
-import List from '@/components/iot/list/List';
+import { IotList } from '@/components';
 // Styles imports
 import styles from '@/style/orders.style';
 import { FONT } from '@/constants';
 
 const FirstRoute = () => (
-    <List />
+    <IotList />
 );
 
 const SecondRoute = () => (
-    <List />
+    <IotList />
 );
 
 const ThirdRoute = () => (
-    <List />
+    <IotList />
 );
 
 const renderScene = SceneMap({
@@ -26,7 +26,7 @@ const renderScene = SceneMap({
     third: ThirdRoute,
 });
 
-const IoTPage: React.FC  = () => {
+const IoTPage: React.FC = () => {
     const layout = useWindowDimensions();
 
     const [index, setIndex] = React.useState(0);
