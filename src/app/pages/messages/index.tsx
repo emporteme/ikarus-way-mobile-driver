@@ -6,6 +6,7 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 // Styles imports
 import styles from '@/style/orders.style';
 import { FONT } from '@/constants';
+import { Empty } from '@/components';
 
 const Func = () => (
     <View>
@@ -23,7 +24,7 @@ const Func = () => (
 )
 
 const FirstRoute = () => (
-    <Func />
+    <Empty />
 );
 
 const SecondRoute = () => (
@@ -40,7 +41,7 @@ const renderScene = SceneMap({
     third: ThirdRoute,
 });
 
-const MessagesPage: React.FC  = () => {
+const MessagesPage: React.FC = () => {
     const layout = useWindowDimensions();
 
     const [index, setIndex] = React.useState(0);

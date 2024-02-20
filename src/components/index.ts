@@ -4,7 +4,7 @@ import OrderCard from "./pages/orders/card/OrderCard";
 import IotList from "./pages/iot/list/IotList";
 import IotCard from "./pages/iot/card/IotCard";
 import Empty from "./pages/messages/empty/Empty";
-
+import Circle from "./pages/messages/circle/Circle";
 // Core Components
 import OuterDropdown from "./core/dropdowns/OuterDropdown";
 import InnerDropdown from "./core/dropdowns/InnerDropdown";
@@ -17,7 +17,8 @@ export {
     IotList,
     IotCard,
     Empty,
-
+    Circle,
+    
     // Core Components
     OuterDropdown,
     InnerDropdown,
