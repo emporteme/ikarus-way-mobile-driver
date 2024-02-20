@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
     scroll: {},
     page: {
         flex: 1,
-        padding: 20
+        padding: 20,
+        marginBottom: 70
     },
     body: {
         flex: 1,
@@ -91,7 +92,8 @@ const styles = StyleSheet.create({
         tintColor: COLORS.primary
     },
     footer: {
-        paddingHorizontal: 20
+        flex: 1,
+        paddingHorizontal: 20,
     },
     detail: {
         paddingVertical: 14,
@@ -120,8 +122,6 @@ const styles = StyleSheet.create({
 
     // Button
     button: {
-        marginHorizontal: 20,
-        marginBottom: 20,
         paddingHorizontal: 16,
         paddingVertical: 14,
         borderRadius: 12,
@@ -129,7 +129,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: COLORS.primary
+        backgroundColor: COLORS.primary,
+        position: 'absolute',
+        bottom: 20,
+        left: 20,
+        right: 20,
     },
     buttonText: {
         color: COLORS.white,
