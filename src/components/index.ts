@@ -7,6 +7,7 @@ import Empty from "./pages/messages/empty/Empty";
 import Circle from "./pages/messages/circle/Circle";
 import Profile from "./pages/account/profile/Profile";
 import Vehicle from "./pages/account/vehicle/Vehicle";
+import MessageList from "./pages/messages/list/MessageList";
 
 // Core Components
 import OuterDropdown from "./core/dropdowns/OuterDropdown";
@@ -23,6 +24,7 @@ export {
     Circle,
     Profile,
     Vehicle,
+    MessageList,
 
     // Core Components
     OuterDropdown,
