@@ -6,7 +6,7 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 // Styles imports
 import styles from '@/style/orders.style';
 import { FONT } from '@/constants';
-import { Empty } from '@/components';
+import { Empty, MessageList } from '@/components';
 
 const Func = () => (
     <View>
@@ -28,7 +28,7 @@ const FirstRoute = () => (
 );
 
 const SecondRoute = () => (
-    <Func />
+    <MessageList />
 );
 
 const ThirdRoute = () => (
