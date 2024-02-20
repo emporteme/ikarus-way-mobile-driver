@@ -7,10 +7,10 @@ import { Link } from 'expo-router';
 import { icons, images } from '@/constants';
 
 // Import styles
-import styles from './profile.style';
+import styles from './vehicle.style';
 
 
-const Profile: React.FC = () => {
+const Vehicle: React.FC = () => {
     return (
         <SafeAreaView style={styles.safe}>
             <ScrollView style={styles.scroll}>
@@ -84,4 +84,4 @@ const Profile: React.FC = () => {
     );
 }
 
-export default Profile;
+export default Vehicle;
