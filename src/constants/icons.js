@@ -37,6 +37,7 @@ import attach from "../../assets/icons/attach.png"
 import camera from "../../assets/icons/camera.png"
 import document from "../../assets/icons/document.png"
 import photo from "../../assets/icons/photo.png"
+import check from "../../assets/icons/check.png";
 
 export default {
 
@@ -60,7 +61,8 @@ export default {
     camera,
     document,
     photo,
-
+    check,
+    
 
     // Old icons
     back,

@@ -4,7 +4,7 @@ import { FONT, COLORS, SIZES } from "@/constants";
 
 const styles = StyleSheet.create({
     card: {},
-    content: {},
+    photo: {},
 })
 
 export default styles
