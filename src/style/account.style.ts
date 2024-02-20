@@ -4,6 +4,10 @@ import { FONT, COLORS, SIZES } from "@/constants";
 
 const styles = StyleSheet.create({
     // Stack styles
+    logo:{
+        width: 80,
+        height: 32,
+    },
     languages: {
         flexDirection: 'row',
         alignItems: 'center',

@@ -20,6 +20,24 @@ export default () => {
                 },
             }}
         >
+            
+            {/* Account tab */}
+            <Tabs.Screen
+                name="account"
+                options={{
+                    title: 'Account',
+                    headerShown: false,
+                    tabBarIcon: ({ color }) => (
+                        <Image source={icons.profile} style={{ width: 24, height: 24, tintColor: color }} />
+                    ),
+                    tabBarLabelPosition: 'below-icon',
+                    tabBarLabelStyle: {
+                        fontFamily: FONT.medium,
+                        fontSize: 10,
+                    },
+                    tabBarItemStyle: {}
+                }}
+            />
             {/* Messages tab */}
             <Tabs.Screen
                 name="messages"
@@ -80,23 +98,6 @@ export default () => {
                 }}
             />
 
-            {/* Account tab */}
-            <Tabs.Screen
-                name="account"
-                options={{
-                    title: 'Account',
-                    headerShown: false,
-                    tabBarIcon: ({ color }) => (
-                        <Image source={icons.profile} style={{ width: 24, height: 24, tintColor: color }} />
-                    ),
-                    tabBarLabelPosition: 'below-icon',
-                    tabBarLabelStyle: {
-                        fontFamily: FONT.medium,
-                        fontSize: 10,
-                    },
-                    tabBarItemStyle: {}
-                }}
-            />
 
         </Tabs>
     )

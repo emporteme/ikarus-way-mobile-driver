@@ -34,7 +34,7 @@ export default function RootLayout() {
     //     mThin: require("../../assets/fonts/Poppins-Thin.ttf"),
     // });
 
-    
+
     // Load custom fonts || Montserrat
     const [loaded, error] = useFonts({
         mBlack: require("../../assets/font/Montserrat-Black.ttf"),
@@ -91,7 +91,6 @@ function RootLayoutNav() {
                 options={{ headerShown: false }}
             />
 
-            
             {/* Auth screen */}
             <Stack.Screen
                 name="auth"
