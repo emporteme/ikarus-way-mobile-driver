@@ -5,7 +5,7 @@ import { OrderType } from '@/types';
 import { icons } from '@/constants';
 import styles from './card.style'
 
-const OrderCard: React.FC<OrderType> = (order: OrderType) => {
+const OrderCard: React.FC<OrderType> = (order) => {
     return (
         <Link href={`/pages/orders/${order.id}`} asChild>
             <Pressable style={styles.card}>
