@@ -5,7 +5,7 @@ import { FONT, COLORS, SIZES } from "@/constants";
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        gap: 10,
+        gap: 16,
     },
     circle: {
         padding: 10,
