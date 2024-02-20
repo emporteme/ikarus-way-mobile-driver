@@ -35,6 +35,9 @@ import logOut from "../../assets/icons/logOut.png"
 import card from "../../assets/icons/card.png"
 import time from "../../assets/icons/time.png"
 import attach from "../../assets/icons/attach.png"
+import camera from "../../assets/icons/camera.png"
+import document from "../../assets/icons/document.png"
+import photo from "../../assets/icons/photo.png"
 
 export default {
 
@@ -55,7 +58,10 @@ export default {
     card,
     time,
     attach,
-    
+    camera,
+    document,
+    photo,
+
 
     // Old icons
     back,
