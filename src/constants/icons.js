@@ -6,7 +6,6 @@ import guides from "../../assets/icons/guides.png";
 import home from "../../assets/icons/home.png";
 import map from "../../assets/icons/map.png";
 import messages from "../../assets/icons/messages.png";
-import notification from "../../assets/icons/notification.svg"; // THis one still in svg format
 import orders from "../../assets/icons/orders.png";
 import products from "../../assets/icons/products.png";
 import profile from "../../assets/icons/profile.png";
@@ -71,7 +70,6 @@ export default {
     home,
     map,
     messages,
-    notification,
     orders,
     products,
     profile,
