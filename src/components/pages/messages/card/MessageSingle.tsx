@@ -9,8 +9,8 @@ const MessageSingle: React.FC<MessageType> = (message) => {
     return (
         <Link href={`/pages/messages/${message.id}`} asChild>
             <Pressable style={styles.card}>
-                {/* <Text>{order.weight}</Text> */}
                 <Text>{message.id}</Text>
+                <Text>{message.photo}</Text>
             </Pressable>
         </Link>
     )
