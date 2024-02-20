@@ -1,6 +1,4 @@
-// Import necessary components from Expo router and vector icons
 import { Tabs } from "expo-router";
-// import { AntDesign, Entypo } from '@expo/vector-icons';
 import { Image } from "react-native";
 import { FONT, COLORS, icons } from "@/constants";
 
@@ -16,28 +14,28 @@ export default () => {
                 tabBarStyle: {
                     height: 70, // Increase the height as per your requirement
                     paddingTop: 6,
-                    // paddingBottom: 10
                 },
             }}
         >
-            
-            {/* Account tab */}
+            {/* Orders tab */}
             <Tabs.Screen
-                name="account"
+                name="orders"
                 options={{
-                    title: 'Account',
+                    title: 'Orders',
                     headerShown: false,
                     tabBarIcon: ({ color }) => (
-                        <Image source={icons.profile} style={{ width: 24, height: 24, tintColor: color }} />
-                    ),
+                        <Image source={icons.order} style={{ width: 24, height: 24, tintColor: color }} />
+                    ),       
                     tabBarLabelPosition: 'below-icon',
                     tabBarLabelStyle: {
                         fontFamily: FONT.medium,
                         fontSize: 10,
                     },
-                    tabBarItemStyle: {}
+                    tabBarItemStyle: {
+                    }
                 }}
             />
+
             {/* Messages tab */}
             <Tabs.Screen
                 name="messages"
@@ -53,30 +51,6 @@ export default () => {
                         fontSize: 10,
                     },
                     tabBarItemStyle: {}
-                }}
-            />
-
-            {/* Orders tab */}
-            <Tabs.Screen
-                name="orders"
-                options={{
-                    title: 'Orders',
-                    headerShown: false,
-                    // <ScreenHeaderBtn iconUrl={icons.menu} dimension='60%' />
-                    tabBarIcon: ({ color }) => (
-                        // <AntDesign name="home" size={24} color={color} />
-                        <Image source={icons.order} style={{ width: 24, height: 24, tintColor: color }} />
-                    ),
-
-                    // This one for all other tabs too
-                    // tabBarInactiveBackgroundColor:           
-                    tabBarLabelPosition: 'below-icon',
-                    tabBarLabelStyle: {
-                        fontFamily: FONT.medium,
-                        fontSize: 10,
-                    },
-                    tabBarItemStyle: {
-                    }
                 }}
             />
 
@@ -98,7 +72,23 @@ export default () => {
                 }}
             />
 
-
+            {/* Account tab */}
+            <Tabs.Screen
+                name="account"
+                options={{
+                    title: 'Account',
+                    headerShown: false,
+                    tabBarIcon: ({ color }) => (
+                        <Image source={icons.profile} style={{ width: 24, height: 24, tintColor: color }} />
+                    ),
+                    tabBarLabelPosition: 'below-icon',
+                    tabBarLabelStyle: {
+                        fontFamily: FONT.medium,
+                        fontSize: 10,
+                    },
+                    tabBarItemStyle: {}
+                }}
+            />
         </Tabs>
     )
 }
