@@ -5,6 +5,7 @@ import onboarding3 from "../../assets/images/onboarding_3.png"
 import profile from "../../assets/images/profile.png"
 import logo_light from "../../assets/images/logo_light.png"
 import logo_dark from "../../assets/images/logo_dark.png"
+import truck from "../../assets/images/truck.jpg"
 
 export default {
     notFound,
@@ -14,4 +15,5 @@ export default {
     profile,
     logo_light,
     logo_dark,
+    truck,
 }

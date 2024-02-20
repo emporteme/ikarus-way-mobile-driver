@@ -18,7 +18,7 @@ const Vehicle: React.FC = () => {
                     <View style={styles.body}>
                         <>
                         <View style={styles.head}>
-                            <Image />
+                            <Image source={images.truck} style={styles.vehicleImage}/>
                         </View>
                         </>
                         <>
