@@ -34,24 +34,6 @@ export default () => {
                 }}
             />
 
-            {/* Messages tab */}
-            <Tabs.Screen
-                name="messages"
-                options={{
-                    title: 'Messages',
-                    headerShown: false,
-                    tabBarIcon: ({ color }) => (
-                        <Image source={icons.message} style={{ width: 24, height: 24, tintColor: color }} />
-                    ),
-                    tabBarLabelPosition: 'below-icon',
-                    tabBarLabelStyle: {
-                        fontFamily: FONT.medium,
-                        fontSize: 10,
-                    },
-                    tabBarItemStyle: {}
-                }}
-            />
-
             {/* IoT tab */}
             <Tabs.Screen
                 name="iot"
@@ -67,6 +49,24 @@ export default () => {
                         fontSize: 10,
                     },
                     tabBarItemStyle: {},
+                }}
+            />
+
+            {/* Messages tab */}
+            <Tabs.Screen
+                name="messages"
+                options={{
+                    title: 'Messages',
+                    headerShown: false,
+                    tabBarIcon: ({ color }) => (
+                        <Image source={icons.message} style={{ width: 24, height: 24, tintColor: color }} />
+                    ),
+                    tabBarLabelPosition: 'below-icon',
+                    tabBarLabelStyle: {
+                        fontFamily: FONT.medium,
+                        fontSize: 10,
+                    },
+                    tabBarItemStyle: {}
                 }}
             />
 
