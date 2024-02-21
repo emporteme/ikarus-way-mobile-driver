@@ -1,6 +1,6 @@
 // Main imports
 import React from 'react';
-import { useWindowDimensions, Text, View, } from "react-native";
+import { useWindowDimensions, Text, View, Button } from "react-native";
 import { Link } from "expo-router";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 // Styles imports
@@ -8,8 +8,16 @@ import styles from '@/style/orders.style';
 import { FONT } from '@/constants';
 import { Empty, MessageList } from '@/components';
 
+async function fetchHello() {
+    const response = await fetch('/pages/messages/hello');
+    const data = await response.json();
+    alert('Hello ' + data.hello);
+    console.log(data);
+}
+
+
 const Func = () => (
-    <View>
+    <View style={{ padding: 20 }}>
         <Text>Messages page</Text>
         <Link href={'/onboarding'} style={{ marginTop: 50 }}>
             <Text>Onboarding page (Just for now) </Text>
@@ -20,6 +28,9 @@ const Func = () => (
         <Link href={'/qr'} style={{ marginTop: 50 }}>
             <Text>QR scan (Just for now) </Text>
         </Link>
+
+        <Text style={{ marginTop: 50 }}>Testing API</Text>
+        <Button onPress={() => fetchHello()} title="Fetch hello" />
     </View>
 )
 
