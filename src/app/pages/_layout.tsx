@@ -3,8 +3,6 @@ import { Image } from "react-native";
 import { FONT, COLORS, icons } from "@/constants";
 
 export default () => {
-
-    // Set common tab bar styles 
     return (
         <Tabs
             screenOptions={{
