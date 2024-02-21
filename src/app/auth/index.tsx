@@ -17,6 +17,45 @@ import { Link, Stack, useRouter } from 'expo-router';
 import styles from '../../style/auth.style';
 import { FONT, icons } from '@/constants';
 
+
+// async function fetchHello() {
+//     const response = await fetch('/auth/login');
+//     const data = await response.json();
+//     alert('Hello ' + data.hello);
+//     console.log(data);
+// }
+async function fetchHello(email, password) {
+    const url = 'https://app-test.prometeochain.io/api/v1/auth/authenticate';
+    const credentials = {
+        email: email,
+        password: password
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(credentials)
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            // Handle successful login here
+            console.log(data); // Log response data
+        } else {
+            // Handle failed login (e.g., display error message)
+            console.error('Login failed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+
+
 // Main component
 const Auth = () => {
 
@@ -75,7 +114,7 @@ const Auth = () => {
                 </View>
                 <View style={styles.bottom}>
                     <Link href={'/pages'} asChild>
-                        <Pressable style={styles.button}>
+                        <Pressable style={styles.button} onPress={() => fetchHello(email, password)}>
                             <Text style={styles.buttonText}>LOGIN</Text>
                             <Image source={icons.arrow} style={styles.iconArrow} />
                         </Pressable>
