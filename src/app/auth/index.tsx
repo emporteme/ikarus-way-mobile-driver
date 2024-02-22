@@ -24,33 +24,17 @@ import { FONT, icons } from '@/constants';
 //     alert('Hello ' + data.hello);
 //     console.log(data);
 // }
-async function fetchHello(email, password) {
-    const url = 'https://app-test.prometeochain.io/api/v1/auth/authenticate';
+async function fetchHello(email: string, password: string) {
     const credentials = {
         email: email,
         password: password
     };
 
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(credentials)
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            // Handle successful login here
-            console.log(data); // Log response data
-        } else {
-            // Handle failed login (e.g., display error message)
-            console.error('Login failed');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
+    const response = await fetch("/auth/login", {
+        method: "POST",
+        body: JSON.stringify(credentials),
+    });
+    return response.json();
 }
 
 
@@ -113,12 +97,12 @@ const Auth = () => {
                     </Link>
                 </View>
                 <View style={styles.bottom}>
-                    <Link href={'/pages'} asChild>
-                        <Pressable style={styles.button} onPress={() => fetchHello(email, password)}>
-                            <Text style={styles.buttonText}>LOGIN</Text>
-                            <Image source={icons.arrow} style={styles.iconArrow} />
-                        </Pressable>
-                    </Link>
+                    {/* <Link href={'#'} asChild> */}
+                    <Pressable style={styles.button} onPress={() => fetchHello(email, password)}>
+                        <Text style={styles.buttonText}>LOGIN</Text>
+                        <Image source={icons.arrow} style={styles.iconArrow} />
+                    </Pressable>
+                    {/* </Link> */}
                     <Text style={styles.bottomTextWrapper}>
                         <Text style={styles.bottomText}>By clicking on the "Login" button, you accept the terms of the </Text>
                         <Link href={'auth/privacy'}>
