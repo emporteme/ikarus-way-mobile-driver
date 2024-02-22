@@ -9,7 +9,7 @@ import { FONT } from '@/constants';
 import { Empty, MessageList } from '@/components';
 
 async function fetchHello() {
-    const response = await fetch('/pages/messages/hello');
+    const response = await fetch('/api/hello');
     const data = await response.json();
     alert('Hello ' + data.hello);
     console.log(data);
