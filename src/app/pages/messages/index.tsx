@@ -1,6 +1,6 @@
 // Main imports
 import React from 'react';
-import { useWindowDimensions, Text, View, Button } from "react-native";
+import { useWindowDimensions, Text, View, Button, ScrollView } from "react-native";
 import { Link } from "expo-router";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 // Styles imports
@@ -15,23 +15,36 @@ async function fetchHello() {
     console.log(data);
 }
 
+async function profileHello() {
+    const response = await fetch('/api/profile');
+    const data = await response.json();
+    alert('Hello ' + data.data.first_name);
+    console.log(data);
+}
+
 
 const Func = () => (
-    <View style={{ padding: 20 }}>
+    <ScrollView style={{ padding: 20 }}>
         <Text>Messages page</Text>
-        <Link href={'/onboarding'} style={{ marginTop: 50 }}>
+        <Link href={'/onboarding'} style={{ marginTop: 20 }}>
             <Text>Onboarding page (Just for now) </Text>
         </Link>
-        <Link href={'/auth'} style={{ marginTop: 50 }}>
+        <Link href={'/auth'} style={{ marginTop: 20 }}>
             <Text>Login page (Just for now) </Text>
         </Link>
-        <Link href={'/qr'} style={{ marginTop: 50 }}>
+        <Link href={'/qr'} style={{ marginTop: 20 }}>
             <Text>QR scan (Just for now) </Text>
         </Link>
 
-        <Text style={{ marginTop: 50 }}>Testing API</Text>
+        <Text style={{ marginTop: 40 }}>Testing API</Text>
         <Button onPress={() => fetchHello()} title="Fetch hello" />
-    </View>
+
+        <Text style={{ marginTop: 40 }}>Testing API</Text>
+        <Button onPress={() => profileHello()} title="Fetch profile" />
+
+        <Text style={{ marginTop: 40 }}>Testing API</Text>
+        <Button onPress={() => profileHello()} title="Fetch orders" />
+    </ScrollView>
 )
 
 const FirstRoute = () => (
