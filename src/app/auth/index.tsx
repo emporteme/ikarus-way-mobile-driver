@@ -34,6 +34,7 @@ async function fetchHello(email: string, password: string) {
         method: "POST",
         body: JSON.stringify(credentials),
     });
+    console.log(response);
     return response.json();
 }
 
