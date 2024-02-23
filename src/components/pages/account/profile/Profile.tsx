@@ -33,6 +33,7 @@ const Profile: React.FC = () => {
                                         onPress={() => {
                                             // The `app/(app)/_layout.tsx` will redirect to the sign-in screen.
                                             signOut();
+                                            
                                         }}
                                     >
                                         <Image source={icons.logOut} style={styles.iconOut} />
