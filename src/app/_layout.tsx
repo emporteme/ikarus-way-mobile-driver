@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from 'expo-splash-screen';
-
+import { AuthProvider } from '@/components/core/AuthContext';
 
 export {
     // Catch any errors thrown by the Layout component.
@@ -64,8 +64,11 @@ export default function RootLayout() {
     }
 
 
-    return <RootLayoutNav />;
-    // Root navigation stack
+    return (
+        // <AuthProvider>
+            <RootLayoutNav />
+        // </AuthProvider>
+    );
 
 }
 
@@ -73,35 +76,21 @@ function RootLayoutNav() {
 
     return (
         <Stack
-
             // Global screen options
             screenOptions={{
                 headerTintColor: "#13161C",
                 statusBarColor: '#F2F2F2',
                 navigationBarColor: 'transparent'
             }}
-
-        // Hide splash screen after initial render
-        // onLayout={onLayoutRootView}                             // Hope this one will not crush my code
         >
-
             {/* Main pages screen  */}
-            <Stack.Screen
-                name="pages"
-                options={{ headerShown: false }}
-            />
+            <Stack.Screen name="pages" options={{ headerShown: false }} />
 
             {/* Auth screen */}
-            <Stack.Screen
-                name="auth"
-                options={{ headerShown: false }}
-            />
+            <Stack.Screen name="auth" options={{ headerShown: false }} />
 
             {/* Onboarding screen */}
-            <Stack.Screen
-                name="onboarding"
-                options={{ headerShown: false }}
-            />
+            <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         </Stack>
     )
 }
