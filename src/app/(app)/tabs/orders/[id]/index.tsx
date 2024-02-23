@@ -265,7 +265,7 @@ const OrderDetail: React.FC = () => {
                         </View>
                     </View>
                 </ScrollView>
-                <Link href={`/pages/orders/1/expenses`} asChild>
+                <Link href={`/orders/1/expenses`} asChild>
                     <Pressable style={styles.button}>
                         <Text style={styles.buttonText}>Add expenses</Text>
                         <Image source={icons.card} style={styles.buttonIcon} />

@@ -47,8 +47,8 @@ const App: React.FC = () => {
 				) : (
 
 					/* Else redirect to main pages */
-					<Redirect href="/pages" />
-					// router.push("/pages")
+					<Redirect href="/tabs" />
+					// router.push("/")
 				)
 			)}
 		</View>

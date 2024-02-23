@@ -1,8 +1,22 @@
-import { Tabs } from "expo-router";
-import { Image } from "react-native";
+import { Tabs, Redirect } from "expo-router";
+import { Image, Text } from "react-native";
 import { FONT, COLORS, icons } from "@/constants";
+import { useSession } from "@/components/core/Context";
 
-export default () => {
+export default function TabsLayout() {
+    const { session, isLoading } = useSession();
+    // You can keep the splash screen open, or render a loading screen like we do here.
+    if (isLoading) {
+        return <Text>Loading...</Text>;
+    }
+
+    // Only require authentication within the (app) group's layout as users need to be able to access the (auth) group and sign in again.
+    if (!session) {
+        // On web, static rendering will stop here as the user is not authenticated in the headless Node process that the pages are rendered in.
+        return <Redirect href="/auth" />;
+    }
+
+    // This layout can be deferred because it's not the root layout.
     return (
         <Tabs
             screenOptions={{
@@ -23,7 +37,7 @@ export default () => {
                     headerShown: false,
                     tabBarIcon: ({ color }) => (
                         <Image source={icons.order} style={{ width: 24, height: 24, tintColor: color }} />
-                    ),       
+                    ),
                     tabBarLabelPosition: 'below-icon',
                     tabBarLabelStyle: {
                         fontFamily: FONT.medium,

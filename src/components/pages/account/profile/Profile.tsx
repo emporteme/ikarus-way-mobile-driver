@@ -9,8 +9,11 @@ import { icons, images } from '@/constants';
 // Import styles
 import styles from './profile.style';
 
+import { useSession } from '@/components/core/Context';
+
 
 const Profile: React.FC = () => {
+    const { signOut } = useSession();
     return (
         <SafeAreaView style={styles.safe}>
             <ScrollView style={styles.scroll}>
@@ -26,7 +29,12 @@ const Profile: React.FC = () => {
                                     </View>
                                 </View>
                                 <Link href={'/auth'} asChild>
-                                    <Pressable>
+                                    <Pressable
+                                        onPress={() => {
+                                            // The `app/(app)/_layout.tsx` will redirect to the sign-in screen.
+                                            signOut();
+                                        }}
+                                    >
                                         <Image source={icons.logOut} style={styles.iconOut} />
                                     </Pressable>
                                 </Link>

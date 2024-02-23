@@ -28,7 +28,7 @@ export default () => {
                 headerRight: () => (
 
                     // Maybe I need to use router.back(), but for now this logic fits well.
-                    // router.push('/pages/services')}
+                    // router.push('/services')}
                     <Pressable onPress={() => router.back()}>
                         <Image source={icons.exit} resizeMode='contain' width={24} height={24} />
                     </Pressable>

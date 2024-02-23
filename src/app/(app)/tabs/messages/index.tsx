@@ -1,12 +1,14 @@
 // Main imports
 import React from 'react';
-import { useWindowDimensions, Text, View, Button, ScrollView } from "react-native";
+import { useWindowDimensions, Text, View, Button, ScrollView, Pressable } from "react-native";
 import { Link } from "expo-router";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 // Styles imports
 import styles from '@/style/orders.style';
 import { FONT } from '@/constants';
 import { Empty, MessageList } from '@/components';
+
+import { useSession } from '@/components/core/Context';
 
 async function fetchHello() {
     // const response = await fetch('/api/hello');
@@ -49,6 +51,7 @@ async function fetchTest() {
     }
 }
 
+// const { signOut } = useSession();
 const Func = () => (
     <ScrollView style={{ padding: 20 }}>
         <Text>Messages page</Text>
@@ -70,7 +73,18 @@ const Func = () => (
 
         <Text style={{ marginTop: 40 }}>Testing API</Text>
         <Button onPress={() => fetchTest()} title="Fetch test" />
-    </ScrollView>
+
+        {/* <Pressable
+            onPress={() => {
+                // The `app/(app)/_layout.tsx` will redirect to the sign-in screen.
+                signOut();
+            }}
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
+            <Text>
+                Sign Out
+            </Text>
+        </Pressable> */}
+    </ScrollView >
 )
 
 const FirstRoute = () => (
@@ -101,6 +115,8 @@ const MessagesPage: React.FC = () => {
         { key: 'third', title: 'Expeditor' },
     ]);
 
+    const { signOut } = useSession();
+
     return (
         <>
             <TabView
@@ -127,6 +143,15 @@ const MessagesPage: React.FC = () => {
                     style={styles.tabbar}
                 />}
             />
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text
+                    onPress={() => {
+                        // The `app/(app)/_layout.tsx` will redirect to the sign-in screen.
+                        signOut();
+                    }}>
+                    Sign Out
+                </Text>
+            </View>
         </>
     );
 }
