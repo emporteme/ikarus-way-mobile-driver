@@ -9,19 +9,45 @@ import { FONT } from '@/constants';
 import { Empty, MessageList } from '@/components';
 
 async function fetchHello() {
-    const response = await fetch('/api/hello');
-    const data = await response.json();
-    alert('Hello ' + data.hello);
-    console.log(data);
+    // const response = await fetch('/api/hello');
+    // const data = await response.json();
+    // alert('Hello ' + data.hello);
+    // console.log(data);
+    try {
+        const response = await fetch('/api/hello'); // Using JSONPlaceholder mock API
+        if (!response.ok) {
+            throw new Error('Failed to fetch hello data');
+        }
+        const data = await response.json();
+        alert('Hello ' + data.hello);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+        alert('Failed to fetch hello data');
+    }
 }
 
-async function profileHello() {
+async function fetchProfile() {
     const response = await fetch('/api/profile');
     const data = await response.json();
     alert('Hello ' + data.data.first_name);
     console.log(data);
 }
 
+async function fetchTest() {
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/users/1'); // Using JSONPlaceholder mock API
+        if (!response.ok) {
+            throw new Error('Failed to fetch profile data');
+        }
+        const data = await response.json();
+        alert('Hello ' + data.name);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+        alert('Failed to fetch profile data');
+    }
+}
 
 const Func = () => (
     <ScrollView style={{ padding: 20 }}>
@@ -40,10 +66,10 @@ const Func = () => (
         <Button onPress={() => fetchHello()} title="Fetch hello" />
 
         <Text style={{ marginTop: 40 }}>Testing API</Text>
-        <Button onPress={() => profileHello()} title="Fetch profile" />
+        <Button onPress={() => fetchProfile()} title="Fetch profile" />
 
         <Text style={{ marginTop: 40 }}>Testing API</Text>
-        <Button onPress={() => profileHello()} title="Fetch orders" />
+        <Button onPress={() => fetchTest()} title="Fetch test" />
     </ScrollView>
 )
 
