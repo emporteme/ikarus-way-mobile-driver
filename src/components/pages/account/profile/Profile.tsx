@@ -1,5 +1,5 @@
 // Main imports
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, SafeAreaView, ScrollView, Pressable, Image } from "react-native";
 import { Link } from 'expo-router';
 
@@ -11,9 +11,45 @@ import styles from './profile.style';
 
 import { useSession } from '@/components/core/Context';
 
-
 const Profile: React.FC = () => {
-    const { signOut } = useSession();
+    // Auth context
+    const { signOut, jwtToken } = useSession(); // Destructure jwtToken from useSession
+
+    // Data fetching
+    const [profileData, setProfileData] = useState<any>(null);
+
+    useEffect(() => {
+        fetchProfile(jwtToken); // Pass jwtToken as parameter
+    }, [jwtToken]); // Add jwtToken to dependency array
+
+    const fetchProfile = async (jwtToken: string) => { // Accept jwtToken as parameter
+        try {
+            if (!jwtToken) {
+                throw new Error('JWT token not found');
+            }
+
+            const response = await fetch('https://app-test.prometeochain.io/api/v1/users/profile', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + jwtToken
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json(); // Parse response data
+            setProfileData(data.data); // Update state with fetched data
+            console.log(data);
+        } catch (error) {
+            console.error('Error fetching profile:', error);
+            alert('Failed to fetch profile data');
+        }
+    }
+
+
     return (
         <SafeAreaView style={styles.safe}>
             <ScrollView style={styles.scroll}>
@@ -24,7 +60,7 @@ const Profile: React.FC = () => {
                                 <View style={styles.profile}>
                                     <Image source={images.profile} style={styles.image} />
                                     <View style={styles.column}>
-                                        <Text style={styles.name}>Anton Antonovich</Text>
+                                        <Text style={styles.name}>{profileData?.first_name}</Text>
                                         <Text style={styles.role}>Driver</Text>
                                     </View>
                                 </View>
@@ -33,7 +69,6 @@ const Profile: React.FC = () => {
                                         onPress={() => {
                                             // The `app/(app)/_layout.tsx` will redirect to the sign-in screen.
                                             signOut();
-                                            
                                         }}
                                     >
                                         <Image source={icons.logOut} style={styles.iconOut} />
