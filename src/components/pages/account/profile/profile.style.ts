@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     inActive: {
         fontFamily: FONT.medium,
         fontSize: SIZES.small,
+        lineHeight: (SIZES.small) / 2 * 3,
         color: COLORS.dark,
         paddingHorizontal: 8,
         paddingVertical: 4,
@@ -21,6 +22,7 @@ const styles = StyleSheet.create({
     active: {
         fontFamily: FONT.semiBold,
         fontSize: SIZES.small,
+        lineHeight: (SIZES.small) / 2 * 3,
         color: COLORS.primary,
         borderWidth: 2,
         borderColor: COLORS.primary,
@@ -74,16 +76,18 @@ const styles = StyleSheet.create({
         borderColor: '#A0A3BD20',
     },
     column: {
-        gap: 4
+        // gap: 4
     },
     name: {
         fontFamily: FONT.semiBold,
         fontSize: SIZES.semiMedium,
+        lineHeight: (SIZES.semiMedium) / 2 * 3,
         color: COLORS.dark,
     },
     role: {
         fontFamily: FONT.semiBold,
         fontSize: SIZES.small,
+        lineHeight: (SIZES.small) / 2 * 3,
         color: COLORS.gray,
     },
     iconOut: {
@@ -106,20 +110,37 @@ const styles = StyleSheet.create({
     label: {
         fontFamily: FONT.medium,
         fontSize: SIZES.semiMedium,
+        lineHeight: (SIZES.semiMedium) / 2 * 3,
         color: COLORS.gray,
     },
     labelType: {
         fontFamily: FONT.medium,
         fontSize: SIZES.small,
+        lineHeight: (SIZES.small) / 2 * 3,
         color: COLORS.gray,
     },
     value: {
         fontFamily: FONT.medium,
         fontSize: SIZES.semiMedium,
+        lineHeight: (SIZES.semiMedium) / 2 * 3,
         color: COLORS.dark,
         width: '60%',
     },
-
+    companyWrapper: {
+        width: '60%',
+    },
+    valueCompany: {
+        fontFamily: FONT.medium,
+        fontSize: SIZES.semiMedium,
+        lineHeight: (SIZES.semiMedium) / 2 * 3,
+        color: COLORS.dark,
+    },
+    valueType: {
+        fontFamily: FONT.medium,
+        fontSize: SIZES.small,
+        lineHeight: (SIZES.small) / 2 * 3,
+        color: COLORS.dark,
+    },
     // Button
     button: {
         paddingHorizontal: 16,
@@ -138,7 +159,8 @@ const styles = StyleSheet.create({
     buttonText: {
         color: COLORS.white,
         fontFamily: FONT.semiBold,
-        fontSize: SIZES.medium
+        fontSize: SIZES.medium,
+        lineHeight: (SIZES.medium) / 2 * 3,
     },
     buttonIcon: {
         width: 18,

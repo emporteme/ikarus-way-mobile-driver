@@ -80,31 +80,37 @@ const Profile: React.FC = () => {
                             <View style={styles.footer}>
                                 <View style={styles.detail}>
                                     <Text style={styles.label}>First name</Text>
-                                    <Text style={styles.value}>Anton</Text>
+                                    <Text style={styles.value}>{profileData?.first_name}</Text>
                                 </View>
                                 <View style={styles.detail}>
                                     <Text style={styles.label}>Last name</Text>
-                                    <Text style={styles.value}>Antonovich</Text>
+                                    <Text style={styles.value}>{profileData?.last_name}</Text>
                                 </View>
                                 <View style={styles.detail}>
                                     <Text style={styles.label}>Email</Text>
-                                    <Text style={styles.value}>antonio@email.com</Text>
+                                    <Text style={styles.value}>{profileData?.email}</Text>
+                                    {/* <Text style={styles.value}>antonio@email.com</Text> */}
                                 </View>
                                 <View style={styles.detail}>
                                     <Text style={styles.label}>Mobile</Text>
-                                    <Text style={styles.value}>+7 (747) 066 45 12</Text>
+                                    <Text style={styles.value}>{profileData?.phone_number}</Text>
                                 </View>
                                 <View style={styles.detail}>
                                     <View>
                                         <Text style={styles.label}>Company</Text>
                                         <Text style={styles.labelType}>(type)</Text>
                                     </View>
-                                    <Text style={styles.value}>Logistics LTD</Text>
+                                    <View style={styles.companyWrapper}>
+                                        <Text style={styles.valueCompany}>{profileData?.company_name}</Text>
+                                        <Text style={styles.valueType}>{profileData?.company_type}</Text>
+                                    </View>
                                 </View>
-                                <View style={styles.detail}>
-                                    <Text style={styles.label}>Department</Text>
-                                    <Text style={styles.value}>Driver</Text>
-                                </View>
+                                {profileData.department ?
+                                    <View style={styles.detail}>
+                                        <Text style={styles.label}>Department</Text>
+                                        <Text style={styles.value}>{profileData?.department}</Text>
+                                    </View>
+                                    : null}
                             </View>
                         </>
                     </View>
