@@ -1,4 +1,4 @@
-import { Tabs, Redirect } from "expo-router";
+import { Tabs, Redirect, useSegments } from "expo-router";
 import { Image, Text } from "react-native";
 import { FONT, COLORS, icons } from "@/constants";
 import { useSession } from "@/components/core/Context";
@@ -15,6 +15,9 @@ export default function TabsLayout() {
         // On web, static rendering will stop here as the user is not authenticated in the headless Node process that the pages are rendered in.
         return <Redirect href="/auth" />;
     }
+
+    // Segments for message details page, to hide tabbar
+    const segments = useSegments()
 
     // This layout can be deferred because it's not the root layout.
     return (
@@ -80,7 +83,12 @@ export default function TabsLayout() {
                         fontFamily: FONT.medium,
                         fontSize: 10,
                     },
-                    tabBarItemStyle: {}
+                    tabBarStyle: {
+                        // backgroundColor: COLORS.white,
+                        height: 70,
+                        paddingTop: 6,
+                        display: segments[3] === '[id]' ? 'none' : 'flex'
+                    }
                 }}
             />
 
