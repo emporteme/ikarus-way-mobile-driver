@@ -7,7 +7,7 @@ import styles from './single.style'
 
 const MessageSingle: React.FC<MessageType> = (message) => {
     return (
-        <Link href={`/messages/${message.id}`} asChild>
+        <Link href={`/tabs/messages/${message.id}`} asChild>
             <Pressable style={styles.card}>
                 <Image source={images.profile} style={styles.photo} />
                 <View style={styles.content}>
