@@ -91,7 +91,6 @@ const ExpensesPage: React.FC = () => {
             />
             <ScrollView>
                 <View style={styles.scroll}>
-                    <Text>Yo</Text>
                     <OuterDropdown
                         options={['Food', 'Hotel', 'Heating']}
                         selectedOption={selectedOption}
