@@ -5,12 +5,11 @@ import { FONT, COLORS, SIZES } from "@/constants";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 20,
-        paddingTop: '60%',
         alignItems: 'center',
+        justifyContent: 'center',
     },
     textBlock: {
-        marginTop: 14,
+        marginBottom: 20,
     },
     text: {
         textAlign: 'center',

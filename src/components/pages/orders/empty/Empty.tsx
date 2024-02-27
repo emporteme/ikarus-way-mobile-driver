@@ -6,7 +6,7 @@ const EmptyOrders: React.FC = () => {
     return (
         <View style={styles.container}>
             <View style={styles.textBlock}>
-                <Text>No orders found.</Text>
+                <Text style={styles.text}>No orders found.</Text>
             </View>
         </View>
     )
