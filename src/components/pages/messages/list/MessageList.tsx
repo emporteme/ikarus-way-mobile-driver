@@ -7,7 +7,7 @@ import styles from './list.style'
 const MessageList: React.FC = () => {
     return (
         <View style={styles.body}>
-            {messages.length > 20 ? (
+            {messages.length > 0 ? (
                 <FlatList
                     data={messages}
                     contentContainerStyle={styles.content}

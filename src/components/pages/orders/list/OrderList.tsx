@@ -10,7 +10,7 @@ import styles from './list.style'
 const OrderList: React.FC = () => {
     return (
         <View style={styles.body}>
-            {orders.length > 20 ? (
+            {orders.length > 0 ? (
                 <FlatList
                     data={orders}
                     contentContainerStyle={styles.content}
