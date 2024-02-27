@@ -1,6 +1,7 @@
 // Page Screen Components
 import OrderList from "./pages/orders/list/OrderList";
 import OrderCard from "./pages/orders/card/OrderCard";
+import EmptyOrders from "./pages/orders/empty/Empty";
 import IotList from "./pages/iot/list/IotList";
 import IotCard from "./pages/iot/card/IotCard";
 import Empty from "./pages/messages/empty/Empty";
@@ -19,6 +20,7 @@ export {
     // Page Screen Components
     OrderList,
     OrderCard,
+    EmptyOrders,
     IotList,
     IotCard,
     Empty,
