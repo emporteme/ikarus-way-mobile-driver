@@ -46,7 +46,11 @@ export default function TabsLayout() {
                         fontFamily: FONT.medium,
                         fontSize: 10,
                     },
-                    tabBarItemStyle: {
+                    tabBarStyle: {
+                        // backgroundColor: COLORS.white,
+                        height: 70,
+                        paddingTop: 6,
+                        display: segments[3] === '[id]' ? 'none' : 'flex'
                     }
                 }}
             />
