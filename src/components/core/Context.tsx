@@ -21,7 +21,6 @@ const AuthContext = React.createContext<{
     rtToken: null,
     isLoadingJwtToken: false, // Initialize isLoadingJwtToken and isLoadingRtToken as false
     isLoadingRtToken: false,
-
 });
 
 // This hook can be used to access the user info.
