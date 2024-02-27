@@ -19,7 +19,7 @@
 
 
 import { ChatMessageBox, ReplyMessageBar } from '@/components';
-import { COLORS } from '@/constants';
+import { COLORS, images } from '@/constants';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { ImageBackground, StyleSheet, View } from 'react-native';
@@ -108,7 +108,13 @@ const Page = () => {
     }, [replyMessage]);
 
     return (
-        <>
+        <ImageBackground
+            source={images.onboarding2}
+            style={{
+                flex: 1,
+                backgroundColor: COLORS.white,
+                marginBottom: insets.bottom,
+            }}>
             <GiftedChat
                 messages={messages}
                 onSend={(messages: any) => onSend(messages)}
@@ -183,7 +189,7 @@ const Page = () => {
                     />
                 )}
             />
-        </>
+        </ImageBackground>
     );
 };
 
@@ -192,7 +198,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 18,
         borderWidth: 1,
-        borderColor: COLORS.primary,
+        borderColor: COLORS.lightGray,
         paddingHorizontal: 10,
         paddingTop: 8,
         fontSize: 16,
