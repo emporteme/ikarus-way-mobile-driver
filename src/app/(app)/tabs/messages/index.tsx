@@ -8,8 +8,6 @@ import styles from '@/style/orders.style';
 import { FONT } from '@/constants';
 import { Empty, MessageList } from '@/components';
 
-import { useSession } from '@/components/core/Context';
-
 async function fetchHello() {
     // const response = await fetch('/api/hello');
     // const data = await response.json();
@@ -51,7 +49,6 @@ async function fetchTest() {
     }
 }
 
-// const { signOut } = useSession();
 const Func = () => (
     <ScrollView style={{ padding: 20 }}>
         <Text>Messages page</Text>
@@ -73,17 +70,6 @@ const Func = () => (
 
         <Text style={{ marginTop: 40 }}>Testing API</Text>
         <Button onPress={() => fetchTest()} title="Fetch test" />
-
-        {/* <Pressable
-            onPress={() => {
-                // The `app/(app)/_layout.tsx` will redirect to the sign-in screen.
-                signOut();
-            }}
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
-            <Text>
-                Sign Out
-            </Text>
-        </Pressable> */}
     </ScrollView >
 )
 
@@ -114,8 +100,6 @@ const MessagesPage: React.FC = () => {
         { key: 'second', title: 'Sender' },
         { key: 'third', title: 'Expeditor' },
     ]);
-
-    const { signOut } = useSession();
 
     return (
         <>
