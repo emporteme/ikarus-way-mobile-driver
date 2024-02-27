@@ -105,12 +105,12 @@ const Profile: React.FC = () => {
                                         <Text style={styles.valueType}>{profileData?.company_type}</Text>
                                     </View>
                                 </View>
-                                {profileData.department ?
+                                {profileData?.department ?
                                     <View style={styles.detail}>
                                         <Text style={styles.label}>Department</Text>
                                         <Text style={styles.value}>{profileData?.department}</Text>
                                     </View>
-                                    : null}
+                                    : <></>}
                             </View>
                         </>
                     </View>
