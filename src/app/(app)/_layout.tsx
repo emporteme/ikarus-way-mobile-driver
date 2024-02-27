@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { Stack, Slot } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from 'expo-splash-screen';
-import { AuthProvider } from '@/components/core/AuthContext';
 
 export {
     // Catch any errors thrown by the Layout component.
@@ -12,7 +11,7 @@ export {
 
 export const unstable_settings = {
     // Ensure that reloading on `/modal` keeps a back button present.
-    initialRouteName: '(tabs)/orders',
+    initialRouteName: '(tabs)/iot',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.

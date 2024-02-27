@@ -7,7 +7,7 @@ import styles from './card.style'
 
 const OrderCard: React.FC<OrderType> = (order) => {
     return (
-        <Link href={`/tabs/orders/${order.id}`} asChild>
+        <Link href={`/orders/${order.id}`} asChild>
             <Pressable style={styles.card}>
                 {/* <Text>{order.weight}</Text> */}
                 <View style={styles.top}>
