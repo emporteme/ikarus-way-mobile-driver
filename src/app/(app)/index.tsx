@@ -47,7 +47,7 @@ const App: React.FC = () => {
 				) : (
 
 					/* Else redirect to main pages */
-					<Redirect href="/iot" />
+					<Redirect href="/orders" />
 					// router.push("/")
 				)
 			)}

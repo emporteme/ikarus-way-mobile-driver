@@ -51,7 +51,7 @@ async function fetchAuth(email: string, password: string, signIn: (jwt: string, 
         console.log(json);
         console.log(json.status);
 
-        router.push('/iot');
+        router.push('/orders');
     } catch (error) {
         console.error(error);
         alert('Failed to authenticate');
@@ -123,7 +123,7 @@ const Auth = () => {
                         style={styles.button}
                         onPress={async () => {
                             await fetchAuth(email, password, signIn); // Call fetchAuth to get jwt and rt tokens
-                            router.replace('/iot');
+                            router.replace('/orders');
                         }}
                     >
                         <Text style={styles.buttonText}>LOGIN</Text>
