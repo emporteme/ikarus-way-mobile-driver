@@ -1,29 +1,9 @@
-// import { View, Text } from 'react-native'
-// import React from 'react'
-// import { useLocalSearchParams, Stack } from 'expo-router';
-
-// const DetailMessage: React.FC<{}> = () => {
-//     const { id } = useLocalSearchParams();
-//     return (
-//         <>
-//             <Stack.Screen options={{ title: 'ID ' + id }} />
-//             <View>
-//                 <Text>DetailMessage with id: {id}</Text>
-//             </View>
-//         </>
-//     )
-// }
-
-// export default DetailMessage
-
-
-
 import { ChatMessageBox, ReplyMessageBar } from '@/components';
 import { useLocalSearchParams, Stack } from 'expo-router';
-import { COLORS, images, FONT } from '@/constants';
+import { COLORS, FONT } from '@/constants';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { ImageBackground, StyleSheet, View, SafeAreaView } from 'react-native';
+import { StyleSheet, View, SafeAreaView } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 import {
     GiftedChat,
