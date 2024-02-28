@@ -19,10 +19,11 @@
 
 
 import { ChatMessageBox, ReplyMessageBar } from '@/components';
-import { COLORS, images } from '@/constants';
+import { useLocalSearchParams, Stack } from 'expo-router';
+import { COLORS, images, FONT } from '@/constants';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { ImageBackground, StyleSheet, View } from 'react-native';
+import { ImageBackground, StyleSheet, View, SafeAreaView } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 import {
     GiftedChat,
@@ -107,14 +108,10 @@ const Page = () => {
         }
     }, [replyMessage]);
 
+    const { id } = useLocalSearchParams();
     return (
-        <ImageBackground
-            source={images.onboarding2}
-            style={{
-                flex: 1,
-                backgroundColor: COLORS.white,
-                marginBottom: insets.bottom,
-            }}>
+        <SafeAreaView style={{ flex: 1 }}>
+            <Stack.Screen options={{ title: 'ID ' + id }} />
             <GiftedChat
                 messages={messages}
                 onSend={(messages: any) => onSend(messages)}
@@ -134,16 +131,29 @@ const Page = () => {
                         <Bubble
                             {...props}
                             textStyle={{
+                                left: {
+                                    color: COLORS.dark,
+                                    fontFamily: FONT.medium,
+                                    fontSize: 14,
+                                    lineHeight: 21,
+                                },
                                 right: {
-                                    color: '#000',
+                                    color: COLORS.white,
+                                    fontFamily: FONT.medium,
+                                    fontSize: 14,
+                                    lineHeight: 21,
                                 },
                             }}
                             wrapperStyle={{
                                 left: {
-                                    backgroundColor: '#fff',
+                                    backgroundColor: COLORS.secondary,
+                                    padding: 10,
+                                    borderRadius: 16
                                 },
                                 right: {
-                                    backgroundColor: COLORS.lightGreen,
+                                    backgroundColor: COLORS.dark,
+                                    padding: 10,
+                                    borderRadius: 16
                                 },
                             }}
                         />
@@ -189,7 +199,7 @@ const Page = () => {
                     />
                 )}
             />
-        </ImageBackground>
+        </SafeAreaView>
     );
 };
 

@@ -1,4 +1,4 @@
-import {COLORS} from '@/constants';
+import { COLORS } from '@/constants';
 import { Ionicons } from '@expo/vector-icons';
 import { View, TouchableOpacity, Text } from 'react-native';
 import { IMessage } from 'react-native-gifted-chat';
@@ -17,11 +17,11 @@ const ReplyMessageBar = ({ clearReply, message }: ReplyMessageBarProps) => {
                     style={{ height: 50, flexDirection: 'row', backgroundColor: '#E4E9EB' }}
                     entering={FadeInDown}
                     exiting={FadeOutDown}>
-                    <View style={{ height: 50, width: 6, backgroundColor: '#89BC0C' }}></View>
+                    <View style={{ height: 50, width: 6, backgroundColor: COLORS.primary }}></View>
                     <View style={{ flexDirection: 'column' }}>
                         <Text
                             style={{
-                                color: '#89BC0C',
+                                color: COLORS.primary,
                                 paddingLeft: 10,
                                 paddingTop: 5,
                                 fontWeight: '600',
