@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { StyleSheet, View, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
+import { StyleSheet, View, SafeAreaView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import {
     GiftedChat,
@@ -15,8 +15,39 @@ import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { ChatMessageBox, ReplyMessageBar } from '@/components';
 import { COLORS, FONT } from '@/constants';
 import messageData from '@/api/chat.json'
+// import * as DocumentPicker from 'react-native-document-picker'
+import * as DocumentPicker from 'expo-document-picker';
+
+interface File extends IMessage {
+    url?: string;
+}
 
 const Page = () => {
+    // declare 4 states
+    const [isAttachImage, setIsAttachImage] = useState(false);
+    const [isAttachFile, setIsAttachFile] = useState(false);
+    const [imagePath, setImagePath] = useState('');
+    const [filePath, setFilePath] = useState('');
+
+    // add a function attach file using DocumentPicker.pick
+
+    const _pickDocument = async () => {
+        try {
+            const result = await DocumentPicker.getDocumentAsync({
+                type: '*/*', // You can specify the file types you want to allow, e.g., 'application/pdf', 'image/*', etc.
+            });
+            // Uncomment when will be API
+            // if (result.type === 'success') {
+            //     onSelectFile(result.uri);
+            // } else {
+            //     onSelectFile(null); // User canceled file selection
+            // }
+        } catch (error) {
+            console.error('Error picking file:', error);
+        }
+    };
+
+
     const [messages, setMessages] = useState<IMessage[]>([]);
     const [text, setText] = useState('');
     const insets = useSafeAreaInsets();
@@ -60,9 +91,11 @@ const Page = () => {
                 {...props}
                 containerStyle={{ backgroundColor: COLORS.white }}
                 renderActions={() => (
-                    <View style={{ height: 44, justifyContent: 'center', alignItems: 'center', left: 5 }}>
-                        <Ionicons name="add" color={COLORS.primary} size={28} />
-                    </View>
+                    <TouchableOpacity onPress={_pickDocument}>
+                        <View style={{ height: 44, justifyContent: 'center', alignItems: 'center', left: 5 }}>
+                            <Ionicons name="add" color={COLORS.primary} size={28} />
+                        </View>
+                    </TouchableOpacity>
                 )}
             />
         );
