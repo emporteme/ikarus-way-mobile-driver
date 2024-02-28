@@ -34,7 +34,8 @@
       "config": {
         "usesCleartextTraffic": true
       },
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "windowSoftInputMode": "adjustResize"
     },
     "web": {
       "favicon": "./assets/favicon.png",

@@ -50,48 +50,52 @@ async function fetchTest() {
 }
 
 const Func = () => (
-    <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        // behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-        behavior='padding'
-        // keyboardVerticalOffset={-500}
-    // keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500} // Adjust this value as needed
-    >
-        <ScrollView style={{ padding: 20, flex: 1 }}>
-            <>
-                <Text>Messages page</Text>
-                <Link href={'/onboarding'} style={{ marginTop: 20 }}>
-                    <Text>Onboarding page (Just for now) </Text>
-                </Link>
-                <Link href={'/auth'} style={{ marginTop: 20 }}>
-                    <Text>Login page (Just for now) </Text>
-                </Link>
-                <Link href={'/qr'} style={{ marginTop: 20 }}>
-                    <Text>QR scan (Just for now) </Text>
-                </Link>
+    // <KeyboardAvoidingView
+    //     style={{ flex: 1 }}
+    //     // behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+    //     behavior='padding'
+    // // keyboardVerticalOffset={-500}
+    // // keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500} // Adjust this value as needed
+    // >
+    <ScrollView style={{ padding: 20, flex: 1 }}>
+        <View style={{ paddingBottom: 0 }}>
+            <Text>Messages page</Text>
+            <Link href={'/onboarding'} style={{ marginTop: 20 }}>
+                <Text>Onboarding page (Just for now) </Text>
+            </Link>
+            <Link href={'/auth'} style={{ marginTop: 20 }}>
+                <Text>Login page (Just for now) </Text>
+            </Link>
+            <Link href={'/qr'} style={{ marginTop: 20 }}>
+                <Text>QR scan (Just for now) </Text>
+            </Link>
 
-                <Text style={{ marginTop: 40 }}>Testing API</Text>
-                <Button onPress={() => fetchHello()} title="Fetch hello" />
+            <Text style={{ marginTop: 40 }}>Testing API</Text>
+            <Button onPress={() => fetchHello()} title="Fetch hello" />
 
-                <Text style={{ marginTop: 40 }}>Testing API</Text>
-                <Button onPress={() => fetchProfile()} title="Fetch profile" />
+            <Text style={{ marginTop: 40 }}>Testing API</Text>
+            <Button onPress={() => fetchProfile()} title="Fetch profile" />
 
-                <Text style={{ marginTop: 40 }}>Testing API</Text>
-                <Button onPress={() => fetchTest()} title="Fetch test" />
+            <Text style={{ marginTop: 40 }}>Testing API</Text>
+            <Button onPress={() => fetchTest()} title="Fetch test" />
 
-                <Text style={{ marginTop: 40 }}>Text input below</Text>
-                <TextInput
-                    style={{
-                        height: 40,
-                        margin: 12,
-                        borderWidth: 1,
-                        padding: 10,
-                    }}
-                    placeholder="Type here"
-                    onChangeText={text => console.log(text)} />
-            </>
-        </ScrollView>
-    </KeyboardAvoidingView>
+            <Text style={{ marginTop: 40 }}>Text input below</Text>
+            <TextInput
+                style={{
+                    height: 40,
+                    margin: 12,
+                    borderWidth: 1,
+                    padding: 10,
+                }}
+                placeholder="Type here"
+                onChangeText={text => console.log(text)}
+            />
+            {/* {
+                Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding" />
+            } */}
+        </View>
+    </ScrollView>
+    // </KeyboardAvoidingView>
 )
 
 const FirstRoute = () => (

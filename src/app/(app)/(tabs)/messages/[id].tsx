@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, View, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
-import { Swipeable } from 'react-native-gesture-handler';
 import {
     GiftedChat,
     Bubble,
@@ -10,6 +9,7 @@ import {
     SystemMessage,
     IMessage,
 } from 'react-native-gifted-chat';
+import { Swipeable } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { ChatMessageBox, ReplyMessageBar } from '@/components';
@@ -89,104 +89,100 @@ const Page = () => {
     }, [replyMessage]);
 
     const { id } = useLocalSearchParams();
+
+
     return (
         <SafeAreaView style={{ flex: 1, marginBottom: insets.bottom, backgroundColor: COLORS.background }}>
             <Stack.Screen options={{ title: 'Chat ID: ' + id }} />
-            {/* <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior='padding'
-                // keyboardVerticalOffset={insets.bottom}
-            // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            // keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500} // Adjust this value as needed
-            > */}
-            <GiftedChat
-                messages={messages}
-                onSend={(messages: any) => onSend(messages)}
-                onInputTextChanged={setText}
-                user={{
-                    _id: 1,
-                }}
-                renderSystemMessage={(props) => (
-                    <SystemMessage {...props} textStyle={{ color: COLORS.gray }} />
-                )}
-                bottomOffset={insets.bottom}
-                renderAvatar={null}
-                maxComposerHeight={100}
-                textInputProps={styles.composer}
-                renderBubble={(props) => {
-                    return (
-                        <Bubble
-                            {...props}
-                            textStyle={{
-                                left: {
-                                    color: COLORS.dark,
-                                    fontFamily: FONT.medium,
-                                    fontSize: 14,
-                                    lineHeight: 21,
-                                },
-                                right: {
-                                    color: COLORS.white,
-                                    fontFamily: FONT.medium,
-                                    fontSize: 14,
-                                    lineHeight: 21,
-                                },
-                            }}
-                            wrapperStyle={{
-                                left: {
-                                    backgroundColor: COLORS.secondary,
-                                    padding: 10,
-                                    borderRadius: 16
-                                },
-                                right: {
-                                    backgroundColor: COLORS.dark,
-                                    padding: 10,
-                                    borderRadius: 16
-                                },
-                            }}
-                        />
-                    );
-                }}
-                renderSend={(props) => (
-                    <View
-                        style={{
-                            height: 44,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: 14,
-                            paddingHorizontal: 14,
-                        }}>
-                        {text === '' && (
-                            <></>        // Later in future will be added a voice and camera buttons
-                        )}
-                        {text !== '' && (
-                            <Send
+            <View style={{ flex: 1 }}>
+                <GiftedChat
+                    messages={messages}
+                    onSend={(messages: any) => onSend(messages)}
+                    onInputTextChanged={setText}
+                    user={{
+                        _id: 1,
+                    }}
+                    renderSystemMessage={(props) => (
+                        <SystemMessage {...props} textStyle={{ color: COLORS.gray }} />
+                    )}
+                    bottomOffset={insets.bottom}
+                    renderAvatar={null}
+                    maxComposerHeight={100}
+                    textInputProps={styles.composer}
+                    renderBubble={(props) => {
+                        return (
+                            <Bubble
                                 {...props}
-                                containerStyle={{
-                                    justifyContent: 'center',
-                                }}>
-                                <Ionicons name="send" color={COLORS.primary} size={28} />
-                            </Send>
-                        )}
-                    </View>
-                )}
-                renderInputToolbar={renderInputToolbar}
-                renderChatFooter={() => (
-                    <ReplyMessageBar clearReply={() => setReplyMessage(null)} message={replyMessage} />
-                )}
-                onLongPress={(context, message) => setReplyMessage(message)}
-                renderMessage={(props) => (
-                    <ChatMessageBox
-                        {...props}
-                        setReplyOnSwipeOpen={setReplyMessage}
-                        updateRowRef={updateRowRef}
-                    />
-                )}
-            />
-            {/* {
-                Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-500} />
-            } */}
-            {/* </KeyboardAvoidingView> */}
+                                textStyle={{
+                                    left: {
+                                        color: COLORS.dark,
+                                        fontFamily: FONT.medium,
+                                        fontSize: 14,
+                                        lineHeight: 21,
+                                    },
+                                    right: {
+                                        color: COLORS.white,
+                                        fontFamily: FONT.medium,
+                                        fontSize: 14,
+                                        lineHeight: 21,
+                                    },
+                                }}
+                                wrapperStyle={{
+                                    left: {
+                                        backgroundColor: COLORS.secondary,
+                                        padding: 10,
+                                        borderRadius: 16
+                                    },
+                                    right: {
+                                        backgroundColor: COLORS.dark,
+                                        padding: 10,
+                                        borderRadius: 16
+                                    },
+                                }}
+                            />
+                        );
+                    }}
+                    renderSend={(props) => (
+                        <View
+                            style={{
+                                height: 44,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: 14,
+                                paddingHorizontal: 14,
+                            }}>
+                            {text === '' && (
+                                <></>        // Later in future will be added a voice and camera buttons
+                            )}
+                            {text !== '' && (
+                                <Send
+                                    {...props}
+                                    containerStyle={{
+                                        justifyContent: 'center',
+                                    }}>
+                                    <Ionicons name="send" color={COLORS.primary} size={28} />
+                                </Send>
+                            )}
+                        </View>
+                    )}
+                    renderInputToolbar={renderInputToolbar}
+                    renderChatFooter={() => (
+                        <ReplyMessageBar clearReply={() => setReplyMessage(null)} message={replyMessage} />
+                    )}
+                    onLongPress={(context, message) => setReplyMessage(message)}
+                    renderMessage={(props) => (
+                        <ChatMessageBox
+                            {...props}
+                            setReplyOnSwipeOpen={setReplyMessage}
+                            updateRowRef={updateRowRef}
+                        />
+                    )}
+                />
+                {/* {
+                    Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding" />
+                } */}
+            </View>
         </SafeAreaView>
     );
 };
