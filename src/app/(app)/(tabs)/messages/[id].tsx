@@ -90,8 +90,8 @@ const Page = () => {
 
     const { id } = useLocalSearchParams();
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <Stack.Screen options={{ title: 'ID ' + id }} />
+        <SafeAreaView style={{ flex: 1, marginBottom: insets.bottom, backgroundColor: COLORS.background }}>
+            <Stack.Screen options={{ title: 'Chat ID: ' + id }} />
             <GiftedChat
                 messages={messages}
                 onSend={(messages: any) => onSend(messages)}

@@ -75,7 +75,7 @@ function RootLayoutNav() {
             screenOptions={{
                 headerTintColor: "#13161C",
                 statusBarColor: 'transparent',
-                navigationBarColor: 'transparent'
+                navigationBarColor: 'white'
             }}
         >
             {/* Main pages screen  */}
