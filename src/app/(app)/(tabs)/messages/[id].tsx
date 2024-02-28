@@ -1,9 +1,6 @@
-import { ChatMessageBox, ReplyMessageBar } from '@/components';
-import { useLocalSearchParams, Stack } from 'expo-router';
-import { COLORS, FONT } from '@/constants';
-import { Ionicons } from '@expo/vector-icons';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
+import { useLocalSearchParams, Stack } from 'expo-router';
 import { Swipeable } from 'react-native-gesture-handler';
 import {
     GiftedChat,
@@ -14,6 +11,9 @@ import {
     IMessage,
 } from 'react-native-gifted-chat';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
+import { ChatMessageBox, ReplyMessageBar } from '@/components';
+import { COLORS, FONT } from '@/constants';
 import messageData from '@/api/chat.json'
 
 const Page = () => {
@@ -150,10 +150,7 @@ const Page = () => {
                             paddingHorizontal: 14,
                         }}>
                         {text === '' && (
-                            <>
-                                <Ionicons name="camera-outline" color={COLORS.primary} size={28} />
-                                <Ionicons name="mic-outline" color={COLORS.primary} size={28} />
-                            </>
+                            <></>        // Later in future will be added a voice and camera buttons
                         )}
                         {text !== '' && (
                             <Send
@@ -186,13 +183,14 @@ const Page = () => {
 const styles = StyleSheet.create({
     composer: {
         backgroundColor: '#fff',
-        borderRadius: 18,
+        borderRadius: 14,
         borderWidth: 1,
         borderColor: COLORS.lightGray,
         paddingHorizontal: 10,
-        paddingTop: 8,
+        // paddingTop: 8,
         fontSize: 16,
-        marginVertical: 4,
+        // fontFamily: FONT.bold,
+        // marginVertical: 4,
     },
 });
 
