@@ -33,7 +33,8 @@
       "package": "com.emporteme.ikaruswaymobiledriver",
       "config": {
         "usesCleartextTraffic": true
-      }
+      },
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "favicon": "./assets/favicon.png",

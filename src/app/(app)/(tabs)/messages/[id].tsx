@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { StyleSheet, View, SafeAreaView } from 'react-native';
+import { StyleSheet, View, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { Swipeable } from 'react-native-gesture-handler';
 import {
@@ -92,6 +92,13 @@ const Page = () => {
     return (
         <SafeAreaView style={{ flex: 1, marginBottom: insets.bottom, backgroundColor: COLORS.background }}>
             <Stack.Screen options={{ title: 'Chat ID: ' + id }} />
+            {/* <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior='padding'
+                // keyboardVerticalOffset={insets.bottom}
+            // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            // keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500} // Adjust this value as needed
+            > */}
             <GiftedChat
                 messages={messages}
                 onSend={(messages: any) => onSend(messages)}
@@ -176,6 +183,10 @@ const Page = () => {
                     />
                 )}
             />
+            {/* {
+                Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-500} />
+            } */}
+            {/* </KeyboardAvoidingView> */}
         </SafeAreaView>
     );
 };
@@ -185,12 +196,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 14,
         borderWidth: 1,
-        borderColor: COLORS.lightGray,
+        borderColor: COLORS.primary,
         paddingHorizontal: 10,
-        // paddingTop: 8,
         fontSize: 16,
-        // fontFamily: FONT.bold,
-        // marginVertical: 4,
+        // marginVertical: 100
     },
 });
 
