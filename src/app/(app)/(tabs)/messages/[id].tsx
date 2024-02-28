@@ -11,7 +11,7 @@ import {
 } from 'react-native-gifted-chat';
 import { Swipeable } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { ChatMessageBox, ReplyMessageBar } from '@/components';
 import { COLORS, FONT } from '@/constants';
 import messageData from '@/api/chat.json'
@@ -90,7 +90,9 @@ const Page = () => {
 
     const { id } = useLocalSearchParams();
 
-
+    const scrollToBottomComponent = () => {
+        return <FontAwesome name="angle-double-down" size={22} color="#333" />;
+    };
     return (
         <SafeAreaView style={{ flex: 1, marginBottom: insets.bottom, backgroundColor: COLORS.background }}>
             <Stack.Screen options={{ title: 'Chat ID: ' + id }} />
@@ -178,6 +180,8 @@ const Page = () => {
                             updateRowRef={updateRowRef}
                         />
                     )}
+                    scrollToBottom
+                    scrollToBottomComponent={scrollToBottomComponent}
                 />
                 {/* {
                     Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding" />
