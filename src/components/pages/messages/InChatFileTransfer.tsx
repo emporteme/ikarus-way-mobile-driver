@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
+import { images } from '@/constants';
 
 const InChatFileTransfer = ({ filePath }) => {
     var fileType = '';
@@ -16,8 +17,8 @@ const InChatFileTransfer = ({ filePath }) => {
                 <Image
                     source={
                         fileType === 'pdf'
-                            ? require('../assests/chat_file.png')
-                            : require('../assests/unknowFile.png')
+                            ? images.chat_file
+                            : images.unknowFile
                     }
                     style={{ height: 60, width: 60 }}
                 />

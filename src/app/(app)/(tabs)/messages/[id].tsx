@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { StyleSheet, View, SafeAreaView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, KeyboardAvoidingView, Platform } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import {
     GiftedChat,
@@ -12,7 +12,7 @@ import {
 import { Swipeable } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import { ChatMessageBox, ReplyMessageBar } from '@/components';
+import { ChatMessageBox, ReplyMessageBar, InChatFileTransfer } from '@/components';
 import { COLORS, FONT } from '@/constants';
 import messageData from '@/api/chat.json'
 // import * as DocumentPicker from 'react-native-document-picker'
@@ -46,7 +46,6 @@ const Page = () => {
             console.error('Error picking file:', error);
         }
     };
-
 
     const [messages, setMessages] = useState<IMessage[]>([]);
     const [text, setText] = useState('');
@@ -126,6 +125,41 @@ const Page = () => {
     const scrollToBottomComponent = () => {
         return <FontAwesome name="angle-double-down" size={22} color="#333" />;
     };
+
+    // add a function to view your file picked before click send it
+
+    const renderChatFooter = useCallback(() => {
+        if (imagePath) {
+            return (
+                <View>
+                    <Image source={{ uri: imagePath }} style={{ height: 75, width: 75 }} />
+                    <TouchableOpacity
+                        onPress={() => setImagePath('')}
+                    // style={styles.buttonFooterChatImg}
+                    >
+                        <Text>X</Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        }
+        if (filePath) {
+            return (
+                <View>
+                    <InChatFileTransfer
+                        filePath={filePath}
+                    />
+                    <TouchableOpacity
+                        onPress={() => setFilePath('')}
+                    // style={styles.buttonFooterChat}
+                    >
+                        <Text>X</Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        }
+        return null;
+    }, [filePath, imagePath]);
+
     return (
         <SafeAreaView style={{ flex: 1, marginBottom: insets.bottom, backgroundColor: COLORS.background }}>
             <Stack.Screen options={{ title: 'Chat ID: ' + id }} />
@@ -202,9 +236,9 @@ const Page = () => {
                         </View>
                     )}
                     renderInputToolbar={renderInputToolbar}
-                    renderChatFooter={() => (
-                        <ReplyMessageBar clearReply={() => setReplyMessage(null)} message={replyMessage} />
-                    )}
+                    // renderChatFooter={() => (
+                    //     <ReplyMessageBar clearReply={() => setReplyMessage(null)} message={replyMessage} />
+                    // )}
                     onLongPress={(context, message) => setReplyMessage(message)}
                     renderMessage={(props) => (
                         <ChatMessageBox
@@ -215,6 +249,7 @@ const Page = () => {
                     )}
                     scrollToBottom
                     scrollToBottomComponent={scrollToBottomComponent}
+                    renderChatFooter={renderChatFooter}
                 />
                 {/* {
                     Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding" />
