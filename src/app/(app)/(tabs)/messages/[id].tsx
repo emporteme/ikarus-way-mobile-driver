@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useState, useCallback, useEffect, useRef, memo } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import {
     GiftedChat,
@@ -23,6 +23,10 @@ interface File extends IMessage {
 }
 
 const Page = () => {
+    // Memoize components
+    const SystemMessageMemoized = memo(SystemMessage);
+    const BubbleMemoized = memo(Bubble);
+
     // declare 4 states
     const [isAttachImage, setIsAttachImage] = useState(false);
     const [isAttachFile, setIsAttachFile] = useState(false);
@@ -126,8 +130,6 @@ const Page = () => {
         return <FontAwesome name="angle-double-down" size={22} color="#333" />;
     };
 
-    // add a function to view your file picked before click send it
-
     const renderChatFooter = useCallback(() => {
         if (imagePath) {
             return (
@@ -163,99 +165,130 @@ const Page = () => {
     return (
         <SafeAreaView style={{ flex: 1, marginBottom: insets.bottom, backgroundColor: COLORS.background }}>
             <Stack.Screen options={{ title: 'Chat ID: ' + id }} />
-            <View style={{ flex: 1 }}>
-                <GiftedChat
-                    messages={messages}
-                    onSend={(messages: any) => onSend(messages)}
-                    onInputTextChanged={setText}
-                    user={{
-                        _id: 1,
-                    }}
-                    renderSystemMessage={(props) => (
-                        <SystemMessage {...props} textStyle={{ color: COLORS.gray }} />
-                    )}
-                    bottomOffset={insets.bottom}
-                    renderAvatar={null}
-                    maxComposerHeight={100}
-                    textInputProps={styles.composer}
-                    renderBubble={(props) => {
-                        return (
-                            <Bubble
-                                {...props}
-                                textStyle={{
-                                    left: {
-                                        color: COLORS.dark,
-                                        fontFamily: FONT.medium,
-                                        fontSize: 14,
-                                        lineHeight: 21,
-                                    },
-                                    right: {
-                                        color: COLORS.white,
-                                        fontFamily: FONT.medium,
-                                        fontSize: 14,
-                                        lineHeight: 21,
-                                    },
-                                }}
-                                wrapperStyle={{
-                                    left: {
-                                        backgroundColor: COLORS.secondary,
-                                        padding: 10,
-                                        borderRadius: 16
-                                    },
-                                    right: {
-                                        backgroundColor: COLORS.dark,
-                                        padding: 10,
-                                        borderRadius: 16
-                                    },
-                                }}
-                            />
-                        );
-                    }}
-                    renderSend={(props) => (
-                        <View
-                            style={{
-                                height: 44,
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: 14,
-                                paddingHorizontal: 14,
-                            }}>
-                            {text === '' && (
-                                <></>        // Later in future will be added a voice and camera buttons
-                            )}
-                            {text !== '' && (
-                                <Send
+            <>
+                <View style={{ flex: 1 }}>
+                    <GiftedChat
+                        messages={messages}
+                        onSend={(messages: any) => onSend(messages)}
+                        onInputTextChanged={setText}
+                        user={{
+                            _id: 1,
+                        }}
+                        renderSystemMessage={(props) => (
+                            <SystemMessageMemoized {...props} textStyle={{ color: COLORS.gray }} />
+                        )}
+                        bottomOffset={insets.bottom}
+                        renderAvatar={null}
+                        maxComposerHeight={100}
+                        textInputProps={styles.composer}
+                        renderBubble={(props) => {
+                            return (
+                                <BubbleMemoized
                                     {...props}
-                                    containerStyle={{
-                                        justifyContent: 'center',
-                                    }}>
-                                    <Ionicons name="send" color={COLORS.primary} size={28} />
-                                </Send>
-                            )}
-                        </View>
-                    )}
-                    renderInputToolbar={renderInputToolbar}
-                    // renderChatFooter={() => (
-                    //     <ReplyMessageBar clearReply={() => setReplyMessage(null)} message={replyMessage} />
-                    // )}
-                    onLongPress={(context, message) => setReplyMessage(message)}
-                    renderMessage={(props) => (
-                        <ChatMessageBox
-                            {...props}
-                            setReplyOnSwipeOpen={setReplyMessage}
-                            updateRowRef={updateRowRef}
-                        />
-                    )}
-                    scrollToBottom
-                    scrollToBottomComponent={scrollToBottomComponent}
-                    renderChatFooter={renderChatFooter}
-                />
-                {/* {
-                    Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding" />
-                } */}
-            </View>
-        </SafeAreaView>
+                                    textStyle={{
+                                        left: {
+                                            color: COLORS.dark,
+                                            fontFamily: FONT.medium,
+                                            fontSize: 14,
+                                            lineHeight: 21,
+                                        },
+                                        right: {
+                                            color: COLORS.white,
+                                            fontFamily: FONT.medium,
+                                            fontSize: 14,
+                                            lineHeight: 21,
+                                        },
+                                    }}
+                                    wrapperStyle={{
+                                        left: {
+                                            backgroundColor: COLORS.secondary,
+                                            padding: 10,
+                                            borderRadius: 16
+                                        },
+                                        right: {
+                                            backgroundColor: COLORS.dark,
+                                            padding: 10,
+                                            borderRadius: 16
+                                        },
+                                    }}
+                                />
+                                // <Bubble
+                                //     {...props}
+                                //     textStyle={{
+                                //         left: {
+                                //             color: COLORS.dark,
+                                //             fontFamily: FONT.medium,
+                                //             fontSize: 14,
+                                //             lineHeight: 21,
+                                //         },
+                                //         right: {
+                                //             color: COLORS.white,
+                                //             fontFamily: FONT.medium,
+                                //             fontSize: 14,
+                                //             lineHeight: 21,
+                                //         },
+                                //     }}
+                                //     wrapperStyle={{
+                                //         left: {
+                                //             backgroundColor: COLORS.secondary,
+                                //             padding: 10,
+                                //             borderRadius: 16
+                                //         },
+                                //         right: {
+                                //             backgroundColor: COLORS.dark,
+                                //             padding: 10,
+                                //             borderRadius: 16
+                                //         },
+                                //     }}
+                                // />
+                            );
+                        }}
+                        renderSend={(props) => (
+                            <View
+                                style={{
+                                    height: 44,
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: 14,
+                                    paddingHorizontal: 14,
+                                }}>
+                                {text === '' && (
+                                    <></>        // Later in future will be added a voice and camera buttons
+                                )}
+                                {text !== '' && (
+                                    <Send
+                                        {...props}
+                                        containerStyle={{
+                                            justifyContent: 'center',
+                                        }}>
+                                        <Ionicons name="send" color={COLORS.primary} size={28} />
+                                    </Send>
+                                )}
+                            </View>
+                        )}
+                        renderInputToolbar={renderInputToolbar}
+                        // renderChatFooter={() => (
+                        //     <ReplyMessageBar clearReply={() => setReplyMessage(null)} message={replyMessage} />
+                        // )}
+                        onLongPress={(context, message) => setReplyMessage(message)}
+                        renderMessage={(props) => (
+                            <ChatMessageBox
+                                {...props}
+                                setReplyOnSwipeOpen={setReplyMessage}
+                                updateRowRef={updateRowRef}
+                            />
+                        )}
+                        scrollToBottom
+                        scrollToBottomComponent={scrollToBottomComponent}
+                        renderChatFooter={renderChatFooter}
+                    />
+                </View>
+                {
+                    Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding"  />
+                }
+            </>
+        </SafeAreaView >
     );
 };
 
