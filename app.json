@@ -17,13 +17,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "config": {
-        "infoPlist": {
-          "NSAppTransportSecurity": {
-            "NSAllowsArbitraryLoads": true
-          }
-        }
-      }
+      "config": {}
     },
     "android": {
       "adaptiveIcon": {
@@ -31,11 +25,8 @@
         "backgroundColor": "#1B1B1B"
       },
       "package": "com.emporteme.ikaruswaymobiledriver",
-      "config": {
-        "usesCleartextTraffic": true
-      },
-      "softwareKeyboardLayoutMode": "pan",
-      "windowSoftInputMode": "adjustResize"
+      "config": {},
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "favicon": "./assets/favicon.png",
