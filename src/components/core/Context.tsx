@@ -3,27 +3,35 @@ import { useStorageState } from './useStorageState';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AuthContext = React.createContext<{
+    // signIn: () => void;
     signIn: (jwt: string, rt: string) => void;
     signOut: () => void;
     session?: string | null;
     isLoading: boolean;
-    jwtToken?: string | null;
+    jwtToken?: string | null; // Define jwtToken and rtToken
     rtToken?: string | null;
-    isLoadingJwtToken?: boolean;
+    isLoadingJwtToken?: boolean; // Define isLoadingJwtToken and isLoadingRtToken
     isLoadingRtToken?: boolean;
 }>({
     signIn: () => null,
     signOut: () => null,
     session: null,
     isLoading: false,
-    jwtToken: null,
+    jwtToken: null, // Initialize jwtToken and rtToken as null
     rtToken: null,
-    isLoadingJwtToken: false,
+    isLoadingJwtToken: false, // Initialize isLoadingJwtToken and isLoadingRtToken as false
     isLoadingRtToken: false,
 });
 
+// This hook can be used to access the user info.
 export function useSession() {
     const value = React.useContext(AuthContext);
+    // if (process.env.NODE_ENV !== 'production') {
+    //     if (!value) {
+    //         throw new Error('useSession must be wrapped in a <SessionProvider />');
+    //     }
+    // }
+
     return {
         signIn: value.signIn,
         signOut: value.signOut,
@@ -33,66 +41,22 @@ export function useSession() {
     };
 }
 
-export function SessionProvider(props: React.PropsWithChildren<{}>) {
+export function SessionProvider(props: React.PropsWithChildren) {
     const [[isLoading, session], setSession] = useStorageState('session');
     const [[isLoadingJwtToken, jwtToken], setJwtToken] = useStorageState('jwtToken');
     const [[isLoadingRtToken, rtToken], setRtToken] = useStorageState('rtToken');
 
-    const fetchNewTokens = async (refreshToken: string): Promise<{ accessToken: string; refreshToken: string }> => {
-        // Replace this with your actual API endpoint for token refresh
-        const refreshTokenEndpoint = 'https://app-test.prometeochain.io/api/v1/auth/refreshToken';
-        // refreshToken
-        try {
-            const response = await fetch(refreshTokenEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ refreshToken }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to refresh token');
-            }
-
-            return response.json();
-        } catch (error) {
-            throw new Error('Error refreshing token: ' + error.message);
-        }
-    };
-
-    const refreshToken = async (): Promise<void> => {
-        try {
-            const storedRefreshToken = await AsyncStorage.getItem('rtToken');
-
-            if (storedRefreshToken) {
-                const { accessToken, refreshToken } = await fetchNewTokens(storedRefreshToken);
-
-                setJwtToken(accessToken);
-                setRtToken(refreshToken);
-            } else {
-                console.error('No refresh token found');
-                signOut();
-            }
-        } catch (error) {
-            console.error('Error refreshing token:', error);
-            signOut();
-        }
-    };
-
-    React.useEffect(() => {
-        refreshToken();
-    }, []);
-
+    // Function to set JWT and refresh tokens
     const setTokens = async (jwt: string, rt: string) => {
         try {
-            setJwtToken(jwt);
-            setRtToken(rt);
+            await setJwtToken(jwt);
+            await setRtToken(rt);
         } catch (error) {
             console.error('Error setting tokens:', error);
         }
     };
 
+    // Function to clear tokens
     const clearTokens = async () => {
         try {
             await AsyncStorage.removeItem('jwtToken');
@@ -107,7 +71,7 @@ export function SessionProvider(props: React.PropsWithChildren<{}>) {
             value={{
                 signIn: async (jwt: string, rt: string) => {
                     await setTokens(jwt, rt);
-                    setSession('xxx');
+                    setSession('xxx'); // Set the session as needed
                 },
                 signOut: async () => {
                     await clearTokens();
@@ -124,7 +88,3 @@ export function SessionProvider(props: React.PropsWithChildren<{}>) {
         </AuthContext.Provider>
     );
 }
-function signOut() {
-    throw new Error('Function not implemented.');
-}
-
