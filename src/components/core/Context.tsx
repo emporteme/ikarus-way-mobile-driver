@@ -68,15 +68,15 @@ export function SessionProvider(props: React.PropsWithChildren<{}>) {
             if (storedRefreshToken) {
                 const { accessToken, refreshToken } = await fetchNewTokens(storedRefreshToken);
 
-                await setJwtToken(accessToken);
-                await setRtToken(refreshToken);
+                setJwtToken(accessToken);
+                setRtToken(refreshToken);
             } else {
                 console.error('No refresh token found');
-                await signOut();
+                signOut();
             }
         } catch (error) {
             console.error('Error refreshing token:', error);
-            await signOut();
+            signOut();
         }
     };
 
@@ -86,8 +86,8 @@ export function SessionProvider(props: React.PropsWithChildren<{}>) {
 
     const setTokens = async (jwt: string, rt: string) => {
         try {
-            await setJwtToken(jwt);
-            await setRtToken(rt);
+            setJwtToken(jwt);
+            setRtToken(rt);
         } catch (error) {
             console.error('Error setting tokens:', error);
         }
