@@ -1,6 +1,7 @@
 import { View, FlatList } from 'react-native'
 import React from 'react'
-import { OrderCard, EmptyOrders } from '@/components'
+import OrderCard from '@/components/pages/orders/card/OrderCard'
+import EmptyOrders from '@/components/pages/orders/empty/Empty'
 import { orders } from '@/api/orders'
 import styles from './list.style'
 

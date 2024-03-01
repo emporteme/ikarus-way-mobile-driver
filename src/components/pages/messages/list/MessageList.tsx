@@ -1,6 +1,7 @@
 import { View, Text, FlatList } from 'react-native'
 import React from 'react'
-import { MessageSingle, Empty } from '@/components'
+import MessageSingle from '@/components/pages/messages/card/MessageSingle'
+import Empty from '@/components/pages/messages/empty/Empty'
 import { messages } from '@/api/messages'
 import styles from './list.style'
 
