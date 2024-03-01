@@ -283,10 +283,10 @@ const Page = () => {
                         scrollToBottomComponent={scrollToBottomComponent}
                         renderChatFooter={renderChatFooter}
                     />
+                    {
+                        Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding"  />
+                    }
                 </View>
-                {
-                    Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding"  />
-                }
             </>
         </SafeAreaView >
     );
