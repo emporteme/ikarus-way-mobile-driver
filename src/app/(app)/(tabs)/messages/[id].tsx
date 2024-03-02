@@ -11,6 +11,7 @@ import { COLORS, FONT } from '@/constants';
 import messageData from '@/api/chat.json'
 // import * as DocumentPicker from 'react-native-document-picker'
 import * as DocumentPicker from 'expo-document-picker';
+import { useSession } from '@/components/core/Context';
 
 interface File extends IMessage {
     url?: string;
@@ -18,14 +19,15 @@ interface File extends IMessage {
 
 const Page = () => {
     // WEBSOCKET
+
     const ws = useRef(null)
-    const jwt = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjgwLCJzdWIiOiJPaW1ha25pcmkrR0VOQUB5YW5kZXgucnUiLCJpYXQiOjE3MDkzNTY0MjUsImV4cCI6MTcwOTM2MDAyNSwidG9rZW5fdHlwZSI6Imp3dCJ9.8PApf8JCmzUIRT4v9ITjWQqxfFUCp9BkLRyamz8k0EU'
-    const companyid = '32'
+    const { jwtToken } = useSession();
+    const companyid = '3'
     const orderID = '1'
     useEffect(() => {
-        console.log('Initial WebSocket connection');
+        console.log('Initial WebSocket connection started');
 
-        ws.current = new WebSocket(`wss://support-test.prometeochain.io/v1/messenger/ws?token=${jwt}?companyid=${companyid}?orderid=${orderID}`);
+        ws.current = new WebSocket(`wss://support-test.prometeochain.io/v1/messenger/ws?token=${jwtToken}&companyid=${companyid}&order_id=${orderID}`);
         ws.current.onopen = () => {
             console.log('WebSocket connected');
         };
@@ -112,6 +114,13 @@ const Page = () => {
             },
         ]);
     }, []);
+
+    useEffect(() => {
+        ws.current.onmessage = e => {
+            const response = JSON.parse(e.data)
+            console.log
+        }
+    })
 
     const onSend = useCallback((messages = []) => {
         setMessages((previousMessages: any[]) => GiftedChat.append(previousMessages, messages));
