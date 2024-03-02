@@ -9,15 +9,15 @@ import styles from '@/style/orders.style';
 import { FONT } from '@/constants';
 
 const FirstRoute = () => (
-    <OrderList />
+    <OrderList status="IN_WORK"/>
 );
 
 const SecondRoute = () => (
-    <OrderList />
+    <OrderList status="COMPLETED"/>
 );
 
 const ThirdRoute = () => (
-    <OrderList />
+    <OrderList status="REJECTED"/>
 );
 
 const renderScene = SceneMap({

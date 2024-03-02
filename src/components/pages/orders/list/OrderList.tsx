@@ -9,13 +9,13 @@ import { useSession } from '@/components/core/Context';
 // Mock data of orders
 
 
-const OrderList: React.FC = (status: string) => {
+const OrderList: React.FC<{ status: string }> = ({ status }) => {
     // Auth context
     const { jwtToken } = useSession(); // Destructure jwtToken from useSession
 
     // Data fetching
     const [orders, setOrders] = useState<any>([]);
-    const apiURL = `https://app-test.prometeochain.io/api/v1/carrier/orders?filter=IN_WORK`
+    const apiURL = `https://app-test.prometeochain.io/api/v1/carrier/orders?filter=${status}`
 
     useEffect(() => {
         fetchProfile(jwtToken); // Pass jwtToken as parameter
