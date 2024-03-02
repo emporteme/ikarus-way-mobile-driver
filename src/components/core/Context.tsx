@@ -1,39 +1,31 @@
-import React from 'react';
-import { useStorageState } from './useStorageState';
+import React, { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useStorageState } from './useStorageState';
 
 const AuthContext = React.createContext<{
-    // signIn: () => void;
     signIn: (jwt: string, rt: string) => void;
     signOut: () => void;
     session?: string | null;
     isLoading: boolean;
-    jwtToken?: string | null; // Define jwtToken and rtToken
+    jwtToken?: string | null;
     rtToken?: string | null;
-    isLoadingJwtToken?: boolean; // Define isLoadingJwtToken and isLoadingRtToken
+    isLoadingJwtToken?: boolean;
     isLoadingRtToken?: boolean;
 }>({
     signIn: () => null,
     signOut: () => null,
     session: null,
     isLoading: false,
-    jwtToken: null, // Initialize jwtToken and rtToken as null
+    jwtToken: null,
     rtToken: null,
-    isLoadingJwtToken: false, // Initialize isLoadingJwtToken and isLoadingRtToken as false
+    isLoadingJwtToken: false,
     isLoadingRtToken: false,
 });
 
 export const useAuth = () => React.useContext(AuthContext);
 
-// This hook can be used to access the user info.
 export function useSession() {
     const value = React.useContext(AuthContext);
-    // if (process.env.NODE_ENV !== 'production') {
-    //     if (!value) {
-    //         throw new Error('useSession must be wrapped in a <SessionProvider />');
-    //     }
-    // }
-
     return {
         signIn: value.signIn,
         signOut: value.signOut,
@@ -48,29 +40,24 @@ export function SessionProvider(props: React.PropsWithChildren) {
     const [[isLoadingJwtToken, jwtToken], setJwtToken] = useStorageState('jwtToken');
     const [[isLoadingRtToken, rtToken], setRtToken] = useStorageState('rtToken');
 
-
     const refreshToken = async () => {
         try {
             const refreshToken = rtToken;
             if (refreshToken) {
-                // Send a request to your server to refresh tokens
                 const response = await fetch('https://app-test.prometeochain.io/api/v1/auth/refreshToken', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${refreshToken}`,
                     },
-                    // Include any necessary body parameters for token refresh
                     body: JSON.stringify({}),
                 });
 
                 if (response.ok) {
                     const data = await response.json();
-                    // Update tokens in storage
                     await setJwtToken(data.jwtToken);
-                    return data.jwtToken; // Return refreshed JWT token
+                    return data.jwtToken;
                 } else {
-                    // Handle refresh token failure
                     throw new Error('Token refresh failed');
                 }
             } else {
@@ -82,8 +69,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
         }
     };
 
-
-    // Function to set JWT and refresh tokens
     const setTokens = async (jwt: string, rt: string) => {
         try {
             await setJwtToken(jwt);
@@ -93,7 +78,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
         }
     };
 
-    // Function to clear tokens
     const clearTokens = async () => {
         try {
             await AsyncStorage.removeItem('jwtToken');
@@ -103,40 +87,48 @@ export function SessionProvider(props: React.PropsWithChildren) {
         }
     };
 
-    const handleResponse = async (response: Response) => {
-        if (response.status === 401) {
+    useEffect(() => {
+        const interceptResponse = async (response: Response) => {
+            if (response.status === 401) {
+                try {
+                    const newToken = await refreshToken();
+                    const newHeaders = new Headers(response.headers);
+                    newHeaders.set('Authorization', `Bearer ${newToken}`);
+                    const newResponse = await fetch(response.url, {
+                        ...response,
+                        headers: newHeaders,
+                    });
+                    return newResponse;
+                } catch (error) {
+                    console.error('Token refresh error:', error);
+                    throw error;
+                }
+            }
+            return response;
+        };
+
+        const originalFetch = window.fetch;
+        window.fetch = async (url: RequestInfo, config?: RequestInit): Promise<Response> => {
             try {
-                const newToken = await refreshToken();
-                // Retry the original request with the new token
-                // Implement your logic here to retry the failed request
-                // You might need to store and retry the request later
-                return fetch(response.url, {
-                    ...response,
-                    headers: {
-                        ...response.headers,
-                        Authorization: `Bearer ${newToken}`,
-                    },
-                });
+                const response = await originalFetch(url, config);
+                return interceptResponse(response);
             } catch (error) {
-                // Handle token refresh error
-                // Redirect to login or handle as needed
-                console.error('Token refresh error:', error);
+                console.error('Fetch error:', error);
                 throw error;
             }
-        }
-        return response;
-    };
+        };
 
-    // React.useEffect(() => {
-    //     fetch.interceptors.response.use(handleResponse);
-    // }, []);
+        return () => {
+            window.fetch = originalFetch;
+        };
+    }, []);
 
     return (
         <AuthContext.Provider
             value={{
                 signIn: async (jwt: string, rt: string) => {
                     await setTokens(jwt, rt);
-                    setSession('xxx'); // Set the session as needed
+                    setSession('xxx');
                 },
                 signOut: async () => {
                     await clearTokens();
