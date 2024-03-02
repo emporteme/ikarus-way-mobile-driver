@@ -50,7 +50,7 @@ const OrderList: React.FC<{ status: string }> = ({ status }) => {
 
     return (
         <View style={styles.body}>
-            {orders.length > 0 ? (
+            {orders?.length > 0 ? (
                 <FlatList
                     data={orders}
                     contentContainerStyle={styles.content}
