@@ -118,11 +118,28 @@ const Page = () => {
     useEffect(() => {
         ws.current.onmessage = e => {
             const response = JSON.parse(e.data)
-            console.log
+            console.log("onmessage=>", JSON.stringify(response))
+            var sentMessages = [{
+                _id: response.id,
+                text: response.msg,
+                createdAt: new Date(response.createdAt * 1000),
+                user: {
+                    _id: response.from,
+                    name: response.from ? 'You' : 'Bob',
+                },
+            }]
+            setMessages((previousMessages: any[]) => GiftedChat.append(previousMessages, sentMessages))
         }
-    })
+    }, [])
 
     const onSend = useCallback((messages = []) => {
+        let obj = {
+            "senderId": 'You',
+            "receiverId": "Bob",
+            "message": messages[0].text,
+            "action": "message"
+        }
+        ws.current.send(JSON.stringify(obj))
         setMessages((previousMessages: any[]) => GiftedChat.append(previousMessages, messages));
     }, []);
 
