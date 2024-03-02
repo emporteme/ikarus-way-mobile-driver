@@ -31,9 +31,9 @@ const OrdersPage: React.FC = () => {
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
-        { key: 'first', title: 'All' },
-        { key: 'second', title: 'Active' },
-        { key: 'third', title: 'Finished' },
+        { key: 'first', title: 'In work' },
+        { key: 'second', title: 'Completed' },
+        { key: 'third', title: 'Rejected' },
     ]);
 
     return (
