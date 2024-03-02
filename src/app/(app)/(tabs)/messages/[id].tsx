@@ -12,7 +12,7 @@ import {
 import { Swipeable } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import { ChatMessageBox, ReplyMessageBar, InChatFileTransfer } from '@/components';
+import { InChatFileTransfer } from '@/components';
 import { COLORS, FONT } from '@/constants';
 import messageData from '@/api/chat.json'
 // import * as DocumentPicker from 'react-native-document-picker'
@@ -272,19 +272,19 @@ const Page = () => {
                         //     <ReplyMessageBar clearReply={() => setReplyMessage(null)} message={replyMessage} />
                         // )}
                         onLongPress={(context, message) => setReplyMessage(message)}
-                        renderMessage={(props) => (
-                            <ChatMessageBox
-                                {...props}
-                                setReplyOnSwipeOpen={setReplyMessage}
-                                updateRowRef={updateRowRef}
-                            />
-                        )}
+                        // renderMessage={(props) => (
+                        //     <ChatMessageBox
+                        //         {...props}
+                        //         setReplyOnSwipeOpen={setReplyMessage}
+                        //         updateRowRef={updateRowRef}
+                        //     />
+                        // )}
                         scrollToBottom
                         scrollToBottomComponent={scrollToBottomComponent}
                         renderChatFooter={renderChatFooter}
                     />
                     {
-                        Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding"  />
+                        Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding" />
                     }
                 </View>
             </>
@@ -296,8 +296,8 @@ const styles = StyleSheet.create({
     composer: {
         backgroundColor: '#fff',
         borderRadius: 14,
-        borderWidth: 1,
-        borderColor: COLORS.primary,
+        // borderWidth: 1,
+        // borderColor: COLORS.primary,
         paddingHorizontal: 10,
         fontSize: 16,
         // marginVertical: 100
