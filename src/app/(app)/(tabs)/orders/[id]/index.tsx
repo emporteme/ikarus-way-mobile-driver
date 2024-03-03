@@ -1,11 +1,50 @@
 import { View, Text, SafeAreaView, ScrollView, Image, Pressable } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useLocalSearchParams, Stack, Link } from 'expo-router';
 import { icons } from '@/constants';
+import { useSession } from '@/components/core/Context';
+import { OrderType } from '@/types';
 import styles from '@/style/orderDetails.style';
 
 const OrderDetail: React.FC = () => {
     const { id } = useLocalSearchParams();
+
+    // Auth context
+    const { jwtToken } = useSession(); // Destructure jwtToken from useSession
+
+    // Data fetching
+    const [orderData, setOrderData] = useState<any>(null);
+
+    useEffect(() => {
+        fetchOrder(jwtToken); // Pass jwtToken as parameter
+    }, [jwtToken]); // Add jwtToken to dependency array
+
+    const fetchOrder = async (jwtToken: string) => { // Accept jwtToken as parameter
+        try {
+            if (!jwtToken) {
+                throw new Error('JWT token not found');
+            }
+
+            const response = await fetch(`https://app-test.prometeochain.io/api/v1/carrier/orders/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + jwtToken
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json(); // Parse response data
+            setOrderData(data.data); // Update state with fetched data
+            console.log(data);
+        } catch (error) {
+            console.error('Error fetching order:', error);
+            alert('Failed to fetch order data');
+        }
+    }
 
     return (
         <SafeAreaView style={styles.body}>
