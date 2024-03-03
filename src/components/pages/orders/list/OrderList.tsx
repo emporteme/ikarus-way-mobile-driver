@@ -18,10 +18,10 @@ const OrderList: React.FC<{ status: string }> = ({ status }) => {
     const apiURL = `https://app-test.prometeochain.io/api/v1/carrier/orders?filter=${status}`
 
     useEffect(() => {
-        fetchProfile(jwtToken); // Pass jwtToken as parameter
+        fetchOrders(jwtToken); // Pass jwtToken as parameter
     }, [jwtToken]); // Add jwtToken to dependency array
 
-    const fetchProfile = async (jwtToken: string) => { // Accept jwtToken as parameter
+    const fetchOrders = async (jwtToken: string) => { // Accept jwtToken as parameter
         try {
             if (!jwtToken) {
                 throw new Error('JWT token not found');
