@@ -28,6 +28,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.73.4",
+    "react-native-country-flag": "^2.0.2",
+    "react-native-country-flags": "^1.1.0",
     "react-native-document-picker": "^9.1.1",
     "react-native-gesture-handler": "~2.14.0",
     "react-native-gifted-chat": "^2.4.0",
