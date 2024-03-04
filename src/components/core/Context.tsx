@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import { useStorageState } from './useStorageState';
 
 const AuthContext = React.createContext<{
@@ -40,98 +41,68 @@ export function SessionProvider(props: React.PropsWithChildren) {
     const [[isLoadingJwtToken, jwtToken], setJwtToken] = useStorageState('jwtToken');
     const [[isLoadingRtToken, rtToken], setRtToken] = useStorageState('rtToken');
 
-    const refreshToken = async () => {
-        try {
-            const refreshToken = rtToken;
-            if (refreshToken) {
-                const response = await fetch('https://app-test.prometeochain.io/api/v1/auth/refreshToken', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${refreshToken}`,
-                    },
-                    body: JSON.stringify({}),
-                });
+    const api = axios.create({
+        baseURL: 'https://app-test.prometeochain.io/api/v1/',
+        timeout: 10000,
+    });
 
-                if (response.ok) {
-                    const data = await response.json();
-                    await setJwtToken(data.jwtToken);
-                    return data.jwtToken;
-                } else {
-                    throw new Error('Token refresh failed');
-                }
-            } else {
-                throw new Error('Refresh token not found');
+    api.interceptors.request.use(
+        async (config) => {
+            if (jwtToken) {
+                config.headers.Authorization = `Bearer ${jwtToken}`;
             }
-        } catch (error) {
-            console.error('Error refreshing tokens:', error);
-            throw error;
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
         }
-    };
+    );
 
-    const setTokens = async (jwt: string, rt: string) => {
-        try {
-            await setJwtToken(jwt);
-            await setRtToken(rt);
-        } catch (error) {
-            console.error('Error setting tokens:', error);
-        }
-    };
-
-    const clearTokens = async () => {
-        try {
-            await AsyncStorage.removeItem('jwtToken');
-            await AsyncStorage.removeItem('rtToken');
-        } catch (error) {
-            console.error('Error clearing tokens:', error);
-        }
-    };
-
-    useEffect(() => {
-        const interceptResponse = async (response: Response) => {
-            if (response.status === 401) {
-                try {
-                    const newToken = await refreshToken();
-                    const newHeaders = new Headers(response.headers);
-                    newHeaders.set('Authorization', `Bearer ${newToken}`);
-                    const newResponse = await fetch(response.url, {
-                        ...response,
-                        headers: newHeaders,
-                    });
-                    return newResponse;
-                } catch (error) {
-                    console.error('Token refresh error:', error);
-                    throw error;
-                }
-            }
+    api.interceptors.response.use(
+        (response) => {
             return response;
-        };
+        },
+        async (error) => {
+            if (error.response && error.response.status === 401 && rtToken) {
+                try {
+                    console.log("CHECK FOR RT")
+                    const response = await axios.post(
+                        'auth/refreshToken',
+                        {},
+                        {
+                            baseURL: 'https://app-test.prometeochain.io/api/v1/',
+                            headers: {
+                                Authorization: `Bearer ${rtToken}`,
+                            },
+                        }
+                    );
 
-        const originalFetch = window.fetch;
-        window.fetch = async (url: RequestInfo, config?: RequestInit): Promise<Response> => {
-            try {
-                const response = await originalFetch(url, config);
-                return interceptResponse(response);
-            } catch (error) {
-                console.error('Fetch error:', error);
-                throw error;
+                    const newJwtToken = response.data.jwtToken;
+                    await setJwtToken(newJwtToken);
+
+                    // Retry the original request with the new token
+                    error.config.headers.Authorization = `Bearer ${newJwtToken}`;
+                    return axios.request(error.config);
+                } catch (refreshError) {
+                    console.error('Error refreshing token:', refreshError);
+                    throw refreshError;
+                }
             }
-        };
-
-        return () => {
-            window.fetch = originalFetch;
-        };
-    }, []);
+            return Promise.reject(error);
+        }
+    );
 
     return (
         <AuthContext.Provider
             value={{
                 signIn: async (jwt: string, rt: string) => {
-                    await setTokens(jwt, rt);
+                    await setJwtToken(jwt);
+                    await setRtToken(rt);
                     setSession('xxx');
                 },
                 signOut: async () => {
-                    await clearTokens();
+                    await AsyncStorage.removeItem('jwtToken');
+                    await AsyncStorage.removeItem('rtToken');
                     setSession(null);
                 },
                 session,

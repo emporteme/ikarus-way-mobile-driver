@@ -111,9 +111,14 @@ const styles = StyleSheet.create({
     },
 
     // Button
+    buttons: {
+        gap: 20,
+        position: 'absolute',
+        bottom: 40,
+        left: 20,
+        right: 20,
+    },
     button: {
-        // marginHorizontal: 20,
-        // marginBottom: 20,
         paddingHorizontal: 16,
         paddingVertical: 14,
         borderRadius: 12,
@@ -122,11 +127,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: COLORS.primary,
-        position: 'absolute',
-        bottom: 40,
-        left: 20,
-        right: 20,
-        // padding: 16,
     },
     buttonText: {
         color: COLORS.white,

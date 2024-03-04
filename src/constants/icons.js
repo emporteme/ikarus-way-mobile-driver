@@ -38,6 +38,7 @@ import camera from "../../assets/icons/camera.png"
 import document from "../../assets/icons/document.png"
 import photo from "../../assets/icons/photo.png"
 import check from "../../assets/icons/check.png";
+import location from "../../assets/icons/location.png";
 
 export default {
 
@@ -62,6 +63,7 @@ export default {
     document,
     photo,
     check,
+    location,
     
 
     // Old icons

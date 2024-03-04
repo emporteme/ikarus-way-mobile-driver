@@ -60,14 +60,13 @@ const OrderDetail: React.FC<OrderType> = () => {
                     ),
                 }}
             />
-            {/* <Text style={{ marginHorizontal: 'auto' }}>{id} USD</Text> */}
             <View style={styles.body}>
                 <ScrollView>
                     <View style={styles.scroll}>
                         <View style={styles.section}>
-                            <Text style={styles.title}>Pickup</Text>
+                            <Text style={styles.title}>Pickup {orderData?.departure_date}</Text>
                             <View style={styles.row}>
-                                <Image source={icons.kz_flag} style={styles.iconFlag} />
+                                <Image source={icons.location} style={styles.iconFlag} />
                                 <View style={styles.column}>
                                     <Text style={styles.row}>
                                         <Text style={styles.medSemiMedium}>Astana, KZ</Text>
@@ -304,12 +303,20 @@ const OrderDetail: React.FC<OrderType> = () => {
                         </View>
                     </View>
                 </ScrollView>
-                <Link href={`/orders/${id}/expenses`} asChild>
-                    <Pressable style={styles.button}>
-                        <Text style={styles.buttonText}>Add expenses</Text>
-                        <Image source={icons.card} style={styles.buttonIcon} />
-                    </Pressable>
-                </Link>
+                <View style={styles.buttons}>
+                    <Link href={`/orders/${id}/expenses`} asChild>
+                        <Pressable style={styles.button}>
+                            <Text style={styles.buttonText}>Navigator</Text>
+                            <Image source={icons.card} style={styles.buttonIcon} />
+                        </Pressable>
+                    </Link>
+                    <Link href={`/orders/${id}/expenses`} asChild>
+                        <Pressable style={styles.button}>
+                            <Text style={styles.buttonText}>Add expenses</Text>
+                            <Image source={icons.card} style={styles.buttonIcon} />
+                        </Pressable>
+                    </Link>
+                </View>
             </View>
         </SafeAreaView >
     );
