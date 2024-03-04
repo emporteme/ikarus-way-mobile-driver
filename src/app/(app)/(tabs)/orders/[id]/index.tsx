@@ -6,7 +6,7 @@ import { useSession } from '@/components/core/Context';
 import { OrderType } from '@/types';
 import styles from '@/style/orderDetails.style';
 
-const OrderDetail: React.FC = () => {
+const OrderDetail: React.FC<OrderType> = () => {
     const { id } = useLocalSearchParams();
 
     // Auth context
