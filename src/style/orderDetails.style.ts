@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
 
     // Button
     buttons: {
-        gap: 20,
+        gap: 10,
         position: 'absolute',
         bottom: 40,
         left: 20,

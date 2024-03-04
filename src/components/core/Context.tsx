@@ -32,6 +32,7 @@ export function useSession() {
         signOut: value.signOut,
         session: value.session,
         jwtToken: value.jwtToken,
+        rtToken: value.rtToken,
         isLoading: value.isLoading,
     };
 }

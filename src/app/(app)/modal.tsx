@@ -5,11 +5,6 @@ import { Stack } from 'expo-router';
 const Modal = () => {
     return (
         <View>
-            {/* <Stack.Screen
-                options={{
-                    presentation: 'modal'
-                }}
-            /> */}
             <Text>Modal</Text>
         </View>
     )

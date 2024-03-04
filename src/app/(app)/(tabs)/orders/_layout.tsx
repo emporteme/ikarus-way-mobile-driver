@@ -11,6 +11,8 @@ export default () => {
                     headerTitleAlign: 'center'
                 }
             }
-        />
+        >
+            <Stack.Screen name='[id]' options={{ headerShown: false }} />
+        </Stack>
     )
 }

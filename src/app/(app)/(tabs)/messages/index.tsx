@@ -69,6 +69,9 @@ const Func = () => (
             <Link href={'/qr'} style={{ marginTop: 20 }}>
                 <Text>QR scan (Just for now) </Text>
             </Link>
+            <Link href={'/modal'} style={{ marginTop: 20 }}>
+                <Text>Modal (Just for now) </Text>
+            </Link>
 
             <Text style={{ marginTop: 40 }}>Testing API</Text>
             <Button onPress={() => fetchHello()} title="Fetch hello" />

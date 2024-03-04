@@ -304,7 +304,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                     </View>
                 </ScrollView>
                 <View style={styles.buttons}>
-                    <Link href={`/orders/${id}/expenses`} asChild>
+                    <Link href={`/orders/${id}/modal`} asChild>
                         <Pressable style={styles.button}>
                             <Text style={styles.buttonText}>Navigator</Text>
                             <Image source={icons.card} style={styles.buttonIcon} />
