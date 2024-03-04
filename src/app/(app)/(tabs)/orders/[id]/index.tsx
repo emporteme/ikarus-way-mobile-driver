@@ -73,44 +73,9 @@ const OrderDetail: React.FC<OrderType> = () => {
             <View style={styles.body}>
                 <ScrollView>
                     <View style={styles.scroll}>
-                        {/* <View>
-                            <Text>Checkpoints:</Text>
-                            {orderData?.checkpoints.map((checkpoint, index) => (
-                                <View key={index}>
-                                    <Text>Checkpoint {index + 1}:</Text>
-                                    <Text>{checkpoint.address.display_name}</Text>
-                                    <Text>Latitude: {checkpoint.address.lat}</Text>
-                                    <Text>Longitude: {checkpoint.address.lon}</Text>
-                                    <Text
-                                        onPress={() =>
-                                            Linking.openURL(
-                                                generateGoogleMapsLink(checkpoint.address.lat, checkpoint.address.lon)
-                                            )
-                                        }
-                                        style={{ color: 'blue' }}
-                                    >
-                                        Open in Google Maps
-                                    </Text>
-                                </View>
-                            ))}
-                        </View> */}
-                        <View>
-                            <Text>Checkpoints:</Text>
-                            {orderData?.checkpoints.map((checkpoint, index) => (
-                                <View key={index}>
-                                    <Text>Checkpoint {index + 1}:</Text>
-                                    <Text>{checkpoint.address.display_name}</Text>
-                                    <Text>Latitude: {checkpoint.address.lat}</Text>
-                                    <Text>Longitude: {checkpoint.address.lon}</Text>
-                                    <Button
-                                        title="Navigate"
-                                        onPress={() => openNavigation(checkpoint.address.lat, checkpoint.address.lon)}
-                                    />
-                                </View>
-                            ))}
-                        </View>
+                        {/* Pickup */}
                         <View style={styles.section}>
-                            <Text style={styles.title}>Pickup {orderData?.departure_date}</Text>
+                            <Text style={styles.title}>Pickup</Text>
                             <View style={styles.row}>
                                 <Image source={icons.location} style={styles.iconFlag} />
                                 <View style={styles.column}>
@@ -143,6 +108,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                                 </View>
                             </View>
                         </View>
+                        {/* Drop */}
                         <View style={styles.section}>
                             <Text style={styles.title}>Drop</Text>
                             <View style={styles.row}>
@@ -178,6 +144,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                             </View>
                         </View>
                         <View style={styles.lineH} />
+                        {/* Cargo details */}
                         <View style={styles.section}>
                             <Text style={styles.title}>Cargo details</Text>
                             <>
@@ -203,6 +170,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                                 </Text>
                             </>
                         </View>
+                        {/* Special conditions */}
                         <View style={styles.section}>
                             <Text style={styles.title2}>Special conditions</Text>
                             <View style={styles.column2}>
@@ -223,13 +191,32 @@ const OrderDetail: React.FC<OrderType> = () => {
                                 </Text>
                             </View>
                         </View>
+                        {/* Special instructions */}
                         <View style={styles.section}>
                             <Text style={styles.title2}>Special instructions</Text>
                             <View>
                                 <Text style={styles.regSmall2}>"Handle with care: Your package's safe journey relies on your careful attention during the delivery process. Thank you for ensuring a secure arrival!"</Text>
                             </View>
                         </View>
+                        {/* Checkpoints */}
                         <View style={styles.lineH} />
+                        <View style={styles.section}>
+                            <Text style={styles.title}>Checkpoints:</Text>
+                            {orderData?.checkpoints.map((checkpoint, index) => (
+                                <View key={index}>
+                                    <Text>Checkpoint {index + 1}:</Text>
+                                    <Text>{checkpoint.address.display_name}</Text>
+                                    <Pressable
+                                        onPress={() => openNavigation(checkpoint.address.lat, checkpoint.address.lon)}
+                                        style={{}}
+                                    >
+                                        <Text>Navigate</Text>
+                                    </Pressable>
+                                </View>
+                            ))}
+                        </View>
+                        <View style={styles.lineH} />
+                        {/* IoT devices */}
                         <View style={styles.section}>
                             <Text style={styles.title}>IoT devices</Text>
                             <>
@@ -266,6 +253,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                             </>
                         </View>
                         <View style={styles.lineH} />
+                        {/* Penalties */}
                         <View style={styles.section}>
                             <Text style={styles.title}>Penalties</Text>
                             <>
@@ -282,6 +270,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                             </>
                         </View>
                         <View style={styles.lineH} />
+                        {/* Payment details */}
                         <View style={styles.section}>
                             <Text style={styles.title2}>Payment details</Text>
                             <View>
@@ -289,6 +278,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                             </View>
                         </View>
                         <View style={styles.lineH} />
+                        {/* Expenses */}
                         <View style={styles.section}>
                             <Text style={styles.title}>Expenses</Text>
                             <View style={styles.column2}>
@@ -329,6 +319,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                             </View>
                         </View>
                         <View style={styles.lineH} />
+                        {/* Team members */}
                         <View style={styles.section}>
                             <Text style={styles.title}>Team members</Text>
                             <>
@@ -350,12 +341,6 @@ const OrderDetail: React.FC<OrderType> = () => {
                     </View>
                 </ScrollView>
                 <View style={styles.buttons}>
-                    {/* <Link href={`/orders/${id}/modal`} asChild>
-                        <Pressable style={styles.button}>
-                            <Text style={styles.buttonText}>Navigator</Text>
-                            <Image source={icons.card} style={styles.buttonIcon} />
-                        </Pressable>
-                    </Link> */}
                     <Link href={`/orders/${id}/expenses`} asChild>
                         <Pressable style={styles.button}>
                             <Text style={styles.buttonText}>Add expenses</Text>

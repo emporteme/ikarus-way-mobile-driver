@@ -49,6 +49,7 @@ const Profile: React.FC = () => {
         }
     }
 
+    // console.log(jwtToken)
 
     return (
         <SafeAreaView style={styles.safe}>
