@@ -80,7 +80,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                                 <Image source={icons.location} style={styles.iconFlag} />
                                 <View style={styles.column}>
                                     <Text style={styles.row}>
-                                        <Text style={styles.medSemiMedium}>Astana, KZ</Text>
+                                        <Text style={styles.medSemiMedium}>Astana, KZ {orderData?.checkpoint.address.display_name}</Text>
                                         <Text style={styles.medSemiMedium}>  ·  </Text>
                                         <Text style={styles.regSemiMedium}>Tsetkinoy, bld. 79/А</Text>
                                     </Text>
