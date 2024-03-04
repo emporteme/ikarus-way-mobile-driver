@@ -94,6 +94,9 @@ const Func = () => (
                 Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding" />
             } */}
         </View>
+        {
+            Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding" />
+        }
     </ScrollView>
     // </KeyboardAvoidingView>
 )
