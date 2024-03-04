@@ -32,7 +32,6 @@ export function useSession() {
         signOut: value.signOut,
         session: value.session,
         jwtToken: value.jwtToken,
-        rtToken: value.rtToken,
         isLoading: value.isLoading,
     };
 }
@@ -42,56 +41,35 @@ export function SessionProvider(props: React.PropsWithChildren) {
     const [[isLoadingJwtToken, jwtToken], setJwtToken] = useStorageState('jwtToken');
     const [[isLoadingRtToken, rtToken], setRtToken] = useStorageState('rtToken');
 
-    const api = axios.create({
-        baseURL: 'https://app-test.prometeochain.io/api/v1/',
-        timeout: 10000,
-    });
+    useEffect(() => {
+        const refreshToken = async () => {
+            try {
+                const response = await axios.post(
+                    'auth/refreshToken',
+                    {},
+                    {
+                        baseURL: 'https://app-test.prometeochain.io/api/v1/',
+                        headers: {
+                            Authorization: `Bearer ${rtToken}`,
+                        },
+                    }
+                );
 
-    api.interceptors.request.use(
-        async (config) => {
-            if (jwtToken) {
-                config.headers.Authorization = `Bearer ${jwtToken}`;
+                const newJwtToken = response.data.jwtToken;
+                await setJwtToken(newJwtToken);
+            } catch (refreshError) {
+                console.error('Error refreshing token:', refreshError);
             }
-            return config;
-        },
-        (error) => {
-            return Promise.reject(error);
-        }
-    );
+        };
 
-    api.interceptors.response.use(
-        (response) => {
-            return response;
-        },
-        async (error) => {
-            if (error.response && error.response.status === 401 && rtToken) {
-                try {
-                    console.log("CHECK FOR RT")
-                    const response = await axios.post(
-                        'auth/refreshToken',
-                        {},
-                        {
-                            baseURL: 'https://app-test.prometeochain.io/api/v1/',
-                            headers: {
-                                Authorization: `Bearer ${rtToken}`,
-                            },
-                        }
-                    );
-
-                    const newJwtToken = response.data.jwtToken;
-                    await setJwtToken(newJwtToken);
-
-                    // Retry the original request with the new token
-                    error.config.headers.Authorization = `Bearer ${newJwtToken}`;
-                    return axios.request(error.config);
-                } catch (refreshError) {
-                    console.error('Error refreshing token:', refreshError);
-                    throw refreshError;
-                }
+        const refreshInterval = setInterval(() => {
+            if (rtToken) {
+                refreshToken();
             }
-            return Promise.reject(error);
-        }
-    );
+        }, 2 * 60 * 60 * 1000); // Refresh every 2 hours
+
+        return () => clearInterval(refreshInterval);
+    }, [rtToken]);
 
     return (
         <AuthContext.Provider

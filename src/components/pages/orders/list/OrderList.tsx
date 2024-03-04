@@ -11,8 +11,8 @@ import { useSession } from '@/components/core/Context';
 
 const OrderList: React.FC<{ status: string }> = ({ status }) => {
     // Auth context
-    const { jwtToken, rtToken } = useSession(); // Destructure jwtToken from useSession
-    console.log("JWT: " + jwtToken + " RT: " + rtToken)
+    const { jwtToken} = useSession(); // Destructure jwtToken from useSession
+    
     // Data fetching
     const [orders, setOrders] = useState<any>([]);
     const apiURL = `https://app-test.prometeochain.io/api/v1/carrier/orders?filter=${status}`
