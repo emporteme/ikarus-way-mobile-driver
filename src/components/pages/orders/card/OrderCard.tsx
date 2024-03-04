@@ -69,12 +69,12 @@ const OrderCard: React.FC<OrderType> = (order) => {
     const totalPrice = calculateTotalPrice(order.cargo_details_list);
 
     // Get the addresses of the first checkpoint's start and last checkpoint's end
-    const initialAddress = order.checkpoints[0].address.address;
-    const finalAddress = order.checkpoints[order.checkpoints.length - 1].address.address;
+    const initialAddress = order.checkpoints[0].address?.display_name;
+    const finalAddress = order.checkpoints[order.checkpoints.length - 1].address?.display_name;
 
     // Shorten the city names to 5 letters
     const shortenName = (name) => {
-        return name?.length > 6 ? name.substring(0, 6) : name;
+        return name?.length > 15 ? name.substring(0, 15) : name;
     };
     return (
         <Link href={`/orders/${order.order_id}`} asChild>
@@ -86,12 +86,12 @@ const OrderCard: React.FC<OrderType> = (order) => {
                             {/* <Image source={icons.kz_flag} style={styles.flag} />
                             <CountryFlag countryCode="US" size={32} />
                             <CountryFlag countryCode={initialAddress.country_code} size={32} /> */}
-                            <Text style={styles.addressText}>{shortenName(initialAddress.city)}, {shortenName(initialAddress.country)}</Text>
+                            <Text style={styles.addressText}>{shortenName(initialAddress)}...</Text>
                             <Image source={icons.arrow} style={styles.iconArrow} />
                         </View>
                         <View style={styles.pickup}>
                             {/* <Image source={icons.kz_flag} style={styles.flag} /> */}
-                            <Text style={styles.addressText}>{shortenName(finalAddress.city)}, {shortenName(finalAddress.country)}</Text>
+                            <Text style={styles.addressText}>{shortenName(finalAddress)}...</Text>
                             <Text style={styles.distanceText}>{order.distance} km</Text>
                         </View>
                     </View>

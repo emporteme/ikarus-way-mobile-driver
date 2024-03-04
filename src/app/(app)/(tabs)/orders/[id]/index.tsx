@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, Image, Pressable } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, Image, Pressable, Linking, Button } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useLocalSearchParams, Stack, Link } from 'expo-router';
 import { icons } from '@/constants';
@@ -46,6 +46,16 @@ const OrderDetail: React.FC<OrderType> = () => {
         }
     }
 
+    // Navigator
+    const generateNavigationLink = (destinationLat, destinationLon) => {
+        return `https://www.google.com/maps/dir/?api=1&destination=${destinationLat},${destinationLon}`;
+    };
+
+    const openNavigation = (destinationLat, destinationLon) => {
+        const navigationLink = generateNavigationLink(destinationLat, destinationLon);
+        Linking.openURL(navigationLink);
+    };
+
     return (
         <SafeAreaView style={styles.body}>
             <Stack.Screen
@@ -63,6 +73,42 @@ const OrderDetail: React.FC<OrderType> = () => {
             <View style={styles.body}>
                 <ScrollView>
                     <View style={styles.scroll}>
+                        {/* <View>
+                            <Text>Checkpoints:</Text>
+                            {orderData?.checkpoints.map((checkpoint, index) => (
+                                <View key={index}>
+                                    <Text>Checkpoint {index + 1}:</Text>
+                                    <Text>{checkpoint.address.display_name}</Text>
+                                    <Text>Latitude: {checkpoint.address.lat}</Text>
+                                    <Text>Longitude: {checkpoint.address.lon}</Text>
+                                    <Text
+                                        onPress={() =>
+                                            Linking.openURL(
+                                                generateGoogleMapsLink(checkpoint.address.lat, checkpoint.address.lon)
+                                            )
+                                        }
+                                        style={{ color: 'blue' }}
+                                    >
+                                        Open in Google Maps
+                                    </Text>
+                                </View>
+                            ))}
+                        </View> */}
+                        <View>
+                            <Text>Checkpoints:</Text>
+                            {orderData?.checkpoints.map((checkpoint, index) => (
+                                <View key={index}>
+                                    <Text>Checkpoint {index + 1}:</Text>
+                                    <Text>{checkpoint.address.display_name}</Text>
+                                    <Text>Latitude: {checkpoint.address.lat}</Text>
+                                    <Text>Longitude: {checkpoint.address.lon}</Text>
+                                    <Button
+                                        title="Navigate"
+                                        onPress={() => openNavigation(checkpoint.address.lat, checkpoint.address.lon)}
+                                    />
+                                </View>
+                            ))}
+                        </View>
                         <View style={styles.section}>
                             <Text style={styles.title}>Pickup {orderData?.departure_date}</Text>
                             <View style={styles.row}>
@@ -304,12 +350,12 @@ const OrderDetail: React.FC<OrderType> = () => {
                     </View>
                 </ScrollView>
                 <View style={styles.buttons}>
-                    <Link href={`/orders/${id}/modal`} asChild>
+                    {/* <Link href={`/orders/${id}/modal`} asChild>
                         <Pressable style={styles.button}>
                             <Text style={styles.buttonText}>Navigator</Text>
                             <Image source={icons.card} style={styles.buttonIcon} />
                         </Pressable>
-                    </Link>
+                    </Link> */}
                     <Link href={`/orders/${id}/expenses`} asChild>
                         <Pressable style={styles.button}>
                             <Text style={styles.buttonText}>Add expenses</Text>
