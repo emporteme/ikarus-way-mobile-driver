@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     },
     scroll: {
         padding: 20,
+        paddingBottom: 90
     },
     section: {
         gap: 10,
@@ -41,9 +42,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-start',
         gap: 12,
+        flex: 1,
+    },
+    row2: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        gap: 12,
+        // flex: 1,
     },
     column: {
-        gap: 0
+        gap: 0,
+        flex: 1
     },
     column2: {
         gap: 4
@@ -98,6 +107,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'space-between',
         gap: 10,
+        // width: '100%'
     },
     iconFlag: {
         width: 22,
@@ -111,13 +121,6 @@ const styles = StyleSheet.create({
     },
 
     // Button
-    buttons: {
-        gap: 10,
-        position: 'absolute',
-        bottom: 40,
-        left: 20,
-        right: 20,
-    },
     button: {
         paddingHorizontal: 16,
         paddingVertical: 14,
@@ -127,6 +130,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: COLORS.primary,
+        position: 'absolute',
+        bottom: 40,
+        left: 20,
+        right: 20,
     },
     buttonText: {
         color: COLORS.white,

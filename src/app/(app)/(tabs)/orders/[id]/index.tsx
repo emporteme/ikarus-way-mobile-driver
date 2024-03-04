@@ -33,9 +33,9 @@ const OrderDetail: React.FC<OrderType> = () => {
                 },
             });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            // if (!response.ok) {
+            //     throw new Error('Network response was not ok');
+            // }
 
             const data = await response.json(); // Parse response data
             setOrderData(data.data); // Update state with fetched data
@@ -54,6 +54,18 @@ const OrderDetail: React.FC<OrderType> = () => {
     const openNavigation = (destinationLat, destinationLon) => {
         const navigationLink = generateNavigationLink(destinationLat, destinationLon);
         Linking.openURL(navigationLink);
+    };
+
+    const formatTimestamp = (timestamp) => {
+        const date = new Date(timestamp);
+        const options: any = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+        };
+        return date.toLocaleDateString('en-US', options);
     };
 
     return (
@@ -79,32 +91,30 @@ const OrderDetail: React.FC<OrderType> = () => {
                             <View style={styles.row}>
                                 <Image source={icons.location} style={styles.iconFlag} />
                                 <View style={styles.column}>
-                                    <Text style={styles.row}>
-                                        <Text style={styles.medSemiMedium}>Astana, KZ {orderData?.checkpoint.address.display_name}</Text>
-                                        <Text style={styles.medSemiMedium}>  ·  </Text>
-                                        <Text style={styles.regSemiMedium}>Tsetkinoy, bld. 79/А</Text>
-                                    </Text>
-                                    <Text style={styles.regSmall2}>14 Jan 2024, 12:00</Text>
+                                    <Text style={styles.medSemiMedium}>{orderData?.checkpoints[0]?.address?.display_name}</Text>
+                                    <Text style={styles.regSmall2}>{formatTimestamp(orderData?.checkpoints[0]?.time)}</Text>
                                 </View>
                             </View>
                             <View style={styles.row}>
                                 <Image source={icons.company} style={styles.iconFlag} />
                                 <View style={styles.column}>
-                                    <Text style={styles.medSemiMedium}>Good supplies, LTD</Text>
-                                    <Text style={styles.regSmall2}>+7 776 666 55 12</Text>
+                                    <Text style={styles.medSemiMedium}>{orderData?.sender?.company_name}</Text>
+                                    <Text style={styles.regSmall2}>{orderData?.sender?.phone}</Text>
                                 </View>
                             </View>
                             <View style={styles.rowFull}>
                                 <View style={styles.row}>
                                     <Image source={icons.user} style={styles.iconFlag} />
                                     <View style={styles.column}>
-                                        <Text style={styles.medSemiMedium}>Ivan Ivanov</Text>
-                                        <Text style={styles.regSmall2}>+7 776 666 55 12</Text>
+                                        <Text style={styles.medSemiMedium}>{orderData?.sender?.contact_person?.full_name}</Text>
+                                        <Text style={styles.regSmall2}>{orderData?.sender?.contact_person?.phone}</Text>
                                     </View>
                                 </View>
-                                <View style={styles.row}>
-                                    <Image source={icons.phone} style={styles.iconFlag} />
-                                    <Image source={icons.message} style={styles.iconFlag} />
+                                <View style={styles.row2}>
+                                    <Link href={'#'} asChild style={styles.iconFlag}>
+                                        <Image source={icons.phone} style={styles.iconFlag} />
+                                    </Link>
+                                    {/* <Image source={icons.message} style={styles.iconFlag} /> */}
                                 </View>
                             </View>
                         </View>
@@ -114,12 +124,8 @@ const OrderDetail: React.FC<OrderType> = () => {
                             <View style={styles.row}>
                                 <Image source={icons.kz_flag} style={styles.iconFlag} />
                                 <View style={styles.column}>
-                                    <Text style={styles.row}>
-                                        <Text style={styles.medSemiMedium}>Almaty, KZ</Text>
-                                        <Text style={styles.medSemiMedium}>  ·  </Text>
-                                        <Text style={styles.regSemiMedium}>Auezov, bld. 79/А</Text>
-                                    </Text>
-                                    <Text style={styles.regSmall2}>17 Jan 2024, 12:00</Text>
+                                    <Text style={styles.medSemiMedium}>{orderData?.checkpoints[orderData.checkpoints.length - 1].address?.display_name}</Text>
+                                    <Text style={styles.regSmall2}>{formatTimestamp(orderData?.checkpoints[orderData.checkpoints.length - 1]?.time)}</Text>
                                 </View>
                             </View>
                             <View style={styles.row}>
@@ -137,7 +143,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                                         <Text style={styles.regSmall2}>+7 776 666 55 12</Text>
                                     </View>
                                 </View>
-                                <View style={styles.row}>
+                                <View style={styles.row2}>
                                     <Image source={icons.phone} style={styles.iconFlag} />
                                     <Image source={icons.message} style={styles.iconFlag} />
                                 </View>
@@ -340,14 +346,12 @@ const OrderDetail: React.FC<OrderType> = () => {
                         </View>
                     </View>
                 </ScrollView>
-                <View style={styles.buttons}>
-                    <Link href={`/orders/${id}/expenses`} asChild>
-                        <Pressable style={styles.button}>
-                            <Text style={styles.buttonText}>Add expenses</Text>
-                            <Image source={icons.card} style={styles.buttonIcon} />
-                        </Pressable>
-                    </Link>
-                </View>
+                <Link href={`/orders/${id}/expenses`} asChild>
+                    <Pressable style={styles.button}>
+                        <Text style={styles.buttonText}>Add expenses</Text>
+                        <Image source={icons.card} style={styles.buttonIcon} />
+                    </Pressable>
+                </Link>
             </View>
         </SafeAreaView >
     );
