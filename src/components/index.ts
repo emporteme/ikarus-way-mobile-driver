@@ -13,6 +13,7 @@ import MessageSingle from "./pages/messages/card/MessageSingle";
 import ChatMessageBox from "./pages/messages/ChatMessageBox";
 import ReplyMessageBar from "./pages/messages/ReplyMessageBar";
 import InChatFileTransfer from "./pages/messages/InChatFileTransfer";
+import InChatViewFile from "./pages/messages/InChatViewFile";
 
 // Core Components
 import OuterDropdown from "./core/dropdowns/OuterDropdown";
@@ -35,6 +36,7 @@ export {
     ChatMessageBox,
     ReplyMessageBar,
     InChatFileTransfer,
+    // InChatViewFile,
 
     // Core Components
     OuterDropdown,
