@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, Image, Pressable, Linking, Button } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, Image, Pressable, Linking, Button, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useLocalSearchParams, Stack, Link } from 'expo-router';
 import { icons } from '@/constants';
@@ -68,6 +68,10 @@ const OrderDetail: React.FC<OrderType> = () => {
         return date.toLocaleDateString('en-US', options);
     };
 
+    const handlePhoneCall = (phoneNumber) => {
+        Linking.openURL(`tel:${phoneNumber}`);
+    };
+
     return (
         <SafeAreaView style={styles.body}>
             <Stack.Screen
@@ -111,9 +115,9 @@ const OrderDetail: React.FC<OrderType> = () => {
                                     </View>
                                 </View>
                                 <View style={styles.row2}>
-                                    <Link href={'#'} asChild style={styles.iconFlag}>
+                                    <TouchableOpacity onPress={() => handlePhoneCall(orderData?.sender?.contact_person?.phone)}>
                                         <Image source={icons.phone} style={styles.iconFlag} />
-                                    </Link>
+                                    </TouchableOpacity>
                                     {/* <Image source={icons.message} style={styles.iconFlag} /> */}
                                 </View>
                             </View>
