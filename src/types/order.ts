@@ -1,5 +1,3 @@
-import { images } from '@/constants';
-// Interface for order data
 interface Address {
     lat: string;
     lon: string;
@@ -163,40 +161,4 @@ export interface OrderType {
     packageType: string;
     weight: number;
     distance: number;
-}
-
-export interface CargoType {
-    cargo_name: string;
-    nature_of_goods: string;
-    id_number: string;
-    hscode: string;
-    bar_code: string;
-    packaging_type: string;
-    length: string;
-    width: string;
-    height: string;
-    quantity: string;
-    value_of_cargo: string;
-    currency: string;
-    weight: string;
-    volume: number;
-    stackable_cargo: boolean;
-    special_instruction: string;
-}
-
-export interface IotType {
-    id: number,
-    name: string,
-    value: number, // maybe later to number?
-    unit: string,
-    icon: string
-}
-
-export interface MessageType {
-    id: number,
-    photo: string,
-    name: string,
-    content: string,
-    status: string,
-    time: string, // 16:10
 }
