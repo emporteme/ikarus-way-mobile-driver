@@ -277,8 +277,8 @@ const OrderDetail: React.FC<OrderType> = () => {
                                 </Text>
                             </View>
                         </View>
-                        {/* Checkpoints */}
                         <View style={styles.lineH} />
+                        {/* Checkpoints */}
                         <View style={styles.section}>
                             <Text style={styles.title}>Checkpoints:</Text>
                             {orderData?.checkpoints.map((checkpoint, index) => (
