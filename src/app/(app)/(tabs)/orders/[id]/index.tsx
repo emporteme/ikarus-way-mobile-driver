@@ -90,6 +90,15 @@ const OrderDetail: React.FC<OrderType> = () => {
         return totalVolume.toFixed(2); // Round to 2 decimal places
     };
 
+    // Function to calculate total quantity from all cargos
+    const calculateTotalQuantity = () => {
+        let totalQuantity = 0;
+        orderData?.cargo_details_list.forEach((cargo) => {
+            totalQuantity += parseInt(cargo.quantity, 10);
+        });
+        return totalQuantity;
+    };
+
     return (
         <SafeAreaView style={styles.body}>
             <Stack.Screen
@@ -99,7 +108,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                     headerTitleAlign: 'center',
                     headerRight: () => (
                         <View style={styles.status}>
-                            <Text style={styles.statusText}>Status</Text>
+                            <Text style={styles.statusText}>{orderData?.status}</Text>
                         </View>
                     ),
                 }}
@@ -188,6 +197,11 @@ const OrderDetail: React.FC<OrderType> = () => {
                                     <Text style={styles.medSemiMedium2}>{calculateTotalVolume()} m³</Text>
                                 </Text>
                                 <Text style={styles.row}>
+                                    <Text style={styles.regSemiMedium}>Total Quantity</Text>
+                                    <Text style={styles.medSemiMedium}>  ·  </Text>
+                                    <Text style={styles.medSemiMedium2}>{calculateTotalQuantity()}</Text>
+                                </Text>
+                                <Text style={styles.row}>
                                     <Text style={styles.regSemiMedium}>Cargo names</Text>
                                     <Text style={styles.medSemiMedium}>  ·  </Text>
                                     <Text style={styles.medSemiMedium2}>
@@ -232,17 +246,22 @@ const OrderDetail: React.FC<OrderType> = () => {
                                 <Text style={styles.row}>
                                     <Text style={styles.regSemiMedium}>Temperature</Text>
                                     <Text style={styles.medSemiMedium}>  ·  </Text>
-                                    <Text style={styles.medSemiMedium2}>-5 ; 30℃</Text>
+                                    <Text style={styles.medSemiMedium2}>{orderData?.cargo_condition?.temperature?.min} ; {orderData?.cargo_condition?.temperature?.max} ℃</Text>
                                 </Text>
                                 <Text style={styles.row}>
                                     <Text style={styles.regSemiMedium}>Humidity</Text>
                                     <Text style={styles.medSemiMedium}>  ·  </Text>
-                                    <Text style={styles.medSemiMedium2}>40 ; 80%</Text>
+                                    <Text style={styles.medSemiMedium2}>{orderData?.cargo_condition?.humidity?.min} ; {orderData?.cargo_condition?.humidity?.max}%</Text>
                                 </Text>
                                 <Text style={styles.row}>
                                     <Text style={styles.regSemiMedium}>Pressure</Text>
                                     <Text style={styles.medSemiMedium}>  ·  </Text>
-                                    <Text style={styles.medSemiMedium2}>120 ; 160kPa</Text>
+                                    <Text style={styles.medSemiMedium2}>{orderData?.cargo_condition?.pressure?.min} ; {orderData?.cargo_condition?.pressure?.max}kPa</Text>
+                                </Text>
+                                <Text style={styles.row}>
+                                    <Text style={styles.regSemiMedium}>Freight Trucking</Text>
+                                    <Text style={styles.medSemiMedium}>  ·  </Text>
+                                    <Text style={styles.medSemiMedium2}>{orderData?.cargo_condition?.freight_trucking ? 'Enabled' : 'Disabled'}</Text>
                                 </Text>
                             </View>
                         </View>
