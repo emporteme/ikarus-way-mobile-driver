@@ -105,7 +105,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                 options={{
                     headerShown: true,
                     title: `Order #${id}`,
-                    headerTitleAlign: 'center',
+                    headerTitleAlign: 'left',
                     headerRight: () => (
                         <View style={styles.status}>
                             <Text style={styles.statusText}>{orderData?.status}</Text>
@@ -401,22 +401,23 @@ const OrderDetail: React.FC<OrderType> = () => {
                         {/* Team members */}
                         <View style={styles.section}>
                             <Text style={styles.title}>Team members</Text>
-                            <>
-                                <View style={styles.rowFull}>
+                            {orderData?.users_access?.map((member, index) => (
+                                <View key={index} style={styles.rowFull}>
                                     <View style={styles.row}>
                                         <Image source={icons.user} style={styles.iconFlag} />
                                         <View style={styles.column}>
-                                            <Text style={styles.medSemiMedium}>Anton Antonov</Text>
-                                            <Text style={styles.regSmall2}>Logistic manager</Text>
+                                            <Text style={styles.medSemiMedium}>{member.name}</Text>
+                                            <Text style={styles.regSmall2}>{member.role}</Text>
                                         </View>
                                     </View>
-                                    <View style={styles.row}>
+                                    {/* If you want to add a phone icon and functionality */}
+                                    <TouchableOpacity onPress={() => handlePhoneCall(member?.phone)} style={styles.row2}>
                                         <Image source={icons.phone} style={styles.iconFlag} />
-                                        <Image source={icons.message} style={styles.iconFlag} />
-                                    </View>
+                                    </TouchableOpacity>
                                 </View>
-                            </>
+                            ))}
                         </View>
+
                     </View>
                 </ScrollView>
                 <Link href={`/orders/${id}/expenses`} asChild>
