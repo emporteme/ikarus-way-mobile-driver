@@ -4,7 +4,7 @@ import { useLocalSearchParams, Stack, Link } from 'expo-router';
 import { icons } from '@/constants';
 import { useSession } from '@/components/core/Context';
 import { OrderType } from '@/types';
-import styles from '@/style/orderDetails.style';
+import styles from '@/styles/orderDetails.style';
 
 const OrderDetail: React.FC<OrderType> = () => {
     const { id } = useLocalSearchParams();

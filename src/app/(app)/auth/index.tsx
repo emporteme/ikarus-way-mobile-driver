@@ -15,7 +15,7 @@ import { Link, Stack, useRouter, Redirect, router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Styles
-import styles from '@/style/auth.style';
+import styles from '@/styles/auth.style';
 import { FONT, icons } from '@/constants';
 
 import { useSession } from '@/components/core/Context';

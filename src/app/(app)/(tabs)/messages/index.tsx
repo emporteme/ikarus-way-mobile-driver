@@ -4,7 +4,7 @@ import { useWindowDimensions, Text, View, Button, ScrollView, Pressable, TextInp
 import { Link } from "expo-router";
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 // Styles imports
-import styles from '@/style/orders.style';
+import styles from '@/styles/orders.style';
 import { FONT } from '@/constants';
 import { Empty, MessageList } from '@/components';
 

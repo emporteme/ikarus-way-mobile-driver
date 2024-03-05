@@ -4,7 +4,7 @@ import { useLocalSearchParams, Stack, Link } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 // import * as DocumentPicker from 'expo-document-picker';
 import { icons } from '@/constants';
-import styles from '@/style/expenses.style';
+import styles from '@/styles/expenses.style';
 import { OuterDropdown, InnerDropdown } from '@/components';
 import * as ImagePicker from 'expo-image-picker';
 

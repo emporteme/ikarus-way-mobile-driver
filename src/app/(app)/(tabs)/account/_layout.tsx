@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Stack } from 'expo-router';
-import styles from '@/style/account.style';
+import styles from '@/styles/account.style';
 import { images } from '@/constants';
 
 export default () => {

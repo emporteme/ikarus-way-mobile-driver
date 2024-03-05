@@ -5,7 +5,7 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 // Components imports
 import { OrderList } from '@/components';
 // Styles imports
-import styles from '@/style/orders.style';
+import styles from '@/styles/orders.style';
 import { FONT } from '@/constants';
 
 const FirstRoute = () => (
