@@ -265,13 +265,13 @@ const OrderDetail: React.FC<OrderType> = () => {
                                 </Text>
                             </View>
                         </View>
-                        {/* Special instructions */}
+                        {/* Special instructions
                         <View style={styles.section}>
                             <Text style={styles.title2}>Special instructions</Text>
                             <View>
                                 <Text style={styles.regSmall2}>"Handle with care: Your package's safe journey relies on your careful attention during the delivery process. Thank you for ensuring a secure arrival!"</Text>
                             </View>
-                        </View>
+                        </View> */}
                         {/* Checkpoints */}
                         <View style={styles.lineH} />
                         <View style={styles.section}>
