@@ -150,6 +150,17 @@ const styles = StyleSheet.create({
         height: 18,
         tintColor: COLORS.white
     },
+    navigationBtn: {
+        padding: 10
+    },
+    navigationText: {
+        alignSelf: 'center',
+        color: COLORS.primary,
+        textDecorationLine: 'underline',
+        fontSize: SIZES.semiMedium,
+        lineHeight: (SIZES.semiMedium * 3 / 2),
+        fontFamily: FONT.regular,
+    },
 })
 
 export default styles

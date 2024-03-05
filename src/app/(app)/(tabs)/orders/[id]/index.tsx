@@ -283,13 +283,13 @@ const OrderDetail: React.FC<OrderType> = () => {
                             <Text style={styles.title}>Checkpoints:</Text>
                             {orderData?.checkpoints.map((checkpoint, index) => (
                                 <View key={index}>
-                                    <Text>Checkpoint {index + 1}:</Text>
-                                    <Text>{checkpoint.address.display_name}</Text>
+                                    <Text style={styles.regSemiMedium}>Checkpoint {index + 1}:</Text>
+                                    <Text style={styles.regSmall2}>{checkpoint.address.display_name}</Text>
                                     <Pressable
                                         onPress={() => openNavigation(checkpoint.address.lat, checkpoint.address.lon)}
-                                        style={{}}
+                                        style={styles.navigationBtn}
                                     >
-                                        <Text>Navigate</Text>
+                                        <Text style={styles.navigationText}>Navigate</Text>
                                     </Pressable>
                                 </View>
                             ))}
