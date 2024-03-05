@@ -237,6 +237,18 @@ const OrderDetail: React.FC<OrderType> = () => {
                                         ))}
                                     </Text>
                                 </Text>
+                                <Text style={styles.row}>
+                                    <Text style={styles.regSemiMedium}>Special instructions</Text>
+                                    <Text style={styles.medSemiMedium}>  ·  </Text>
+                                    <Text style={styles.medSemiMedium2}>
+                                        {orderData?.cargo_details_list.map((cargo, index) => (
+                                            <React.Fragment key={index}>
+                                                {cargo.special_instruction}
+                                                {index !== orderData.cargo_details_list.length - 1 && ', '}
+                                            </React.Fragment>
+                                        ))}
+                                    </Text>
+                                </Text>
                             </>
                         </View>
                         {/* Special conditions */}
@@ -265,13 +277,6 @@ const OrderDetail: React.FC<OrderType> = () => {
                                 </Text>
                             </View>
                         </View>
-                        {/* Special instructions
-                        <View style={styles.section}>
-                            <Text style={styles.title2}>Special instructions</Text>
-                            <View>
-                                <Text style={styles.regSmall2}>"Handle with care: Your package's safe journey relies on your careful attention during the delivery process. Thank you for ensuring a secure arrival!"</Text>
-                            </View>
-                        </View> */}
                         {/* Checkpoints */}
                         <View style={styles.lineH} />
                         <View style={styles.section}>
