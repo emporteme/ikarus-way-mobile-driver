@@ -72,74 +72,24 @@ const OrderDetail: React.FC<OrderType> = () => {
         Linking.openURL(`tel:${phoneNumber}`);
     };
 
-
-    // Cargo list logic
-    const [selectedCargo, setSelectedCargo] = useState(null);
-
-    // Function to render cargo details for a single cargo
-    const renderSingleCargoDetails = (cargo) => {
-        return (
-            <View style={styles.section}>
-                <Text style={styles.title}>Cargo details</Text>
-                <Text style={styles.row}>
-                    <Text style={styles.regSemiMedium}>Total weight</Text>
-                    <Text style={styles.medSemiMedium}>  ·  </Text>
-                    <Text style={styles.medSemiMedium2}>{cargo.weight} kg</Text>
-                </Text>
-                <Text style={styles.row}>
-                    <Text style={styles.regSemiMedium}>Total volume</Text>
-                    <Text style={styles.medSemiMedium}>  ·  </Text>
-                    <Text style={styles.medSemiMedium2}>{cargo.volume} m³</Text>
-                </Text>
-                {/* Add more cargo details as needed */}
-            </View>
-        );
+    // Function to calculate total weight from all cargos
+    const calculateTotalWeight = () => {
+        let totalWeight = 0;
+        orderData?.cargo_details_list.forEach((cargo) => {
+            totalWeight += parseFloat(cargo.weight);
+        });
+        return totalWeight.toFixed(2); // Round to 2 decimal places
     };
 
-    // Function to render cargo details for multiple cargos with dropdowns
-    const [expandedCargoIndex, setExpandedCargoIndex] = useState(null);
-
-    // Function to toggle visibility of cargo details
-    const toggleCargoDetails = (index) => {
-        if (expandedCargoIndex === index) {
-            setExpandedCargoIndex(null); // Collapse if already expanded
-        } else {
-            setExpandedCargoIndex(index); // Expand if not already expanded
-        }
+    // Function to calculate total volume from all cargos
+    const calculateTotalVolume = () => {
+        let totalVolume = 0;
+        orderData?.cargo_details_list.forEach((cargo) => {
+            totalVolume += parseFloat(cargo.volume);
+        });
+        return totalVolume.toFixed(2); // Round to 2 decimal places
     };
 
-    // Function to render cargo details for a single cargo
-    const renderSingleCargo = (cargo, index) => {
-        return (
-            <View key={index} style={styles.section}>
-                <Text style={styles.title}>Cargo details</Text>
-                <Text style={styles.row}>
-                    <Text style={styles.regSemiMedium}>Total weight</Text>
-                    <Text style={styles.medSemiMedium}>  ·  </Text>
-                    <Text style={styles.medSemiMedium2}>{cargo.weight} kg</Text>
-                </Text>
-                <Text style={styles.row}>
-                    <Text style={styles.regSemiMedium}>Total volume</Text>
-                    <Text style={styles.medSemiMedium}>  ·  </Text>
-                    <Text style={styles.medSemiMedium2}>{cargo.volume} m³</Text>
-                </Text>
-            </View>
-        );
-    };
-
-    // Main rendering logic for cargo sections
-    const renderCargos = () => {
-        return orderData?.cargo_details_list.map((cargo, index) => (
-            <View key={index}>
-                <TouchableOpacity onPress={() => toggleCargoDetails(index)}>
-                    <Text>
-                        {expandedCargoIndex === index ? '▼ ' : '► '}Cargo {index + 1} details
-                    </Text>
-                </TouchableOpacity>
-                {expandedCargoIndex === index && renderSingleCargo(cargo, index)}
-            </View>
-        ));
-    };
     return (
         <SafeAreaView style={styles.body}>
             <Stack.Screen
@@ -223,19 +173,19 @@ const OrderDetail: React.FC<OrderType> = () => {
                             </View>
                         </View>
                         <View style={styles.lineH} />
-                        {/* Cargo details
+                        {/* Cargo details */}
                         <View style={styles.section}>
                             <Text style={styles.title}>Cargo details</Text>
                             <>
                                 <Text style={styles.row}>
                                     <Text style={styles.regSemiMedium}>Total weight</Text>
                                     <Text style={styles.medSemiMedium}>  ·  </Text>
-                                    <Text style={styles.medSemiMedium2}>2 200 kg</Text>
+                                    <Text style={styles.medSemiMedium2}>{calculateTotalWeight()} kg</Text>
                                 </Text>
                                 <Text style={styles.row}>
                                     <Text style={styles.regSemiMedium}>Total volume</Text>
                                     <Text style={styles.medSemiMedium}>  ·  </Text>
-                                    <Text style={styles.medSemiMedium2}>200 m³</Text>
+                                    <Text style={styles.medSemiMedium2}>{calculateTotalVolume()} m³</Text>
                                 </Text>
                                 <Text style={styles.row}>
                                     <Text style={styles.regSemiMedium}>Cargo names</Text>
@@ -274,12 +224,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                                     </Text>
                                 </Text>
                             </>
-                        </View> */}
-
-                        <>
-                            {renderCargos()}
-                        </>
-
+                        </View>
                         {/* Special conditions */}
                         <View style={styles.section}>
                             <Text style={styles.title2}>Special conditions</Text>

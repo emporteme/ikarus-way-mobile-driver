@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         fontSize: SIZES.semiMedium,
         fontFamily: FONT.semiBold,
         color: COLORS.dark,
-        marginBottom: -10
+        marginBottom: 0
     },
     row: {
         flexDirection: 'row',
