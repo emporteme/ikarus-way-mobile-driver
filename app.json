@@ -17,7 +17,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "config": {}
+      "config": {},
+      "bundleIdentifier": "com.emporteme.ikaruswaymobiledriver"
     },
     "android": {
       "adaptiveIcon": {
