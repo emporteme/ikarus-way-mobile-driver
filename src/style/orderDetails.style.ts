@@ -59,46 +59,51 @@ const styles = StyleSheet.create({
     },
     medSemiMedium: {
         fontSize: SIZES.semiMedium,  // 14
+        lineHeight: (SIZES.semiMedium * 3 / 2),
         fontFamily: FONT.medium,
         color: COLORS.dark,
-        // borderWidth: 1,
-        // includeFontPadding: true,
         textAlignVertical: 'center',
         padding: 0
-        // lineHeight: 20,
     },
     regSemiMedium: {
         fontSize: SIZES.semiMedium,
+        lineHeight: (SIZES.semiMedium * 3 / 2),
         fontFamily: FONT.regular,
         color: COLORS.dark,
     },
     medSmall: {
         fontSize: SIZES.small,
+        lineHeight: (SIZES.small * 3 / 2),
         fontFamily: FONT.medium,
         color: COLORS.dark,
     },
     regSmall: {
         fontSize: SIZES.small,
+        lineHeight: (SIZES.small * 3 / 2),
         fontFamily: FONT.regular,
         color: COLORS.dark,
     },
     medSemiMedium2: {
         fontSize: SIZES.semiMedium,
+        lineHeight: (SIZES.semiMedium * 3 / 2),
         fontFamily: FONT.medium,
         color: COLORS.gray,
     },
     regSemiMedium2: {
         fontSize: SIZES.semiMedium,
+        lineHeight: (SIZES.semiMedium * 3 / 2),
         fontFamily: FONT.regular,
         color: COLORS.gray,
     },
     medSmall2: {
         fontSize: SIZES.small,
+        lineHeight: (SIZES.small * 3 / 2),
         fontFamily: FONT.medium,
         color: COLORS.gray,
     },
     regSmall2: {
         fontSize: SIZES.small,
+        lineHeight: (SIZES.small * 3 / 2),
         fontFamily: FONT.regular,
         color: COLORS.gray,
     },

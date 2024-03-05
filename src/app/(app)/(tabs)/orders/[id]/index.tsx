@@ -72,6 +72,74 @@ const OrderDetail: React.FC<OrderType> = () => {
         Linking.openURL(`tel:${phoneNumber}`);
     };
 
+
+    // Cargo list logic
+    const [selectedCargo, setSelectedCargo] = useState(null);
+
+    // Function to render cargo details for a single cargo
+    const renderSingleCargoDetails = (cargo) => {
+        return (
+            <View style={styles.section}>
+                <Text style={styles.title}>Cargo details</Text>
+                <Text style={styles.row}>
+                    <Text style={styles.regSemiMedium}>Total weight</Text>
+                    <Text style={styles.medSemiMedium}>  ·  </Text>
+                    <Text style={styles.medSemiMedium2}>{cargo.weight} kg</Text>
+                </Text>
+                <Text style={styles.row}>
+                    <Text style={styles.regSemiMedium}>Total volume</Text>
+                    <Text style={styles.medSemiMedium}>  ·  </Text>
+                    <Text style={styles.medSemiMedium2}>{cargo.volume} m³</Text>
+                </Text>
+                {/* Add more cargo details as needed */}
+            </View>
+        );
+    };
+
+    // Function to render cargo details for multiple cargos with dropdowns
+    const [expandedCargoIndex, setExpandedCargoIndex] = useState(null);
+
+    // Function to toggle visibility of cargo details
+    const toggleCargoDetails = (index) => {
+        if (expandedCargoIndex === index) {
+            setExpandedCargoIndex(null); // Collapse if already expanded
+        } else {
+            setExpandedCargoIndex(index); // Expand if not already expanded
+        }
+    };
+
+    // Function to render cargo details for a single cargo
+    const renderSingleCargo = (cargo, index) => {
+        return (
+            <View key={index} style={styles.section}>
+                <Text style={styles.title}>Cargo details</Text>
+                <Text style={styles.row}>
+                    <Text style={styles.regSemiMedium}>Total weight</Text>
+                    <Text style={styles.medSemiMedium}>  ·  </Text>
+                    <Text style={styles.medSemiMedium2}>{cargo.weight} kg</Text>
+                </Text>
+                <Text style={styles.row}>
+                    <Text style={styles.regSemiMedium}>Total volume</Text>
+                    <Text style={styles.medSemiMedium}>  ·  </Text>
+                    <Text style={styles.medSemiMedium2}>{cargo.volume} m³</Text>
+                </Text>
+            </View>
+        );
+    };
+
+    // Main rendering logic for cargo sections
+    const renderCargos = () => {
+        return orderData?.cargo_details_list.map((cargo, index) => (
+            <View key={index}>
+                <TouchableOpacity onPress={() => toggleCargoDetails(index)}>
+                    <Text>
+                        {expandedCargoIndex === index ? '▼ ' : '► '}Cargo {index + 1} details
+                    </Text>
+                </TouchableOpacity>
+                {expandedCargoIndex === index && renderSingleCargo(cargo, index)}
+            </View>
+        ));
+    };
     return (
         <SafeAreaView style={styles.body}>
             <Stack.Screen
@@ -126,7 +194,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                         <View style={styles.section}>
                             <Text style={styles.title}>Drop</Text>
                             <View style={styles.row}>
-                                <Image source={icons.kz_flag} style={styles.iconFlag} />
+                                <Image source={icons.location} style={styles.iconFlag} />
                                 <View style={styles.column}>
                                     <Text style={styles.medSemiMedium}>{orderData?.checkpoints[orderData.checkpoints.length - 1].address?.display_name}</Text>
                                     <Text style={styles.regSmall2}>{formatTimestamp(orderData?.checkpoints[orderData.checkpoints.length - 1]?.time)}</Text>
@@ -135,34 +203,30 @@ const OrderDetail: React.FC<OrderType> = () => {
                             <View style={styles.row}>
                                 <Image source={icons.company} style={styles.iconFlag} />
                                 <View style={styles.column}>
-                                    <Text style={styles.medSemiMedium}>BR Group</Text>
-                                    <Text style={styles.regSmall2}>+7 776 666 55 12</Text>
+                                    <Text style={styles.medSemiMedium}>{orderData?.receiver?.company_name}</Text>
+                                    <Text style={styles.regSmall2}>{orderData?.receiver?.phone}</Text>
                                 </View>
                             </View>
                             <View style={styles.rowFull}>
                                 <View style={styles.row}>
                                     <Image source={icons.user} style={styles.iconFlag} />
                                     <View style={styles.column}>
-                                        <Text style={styles.medSemiMedium}>Anton Antonov</Text>
-                                        <Text style={styles.regSmall2}>+7 776 666 55 12</Text>
+                                        <Text style={styles.medSemiMedium}>{orderData?.receiver?.contact_person?.full_name}</Text>
+                                        <Text style={styles.regSmall2}>{orderData?.receiver?.contact_person?.phone}</Text>
                                     </View>
                                 </View>
                                 <View style={styles.row2}>
-                                    <Image source={icons.phone} style={styles.iconFlag} />
-                                    <Image source={icons.message} style={styles.iconFlag} />
+                                    <TouchableOpacity onPress={() => handlePhoneCall(orderData?.receiver?.contact_person?.phone)}>
+                                        <Image source={icons.phone} style={styles.iconFlag} />
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>
                         <View style={styles.lineH} />
-                        {/* Cargo details */}
+                        {/* Cargo details
                         <View style={styles.section}>
                             <Text style={styles.title}>Cargo details</Text>
                             <>
-                                <Text style={styles.row}>
-                                    <Text style={styles.regSemiMedium}>Type of goods</Text>
-                                    <Text style={styles.medSemiMedium}>  ·  </Text>
-                                    <Text style={styles.medSemiMedium2}>Food</Text>
-                                </Text>
                                 <Text style={styles.row}>
                                     <Text style={styles.regSemiMedium}>Total weight</Text>
                                     <Text style={styles.medSemiMedium}>  ·  </Text>
@@ -174,12 +238,48 @@ const OrderDetail: React.FC<OrderType> = () => {
                                     <Text style={styles.medSemiMedium2}>200 m³</Text>
                                 </Text>
                                 <Text style={styles.row}>
-                                    <Text style={styles.regSemiMedium}>Total price</Text>
+                                    <Text style={styles.regSemiMedium}>Cargo names</Text>
                                     <Text style={styles.medSemiMedium}>  ·  </Text>
-                                    <Text style={styles.medSemiMedium2}>2 000 USD</Text>
+                                    <Text style={styles.medSemiMedium2}>
+                                        {orderData?.cargo_details_list.map((cargo, index) => (
+                                            <React.Fragment key={index}>
+                                                {cargo.cargo_name}
+                                                {index !== orderData.cargo_details_list.length - 1 && ', '}
+                                            </React.Fragment>
+                                        ))}
+                                    </Text>
+                                </Text>
+                                <Text style={styles.row}>
+                                    <Text style={styles.regSemiMedium}>Type of goods</Text>
+                                    <Text style={styles.medSemiMedium}>  ·  </Text>
+                                    <Text style={styles.medSemiMedium2}>
+                                        {orderData?.cargo_details_list.map((cargo, index) => (
+                                            <React.Fragment key={index}>
+                                                {cargo.nature_of_goods}
+                                                {index !== orderData.cargo_details_list.length - 1 && ', '}
+                                            </React.Fragment>
+                                        ))}
+                                    </Text>
+                                </Text>
+                                <Text style={styles.row}>
+                                    <Text style={styles.regSemiMedium}>Packaging type</Text>
+                                    <Text style={styles.medSemiMedium}>  ·  </Text>
+                                    <Text style={styles.medSemiMedium2}>
+                                        {orderData?.cargo_details_list.map((cargo, index) => (
+                                            <React.Fragment key={index}>
+                                                {cargo.packaging_type}
+                                                {index !== orderData.cargo_details_list.length - 1 && ', '}
+                                            </React.Fragment>
+                                        ))}
+                                    </Text>
                                 </Text>
                             </>
-                        </View>
+                        </View> */}
+
+                        <>
+                            {renderCargos()}
+                        </>
+
                         {/* Special conditions */}
                         <View style={styles.section}>
                             <Text style={styles.title2}>Special conditions</Text>
