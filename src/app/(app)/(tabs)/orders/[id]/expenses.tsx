@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, ScrollView, TextInput, TouchableOpacity, Platform, Button, Image } from 'react-native';
-import { useLocalSearchParams, Stack, Link } from 'expo-router';
+import { View, Text, SafeAreaView, ScrollView, TextInput, TouchableOpacity, Platform, Button, Image, Pressable } from 'react-native';
+import { useLocalSearchParams, Stack, Link, router } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 // import * as DocumentPicker from 'expo-document-picker';
 import { icons } from '@/constants';
@@ -113,6 +113,43 @@ const ExpensesPage: React.FC = () => {
             console.log('Error picking image: ', error);
         }
     };
+
+    async function fetchSubmit(selectedOption: string, cost: string, selectedCurrency: string, selectedDate: Date, selectedTime: Date) {
+        const credentials = {
+            selectedOption: selectedOption,
+            cost: cost,
+            selectedCurrency: selectedCurrency,
+            selectedDate: selectedDate,
+            selectedTime: selectedTime,
+        };
+        const dateMilliseconds = selectedDate.getTime();
+        const timeMilliseconds = selectedTime.getTime();
+        const timestamp = dateMilliseconds + timeMilliseconds - new Date().getTimezoneOffset() * 60000;
+        console.log('Timestamp:', timestamp);
+        console.log(credentials)
+        // try {
+        //     const url = 'http://13.40.95.183:442/api/v1/auth/authenticate';
+        //     const response = await fetch(url, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify(credentials)
+        //     });
+        //     if (!response.ok) {
+        //         throw new Error('Failed to authenticate');
+        //     }
+
+        //     const json = await response.json();
+        //     console.log(json);
+        //     console.log(json.status);
+
+        //     router.push('/orders');
+        // } catch (error) {
+        //     console.error(error);
+        //     alert('Failed to submit expenses');
+        // }
+    }
 
 
     return (
@@ -227,6 +264,16 @@ const ExpensesPage: React.FC = () => {
                             <Image source={icons.attach} style={styles.icon} />
                         </TouchableOpacity>
                     </>
+                    <Pressable
+                        style={styles.button}
+                        onPress={async () => {
+                            await fetchSubmit(selectedOption, cost, selectedCurrency, selectedDate, selectedTime); // Call fetchAuth to get jwt and rt tokens
+                            router.back();
+                        }}
+                    >
+                        <Text style={styles.buttonText}>Submit</Text>
+                        {/* <Image source={icons.arrow} style={styles.iconArrow} /> */}
+                    </Pressable>
                 </View>
             </ScrollView>
 

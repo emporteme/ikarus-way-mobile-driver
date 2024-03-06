@@ -77,31 +77,24 @@ const styles = StyleSheet.create({
 
     // Button
     button: {
-        // marginHorizontal: 20,
-        // marginBottom: 20,
         paddingHorizontal: 16,
         paddingVertical: 14,
         borderRadius: 12,
-        gap: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: COLORS.primary,
-        position: 'absolute',
-        bottom: 20,
-        left: 20,
-        right: 20,
-        // padding: 16,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 10,
     },
     buttonText: {
         color: COLORS.white,
+        fontSize: SIZES.medium,
         fontFamily: FONT.semiBold,
-        fontSize: SIZES.medium
     },
-    buttonIcon: {
-        width: 18,
-        height: 18,
-        tintColor: COLORS.white
+    iconArrow: {
+        width: 16,
+        height: 16,
+        tintColor: COLORS.white,
     },
 })
 
