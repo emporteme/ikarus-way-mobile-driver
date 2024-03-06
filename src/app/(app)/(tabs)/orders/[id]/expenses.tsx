@@ -132,7 +132,38 @@ const ExpensesPage: React.FC = () => {
             <ScrollView>
                 <View style={styles.scroll}>
                     <OuterDropdown
-                        options={['Food', 'Hotel', 'Heating']}
+                        options={[
+                            'Fuel',
+                            'Food',
+                            'Lodging',
+                            'Vehicle maintenance',
+                            'Toll fees',
+                            'Parking fees',
+                            'Vehicle rental',
+                            'Vehicle insurance',
+                            'Vehicle registration',
+                            'Vehicle inspection',
+                            'Vehicle cleaning',
+                            'Vehicle repairs',
+                            'Roadside assistance',
+                            'Vehicle accessories',
+                            'Personal protective equipment (PPE)',
+                            'Mobile phone expenses',
+                            'Internet expenses',
+                            'GPS/navigation system',
+                            'Vehicle leasing',
+                            'Vehicle depreciation',
+                            'Vehicle loan payments',
+                            'Health insurance',
+                            'Vehicle permits/licenses',
+                            'Training/certification fees',
+                            'Uniform expenses',
+                            'Office supplies',
+                            'Communication expenses',
+                            'Entertainment expenses',
+                            'Miscellaneous expenses',
+                            'Other (specify)'
+                        ]}
                         selectedOption={selectedOption}
                         onSelect={setSelectedOption}
                     />
@@ -144,7 +175,20 @@ const ExpensesPage: React.FC = () => {
                             style={styles.costText}
                         />
                         <InnerDropdown
-                            options={['USD', 'RUB', 'EUR']}
+                            options={[
+                                'AUD', 'EUR', 'AZN', 'ALL', 'DZD', 'XCD', 'AOA', 'ARS', 'AMD', 'AWG', 'AFN', 'BSD', 'BDT', 'BBD', 'BHD', 'BYR',
+                                'BYN', 'BZD', 'XOF', 'BMD', 'BGN', 'BOB', 'BAM', 'BWP', 'BRL', 'BND', 'BIF', 'BTN', 'VUV', 'GBP', 'HUF', 'VEB',
+                                'IDR', 'VND', 'XAF', 'HTG', 'GYD', 'GMD', 'GHC', 'GTQ', 'GNF', 'GIP', 'HNL', 'HKD', 'GEL', 'DKK', 'DJF', 'DOP',
+                                'EGP', 'ZMK', 'ZWD', 'ILS', 'INR', 'JOD', 'IQD', 'IRR', 'ISK', 'YER', 'CVE', 'KZT', 'KYD', 'KHR', 'CAD', 'QAR',
+                                'KES', 'CYP', 'KGS', 'CNY', 'KPW', 'COP', 'KMF', 'CDF', 'CRC', 'CUP', 'KWD', 'LAK', 'LVL', 'LSL', 'ZAR', 'LRD',
+                                'LBP', 'LYD', 'LTL', 'CHF', 'MUR', 'MRO', 'MGA', 'MOP', 'MKD', 'MWK', 'MYR', 'MVR', 'MTL', 'MAD', 'XDR', 'MXN',
+                                'MZN', 'MDL', 'MNT', 'MMK', 'NAD', 'NPR', 'NGN', 'ANG', 'NIO', 'NZD', 'NOK', 'AED', 'OMR', 'SHP', 'PKR', 'PAB',
+                                'PGK', 'PYG', 'PEN', 'PLN', 'RUB', 'RWF', 'RON', 'WST', 'STD', 'SAR', 'SZL', 'SCR', 'CSD', 'SGD', 'SYP', 'SKK',
+                                'SIT', 'SBD', 'SOS', 'SDD', 'SRD', 'USD', 'SLL', 'TJS', 'THB', 'TWD', 'TZS', 'TOP', 'TTD', 'TND', 'TMM', 'TRY',
+                                'UGX', 'UZS', 'UAH', 'UYU', 'FJD', 'PHP', 'FKP', 'XPF', 'HRK', 'CZK', 'CLP', 'SEK', 'LKR', 'ERN', 'EEK', 'ETB',
+                                'YUM', 'KRW', 'JMD', 'JPY', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XFO', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX',
+                                'TOKEN', 'NONE'
+                            ]}
                             selectedOption={selectedCurrency}
                             onSelect={setSelectedCurrency}
                         />

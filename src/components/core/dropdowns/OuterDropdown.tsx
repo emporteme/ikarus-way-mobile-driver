@@ -29,7 +29,7 @@ const OuterDropdown: React.FC<DropdownProps> = ({ options, selectedOption, onSel
                 <MaterialIcons name={isOpen ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={24} color={COLORS.primary} />
             </TouchableOpacity>
             {isOpen && (
-                <View style={{ height: 100, paddingRight: 24, paddingBottom: 10 }}>
+                <View style={{ height: 140, paddingRight: 24, paddingBottom: 10 }}>
                     <FlatList
                         data={options}
                         renderItem={({ item }) => (
