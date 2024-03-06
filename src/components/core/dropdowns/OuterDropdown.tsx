@@ -29,15 +29,17 @@ const OuterDropdown: React.FC<DropdownProps> = ({ options, selectedOption, onSel
                 <MaterialIcons name={isOpen ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={24} color={COLORS.primary} />
             </TouchableOpacity>
             {isOpen && (
-                <FlatList
-                    data={options}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity style={styles.option} onPress={() => handleSelectOption(item)}>
-                            <Text style={styles.optionText}>{item}</Text>
-                        </TouchableOpacity>
-                    )}
-                    keyExtractor={(item) => item}
-                />
+                <View style={{ height: 100, paddingRight: 24, paddingBottom: 10 }}>
+                    <FlatList
+                        data={options}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity style={styles.option} onPress={() => handleSelectOption(item)}>
+                                <Text style={styles.optionText}>{item}</Text>
+                            </TouchableOpacity>
+                        )}
+                        keyExtractor={(item) => item}
+                    />
+                </View>
             )}
         </View>
     );

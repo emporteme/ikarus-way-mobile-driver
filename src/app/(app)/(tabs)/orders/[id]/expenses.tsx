@@ -120,7 +120,7 @@ const ExpensesPage: React.FC = () => {
             <Stack.Screen
                 options={{
                     headerShown: true,
-                    title: `Order #${id}`,
+                    title: `${id}`,
                     headerTitleAlign: 'left',
                     headerRight: () => (
                         <View style={styles.status}>
