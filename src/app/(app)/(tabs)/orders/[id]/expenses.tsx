@@ -201,10 +201,10 @@ const ExpensesPage: React.FC = () => {
                 },
                 data: formData
             });
-
-            if (response.status !== 200) {
-                throw new Error('Failed to submit expenses');
-            }
+            // console.log("RESPONSE: ", response, response.status)
+            // if (response.status !== 201) {
+            //     throw new Error('Failed to submit expenses');
+            // }
 
             const json = response.data;
             console.log(json);
