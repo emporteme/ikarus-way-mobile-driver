@@ -58,6 +58,7 @@ const ExpensesPage: React.FC = () => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [selectedTime, setSelectedTime] = useState(new Date());
     const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+    const [selectedFiles, setSelectedFiles] = useState<any[]>([]); // State to store selected files
 
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -126,66 +127,79 @@ const ExpensesPage: React.FC = () => {
     //         console.log("Error while selecting file: ", error);
     //     }
     // };
+
+
     const pickSomething = async () => {
         try {
-            // const docRes = await DocumentPicker.getDocumentAsync(...);
             const docRes = await DocumentPicker.getDocumentAsync({
                 type: "*/*",
+                multiple: true, // Allow selecting multiple files
             });
+
             const formData = new FormData();
             const assets = docRes.assets;
             if (!assets) return;
 
-            const file = assets[0];
+            assets.forEach(file => {
+                const audioFile: any = {
+                    name: file.name.split(".")[0],
+                    uri: file.uri,
+                    type: file.mimeType,
+                    size: file.size,
+                };
+                formData.append("audioFiles[]", audioFile); // Append each file to FormData array
+            });
 
-            const audioFile: any = {
-                name: file.name.split(".")[0],
-                uri: file.uri,
-                type: file.mimeType,
-                size: file.size,
-            };
+            console.log("NICEEE: FILES SELECTED", formData.getAll('audioFiles[]'));
+            setSelectedFiles([...selectedFiles, ...assets]); // Update selectedFiles state
 
-            formData.append("files", audioFile);
-            console.log("NICEEE: FILE SELECTED");
         } catch (error) {
-            console.log("Error while selecting file: ", error);
+            console.log("Error while selecting files: ", error);
         }
     };
 
-
-    async function fetchSubmit(selectedOption: string, cost: string, selectedCurrency: string, selectedDate: Date, selectedTime: Date) {
+    async function fetchSubmit() {
         const dateMilliseconds = selectedDate.getTime();
         const timeMilliseconds = selectedTime.getTime();
         const timestamp = dateMilliseconds + timeMilliseconds - new Date().getTimezoneOffset() * 60000;
         console.log('Timestamp:', timestamp);
+
         const credentials = {
             receiptType: selectedOption,
             price: cost,
             currency: selectedCurrency,
             timestamp: timestamp,
-            // files: ["string", "string"]
+            files: selectedFiles.map(file => file.uri), // Extract URIs of selected files
         };
         console.log(credentials)
 
-        //Use FormData() to get tool for forming data with File Objects
-        const formdata = new FormData();
-        formdata.append('receiptType', credentials.receiptType);
-        formdata.append('price', credentials.price);
-        formdata.append('currency', credentials.currency);
-        formdata.append('timestamp', credentials.timestamp.toString());
-        // credentials.files.forEach((file: string) => {
-        //     formdata.append('files', file);
+        const formData = new FormData();
+        formData.append('receiptType', credentials.receiptType);
+        formData.append('price', credentials.price);
+        formData.append('currency', credentials.currency);
+        formData.append('timestamp', credentials.timestamp.toString());
+
+        // Append selected files as an array to FormData
+        formData.append('files', JSON.stringify(credentials.files));
+
+        // // Append selected files to FormData
+        // credentials.files.forEach(uri => {
+        //     formData.append('files', {
+        //         uri,
+        //         type: 'application/octet-stream', // Set MIME type for files
+        //         name: uri.split('/').pop(), // Extract file name from URI
+        //     } as any);
         // });
 
+        console.log('FORMDATA: ', formData)
         try {
             const url = `http://13.40.95.183:442/api/v1/receipts/${id}`;
-            const response = await axios.post(url, formdata, {
-                method: 'POST',
+            const response = await axios.post(url, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': 'Bearer ' + jwtToken
                 },
-                data: formdata,
+                data: formData,
             });
 
             if (response.status !== 200) {
@@ -196,7 +210,6 @@ const ExpensesPage: React.FC = () => {
             console.log(json);
             console.log(json.status);
 
-            // router.back();
         } catch (error) {
             console.error(error);
             alert('Failed to submit expenses');
@@ -322,7 +335,7 @@ const ExpensesPage: React.FC = () => {
                     <Pressable
                         style={styles.button}
                         onPress={async () => {
-                            await fetchSubmit(selectedOption, cost, selectedCurrency, selectedDate, selectedTime); // Call fetchAuth to get jwt and rt tokens
+                            await fetchSubmit();
                             // router.back();
                         }}
                     >
