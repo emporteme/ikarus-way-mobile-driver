@@ -169,9 +169,9 @@ const ExpensesPage: React.FC = () => {
             price: cost,
             currency: selectedCurrency,
             timestamp: timestamp,
-            files: selectedFiles.map(file => file.uri), // Extract URIs of selected files
+            files: selectedFiles.map(file => file.uri),
         };
-        console.log(credentials)
+        console.log(credentials);
 
         const formData = new FormData();
         formData.append('receiptType', credentials.receiptType);
@@ -179,27 +179,27 @@ const ExpensesPage: React.FC = () => {
         formData.append('currency', credentials.currency);
         formData.append('timestamp', credentials.timestamp.toString());
 
-        // Append selected files as an array to FormData
-        formData.append('files', JSON.stringify(credentials.files));
+        // Append selected files to FormData
+        credentials.files.forEach((uri, index) => {
+            const fileExtension = uri.split('.').pop();
+            const filename = `file_${index}.${fileExtension}`;
+            const fileData: any = {
+                uri,
+                name: filename,
+                type: `application/${fileExtension}`,
+            };
+            formData.append('files', fileData);
+        });
 
-        // // Append selected files to FormData
-        // credentials.files.forEach(uri => {
-        //     formData.append('files', {
-        //         uri,
-        //         type: 'application/octet-stream', // Set MIME type for files
-        //         name: uri.split('/').pop(), // Extract file name from URI
-        //     } as any);
-        // });
-
-        console.log('FORMDATA: ', formData)
+        console.log('FORMDATA: ', formData);
         try {
             const url = `http://13.40.95.183:442/api/v1/receipts/${id}`;
             const response = await axios.post(url, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': 'Bearer ' + jwtToken
+                    'Authorization': 'Bearer ' + jwtToken,
                 },
-                data: formData,
+                data: formData
             });
 
             if (response.status !== 200) {
@@ -209,7 +209,6 @@ const ExpensesPage: React.FC = () => {
             const json = response.data;
             console.log(json);
             console.log(json.status);
-
         } catch (error) {
             console.error(error);
             alert('Failed to submit expenses');
