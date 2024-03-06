@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, ScrollView, TextInput, TouchableOpacity, Platform, Button, Image } from 'react-native';
 import { useLocalSearchParams, Stack, Link } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -6,10 +6,50 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { icons } from '@/constants';
 import styles from '@/styles/expenses.style';
 import { OuterDropdown, InnerDropdown } from '@/components';
+import { useSession } from '@/components/core/Context';
 import * as ImagePicker from 'expo-image-picker';
 
 
 const ExpensesPage: React.FC = () => {
+    const { id } = useLocalSearchParams();
+
+    // Auth context
+    const { jwtToken } = useSession(); // Destructure jwtToken from useSession
+
+    // Data fetching
+    const [orderData, setOrderData] = useState<any>(null);
+
+    useEffect(() => {
+        fetchOrder(jwtToken); // Pass jwtToken as parameter
+    }, [jwtToken]); // Add jwtToken to dependency array
+
+    const fetchOrder = async (jwtToken: string) => { // Accept jwtToken as parameter
+        try {
+            if (!jwtToken) {
+                throw new Error('JWT token not found');
+            }
+
+            const response = await fetch(`http://13.40.95.183:442/api/v1/carrier/orders/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + jwtToken
+                },
+            });
+
+            // if (!response.ok) {
+            //     throw new Error('Network response was not ok');
+            // }
+
+            const data = await response.json(); // Parse response data
+            setOrderData(data.data); // Update state with fetched data
+            console.log(data);
+        } catch (error) {
+            console.error('Error fetching order:', error);
+            alert('Failed to fetch order data');
+        }
+    }
+
     const [selectedOption, setSelectedOption] = useState<string>('Select an expenses');
     const [selectedCurrency, setSelectedCurrency] = useState<string>('USD');
     const [cost, setCost] = useState<string>('');
@@ -80,11 +120,11 @@ const ExpensesPage: React.FC = () => {
             <Stack.Screen
                 options={{
                     headerShown: true,
-                    title: 'Expenses',
-                    headerTitleAlign: 'center',
+                    title: `Order #${id}`,
+                    headerTitleAlign: 'left',
                     headerRight: () => (
                         <View style={styles.status}>
-                            <Text style={styles.statusText}>Status</Text>
+                            <Text style={styles.statusText}>{orderData?.status}</Text>
                         </View>
                     ),
                 }}
