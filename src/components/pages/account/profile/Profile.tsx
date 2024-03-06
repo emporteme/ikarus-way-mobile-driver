@@ -28,7 +28,7 @@ const Profile: React.FC = () => {
                 throw new Error('JWT token not found');
             }
 
-            const response = await fetch('https://app-test.prometeochain.io/api/v1/users/profile', {
+            const response = await fetch('http://13.40.95.183:442/api/v1/users/profile', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

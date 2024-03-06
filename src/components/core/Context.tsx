@@ -48,7 +48,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
                     'auth/refreshToken',
                     {},
                     {
-                        baseURL: 'https://app-test.prometeochain.io/api/v1/',
+                        baseURL: 'http://13.40.95.183:442/api/v1/',
                         headers: {
                             Authorization: `Bearer ${rtToken}`,
                         },

@@ -15,7 +15,7 @@ const OrderList: React.FC<{ status: string }> = ({ status }) => {
     
     // Data fetching
     const [orders, setOrders] = useState<any>([]);
-    const apiURL = `https://app-test.prometeochain.io/api/v1/carrier/orders?filter=${status}`
+    const apiURL = `http://13.40.95.183:442/api/v1/carrier/orders?filter=${status}`
 
     useEffect(() => {
         fetchOrders(jwtToken); // Pass jwtToken as parameter

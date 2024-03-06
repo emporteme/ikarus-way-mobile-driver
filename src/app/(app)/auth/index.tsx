@@ -28,7 +28,7 @@ async function fetchAuth(email: string, password: string, signIn: (jwt: string, 
     };
 
     try {
-        const url = 'https://app-test.prometeochain.io/api/v1/auth/authenticate';
+        const url = 'http://13.40.95.183:442/api/v1/auth/authenticate';
         const response = await fetch(url, {
             method: 'POST',
             headers: {
