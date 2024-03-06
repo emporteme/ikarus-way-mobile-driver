@@ -17,8 +17,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "config": {},
-      "bundleIdentifier": "com.emporteme.ikaruswaymobiledriver"
+      "bundleIdentifier": "com.emporteme.ikaruswaymobiledriver",
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -26,8 +28,8 @@
         "backgroundColor": "#1B1B1B"
       },
       "package": "com.emporteme.ikaruswaymobiledriver",
-      "config": {},
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -50,6 +52,9 @@
         "projectId": "3786c1df-7dd8-43d7-98e6-97a2b2b80b77"
       }
     },
-    "owner": "emporteme"
+    "owner": "emporteme",
+    "updates": {
+      "url": "https://u.expo.dev/3786c1df-7dd8-43d7-98e6-97a2b2b80b77"
+    }
   }
 }
