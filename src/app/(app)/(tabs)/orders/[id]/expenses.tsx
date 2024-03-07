@@ -239,9 +239,12 @@ const ExpensesPage: React.FC = () => {
         };
 
         return (
-            <TouchableOpacity onPress={handleFilePress}>
-                <Text>{item.name}</Text>
-            </TouchableOpacity>
+            <>
+                <TouchableOpacity onPress={handleFilePress} style={styles.fileItem}>
+                    <Image source={icons.attach} style={styles.fileIcon} />
+                    <Text style={styles.fileText}>{item.name}</Text>
+                </TouchableOpacity>
+            </>
         );
     };
 
@@ -329,6 +332,7 @@ const ExpensesPage: React.FC = () => {
                             <Text style={styles.dateText}>{selectedDate.toDateString()}</Text>
                             <Image source={icons.calendar} style={styles.icon} />
                         </TouchableOpacity>
+                        <Text style={styles.autoText}>Will be filled automatically </Text>
                         {isDatePickerVisible && (
                             <DateTimePicker
                                 value={selectedDate}
@@ -342,6 +346,7 @@ const ExpensesPage: React.FC = () => {
                             <Text style={styles.dateText}>{selectedTime.toLocaleTimeString()}</Text>
                             <Image source={icons.time} style={styles.icon} />
                         </TouchableOpacity>
+                        <Text style={styles.autoText}>Will be filled automatically </Text>
                         {isTimePickerVisible && (
                             <DateTimePicker
                                 value={selectedTime}
@@ -352,14 +357,20 @@ const ExpensesPage: React.FC = () => {
                             />
                         )}
                         {/* File input */}
-                        <TouchableOpacity onPress={selectFile} style={styles.dateContainer}>
+                        <TouchableOpacity onPress={pickSomething} style={styles.fileContainer}>
                             <Text style={styles.dateText}>Select File</Text>
                             <Image source={icons.attach} style={styles.icon} />
                         </TouchableOpacity>
                     </>
-                    <Pressable onPress={pickSomething} style={{ padding: 100 }}>
-                        <Text>Add another file</Text>
-                    </Pressable>
+                    <>
+                        {/* <View style={styles.fileContainer}> */}
+                        <FlatList
+                            data={selectedFiles}
+                            renderItem={renderFileItem}
+                            keyExtractor={(item) => item.uri}
+                        />
+                        {/* </View> */}
+                    </>
                     <Pressable
                         style={styles.button}
                         onPress={async () => {
@@ -371,11 +382,6 @@ const ExpensesPage: React.FC = () => {
                         {/* <Image source={icons.arrow} style={styles.iconArrow} /> */}
                     </Pressable>
                 </View>
-                <FlatList
-                    data={selectedFiles}
-                    renderItem={renderFileItem}
-                    keyExtractor={(item) => item.uri}
-                />
             </ScrollView>
 
         </SafeAreaView>

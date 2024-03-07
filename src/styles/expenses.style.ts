@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: 20,
         borderColor: COLORS.primary,
         borderWidth: 2,
         borderRadius: 12,
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: COLORS.primary,
         lineHeight: 24,
-        paddingHorizontal: 20,
+        paddingLeft: 20,
         paddingVertical: 12
     },
     icon: {
@@ -70,10 +69,47 @@ const styles = StyleSheet.create({
         tintColor: COLORS.primary
     },
 
+    autoText: {
+        flex: 1,
+        fontFamily: FONT.medium,
+        fontSize: 14,
+        color: COLORS.primary,
+        lineHeight: 21,
+        paddingTop: 8,
+        marginBottom: 20
+    },
 
     // File input styles
-    fileContainer: {},
-    fileText: {},
+    fileContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: COLORS.primary,
+        borderWidth: 2,
+        borderRadius: 12,
+        marginBottom: 20
+    },
+    fileItem: {
+        backgroundColor: '#A0A3BD80',
+        borderRadius: 8,
+        paddingHorizontal: 14,
+        paddingVertical: 8,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+        flex: 1
+    },
+    fileIcon: {
+        tintColor: COLORS.white,
+        height: 14,
+        width: 14
+    },
+    fileText: {
+        color: COLORS.white,
+        fontFamily: FONT.medium,
+        fontSize: SIZES.medium,
+        marginLeft: 10
+    },
 
     // Button
     button: {
@@ -85,6 +121,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         gap: 10,
+        marginTop: 20
     },
     buttonText: {
         color: COLORS.white,
@@ -96,6 +133,7 @@ const styles = StyleSheet.create({
         height: 16,
         tintColor: COLORS.white,
     },
+
 })
 
 export default styles
