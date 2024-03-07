@@ -12,7 +12,7 @@ const OrderDetail: React.FC<OrderType> = () => {
     // Auth context
     const { jwtToken } = useSession(); // Destructure jwtToken from useSession
 
-    // Data fetching
+    // Order Data fetching
     const [orderData, setOrderData] = useState<any>(null);
 
     useEffect(() => {
@@ -43,6 +43,40 @@ const OrderDetail: React.FC<OrderType> = () => {
         } catch (error) {
             console.error('Error fetching order:', error);
             alert('Failed to fetch order data');
+        }
+    }
+
+    // Receipts Data fetching
+    const [receiptsData, setReceiptsData] = useState<any>(null);
+
+    useEffect(() => {
+        fetchReceipts(jwtToken);
+    }, [jwtToken]);
+
+    const fetchReceipts = async (jwtToken: string) => {
+        try {
+            if (!jwtToken) {
+                throw new Error('JWT token not found');
+            }
+
+            const response = await fetch(`http://13.40.95.183:442/api/v1/receipts/order/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + jwtToken
+                },
+            });
+
+            // if (!response.ok) {
+            //     throw new Error('Network response was not ok');
+            // }
+
+            const data = await response.json(); // Parse response data
+            setReceiptsData(data.data); // Update state with fetched data
+            console.log(data);
+        } catch (error) {
+            console.error('Error fetching receipts:', error);
+            alert('Failed to fetch receipts data');
         }
     }
 
@@ -98,6 +132,22 @@ const OrderDetail: React.FC<OrderType> = () => {
         });
         return totalQuantity;
     };
+
+    const groupReceiptsByDate = (receiptsData: any[]) => {
+        const groupedReceipts: { [date: string]: any[] } = {};
+
+        receiptsData.forEach((receipt) => {
+            const date = new Date(receipt.timestamp).toLocaleDateString();
+            if (!groupedReceipts[date]) {
+                groupedReceipts[date] = [];
+            }
+            groupedReceipts[date].push(receipt);
+        });
+
+        return groupedReceipts;
+    };
+
+    const groupedReceipts = receiptsData ? groupReceiptsByDate(receiptsData) : {};
 
     return (
         <SafeAreaView style={styles.body}>
@@ -366,6 +416,8 @@ const OrderDetail: React.FC<OrderType> = () => {
                                     <Text style={styles.regSemiMedium}>Food</Text>
                                     <Text style={styles.medSemiMedium}>  ·  </Text>
                                     <Text style={styles.medSemiMedium2}>29.99 USD</Text>
+                                    // Here you can add a button to view the receipt
+                                // Here should be a time
                                 </Text>
                                 <Text style={styles.row}>
                                     <Text style={styles.regSemiMedium}>Hotel</Text>
@@ -398,6 +450,28 @@ const OrderDetail: React.FC<OrderType> = () => {
                             </View>
                         </View>
                         <View style={styles.lineH} />
+                        <>
+                            <View>
+                                {Object.entries(groupedReceipts).map(([date, receipts]) => (
+                                    <View key={date}>
+                                        <Text style={{ marginVertical: 20, fontSize: 20 }}>{date}</Text>
+                                        {receipts.map((receipt) => (
+                                            <View key={receipt.receiptId}>
+                                                <Text style={{ marginTop: 20 }}>{receipt.timestamp}</Text>
+                                                <Text>{receipt.receiptType}</Text>
+                                                <Text>{receipt.price} {receipt.currency}</Text>
+                                                {receipt.filesInfo.map((file) => (
+                                                    <TouchableOpacity key={file.file_id}>
+                                                        <Text>{file.name}</Text>
+                                                    </TouchableOpacity>
+                                                ))}
+                                            </View>
+                                        ))}
+                                    </View>
+                                ))}
+                            </View>
+                        </>
+                        <View style={styles.lineH} />
                         {/* Team members */}
                         <View style={styles.section}>
                             <Text style={styles.title}>Team members</Text>
@@ -417,7 +491,6 @@ const OrderDetail: React.FC<OrderType> = () => {
                                 </View>
                             ))}
                         </View>
-
                     </View>
                 </ScrollView>
                 <Link href={`/orders/${id}/expenses`} asChild>

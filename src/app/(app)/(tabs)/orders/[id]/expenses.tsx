@@ -162,10 +162,23 @@ const ExpensesPage: React.FC = () => {
     };
 
     async function fetchSubmit() {
-        const dateMilliseconds = selectedDate.getTime();
-        const timeMilliseconds = selectedTime.getTime();
-        const timestamp = dateMilliseconds + timeMilliseconds - new Date().getTimezoneOffset() * 60000;
-        console.log('Timestamp:', timestamp);
+        // const dateMilliseconds = selectedDate.getTime();
+        // const timeMilliseconds = selectedTime.getTime();
+        // // const timestamp = dateMilliseconds + timeMilliseconds - new Date().getTimezoneOffset() * 60000;
+        // // const timestamp = new Date(dateMilliseconds + timeMilliseconds).toISOString();
+        // const timestamp = dateMilliseconds + timeMilliseconds;
+        // console.log('Timestamp:', timestamp);
+
+        // const dateString = selectedDate.toISOString().split('T')[0];
+        // const timeString = selectedTime.toISOString().split('T')[1];
+        // const timestamp = `${dateString}T${timeString}`;
+        // console.log('Timestamp:', timestamp);
+
+        const timestamp = new Date(selectedDate).getTime();
+        // const time = new Date(selectedTime);
+        // const timestamp = date.getTime() + time.getTime() - (new Date()).setHours(0, 0, 0, 0);
+
+        console.log('Timestamp:', timestamp, selectedDate, selectedTime);
 
         const credentials = {
             receiptType: selectedOption,
@@ -337,12 +350,13 @@ const ExpensesPage: React.FC = () => {
                             <DateTimePicker
                                 value={selectedDate}
                                 mode="date"
-                                display="default"
+                                // display="default"
+                                display="spinner"
                                 onChange={handleDateChange}
                             />
                         )}
                         {/* Time input */}
-                        <TouchableOpacity onPress={showTimePicker} style={styles.dateContainer}>
+                        {/* <TouchableOpacity onPress={showTimePicker} style={styles.dateContainer}>
                             <Text style={styles.dateText}>{selectedTime.toLocaleTimeString()}</Text>
                             <Image source={icons.time} style={styles.icon} />
                         </TouchableOpacity>
@@ -355,7 +369,7 @@ const ExpensesPage: React.FC = () => {
                                 display="default"
                                 onChange={handleTimeChange}
                             />
-                        )}
+                        )} */}
                         {/* File input */}
                         <TouchableOpacity onPress={pickSomething} style={styles.fileContainer}>
                             <Text style={styles.dateText}>Select File</Text>
