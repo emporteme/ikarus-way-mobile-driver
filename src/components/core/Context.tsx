@@ -3,6 +3,43 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useStorageState } from './useStorageState';
 
+// Custom API Client with Interceptor
+const apiClient = axios.create({
+    baseURL: 'http://13.40.95.183:442/api/v1/',
+});
+
+apiClient.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
+        if (error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            try {
+                const { rtToken, setJwtToken } = React.useContext(AuthContext);
+                const response = await axios.post(
+                    'auth/refreshToken',
+                    {},
+                    {
+                        baseURL: 'http://13.40.95.183:442/api/v1/',
+                        headers: {
+                            Authorization: `Bearer ${rtToken}`,
+                        },
+                    }
+                );
+
+                const newJwtToken = response.data.jwtToken;
+                await setJwtToken(newJwtToken);
+                originalRequest.headers.Authorization = `Bearer ${newJwtToken}`;
+                return axios(originalRequest);
+            } catch (refreshError) {
+                console.error('Error refreshing token:', refreshError);
+                return Promise.reject(error);
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
 const AuthContext = React.createContext<{
     signIn: (jwt: string, rt: string) => void;
     signOut: () => void;
@@ -12,6 +49,7 @@ const AuthContext = React.createContext<{
     rtToken?: string | null;
     isLoadingJwtToken?: boolean;
     isLoadingRtToken?: boolean;
+    setJwtToken: (token: string) => void;
 }>({
     signIn: () => null,
     signOut: () => null,
@@ -21,6 +59,7 @@ const AuthContext = React.createContext<{
     rtToken: null,
     isLoadingJwtToken: false,
     isLoadingRtToken: false,
+    setJwtToken: () => null,
 });
 
 export const useAuth = () => React.useContext(AuthContext);
@@ -41,36 +80,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
     const [[isLoadingJwtToken, jwtToken], setJwtToken] = useStorageState('jwtToken');
     const [[isLoadingRtToken, rtToken], setRtToken] = useStorageState('rtToken');
 
-    useEffect(() => {
-        const refreshToken = async () => {
-            try {
-                const response = await axios.post(
-                    'auth/refreshToken',
-                    {},
-                    {
-                        baseURL: 'http://13.40.95.183:442/api/v1/',
-                        headers: {
-                            Authorization: `Bearer ${rtToken}`,
-                        },
-                    }
-                );
-
-                const newJwtToken = response.data.jwtToken;
-                await setJwtToken(newJwtToken);
-            } catch (refreshError) {
-                console.error('Error refreshing token:', refreshError);
-            }
-        };
-
-        const refreshInterval = setInterval(() => {
-            if (rtToken) {
-                refreshToken();
-            }
-        }, 2 * 60 * 60 * 1000); // Refresh every 2 hours
-
-        return () => clearInterval(refreshInterval);
-    }, [rtToken]);
-
     return (
         <AuthContext.Provider
             value={{
@@ -90,7 +99,9 @@ export function SessionProvider(props: React.PropsWithChildren) {
                 isLoading,
                 isLoadingJwtToken,
                 isLoadingRtToken,
-            }}>
+                setJwtToken,
+            }}
+        >
             {props.children}
         </AuthContext.Provider>
     );
