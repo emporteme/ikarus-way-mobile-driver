@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, ScrollView, TextInput, TouchableOpacity, Platform, Button, Image, Pressable } from 'react-native';
+import { View, Text, SafeAreaView, ScrollView, TextInput, TouchableOpacity, Platform, Button, Image, Pressable, FlatList } from 'react-native';
 import { useLocalSearchParams, Stack, Link, router } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as DocumentPicker from 'expo-document-picker';
@@ -215,6 +215,11 @@ const ExpensesPage: React.FC = () => {
         }
     }
 
+    const renderFileItem = ({ item }) => (
+        <View>
+            <Text>{item.name}</Text>
+        </View>
+    );
 
     return (
         <SafeAreaView style={styles.body}>
@@ -342,6 +347,11 @@ const ExpensesPage: React.FC = () => {
                         {/* <Image source={icons.arrow} style={styles.iconArrow} /> */}
                     </Pressable>
                 </View>
+                <FlatList
+                    data={selectedFiles}
+                    renderItem={renderFileItem}
+                    keyExtractor={(item) => item.uri}
+                />
             </ScrollView>
 
         </SafeAreaView>
