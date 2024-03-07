@@ -9,6 +9,9 @@ import { OuterDropdown, InnerDropdown } from '@/components';
 import { useSession } from '@/components/core/Context';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
+import * as FileSystem from 'expo-file-system';
+import * as IntentLauncher from 'expo-intent-launcher';
+import Constants from 'expo-constants';
 
 
 const ExpensesPage: React.FC = () => {
@@ -215,11 +218,32 @@ const ExpensesPage: React.FC = () => {
         }
     }
 
-    const renderFileItem = ({ item }) => (
-        <View>
-            <Text>{item.name}</Text>
-        </View>
-    );
+    const renderFileItem = ({ item }) => {
+        const handleFilePress = async () => {
+            try {
+                const destinationUri = `${FileSystem.documentDirectory}${item.name}`;
+                await FileSystem.copyAsync({ from: item.uri, to: destinationUri });
+
+                const contentUri = `${Constants.expoPublicDirectoryUri}/${item.name}`;
+                const shareResponse = await IntentLauncher.startActivityAsync(
+                    'android.intent.action.VIEW',
+                    {
+                        type: 'application/pdf', // Replace with the appropriate MIME type
+                        data: contentUri,
+                        flags: 1,
+                    }
+                );
+            } catch (error) {
+                console.error('Error opening file:', error);
+            }
+        };
+
+        return (
+            <TouchableOpacity onPress={handleFilePress}>
+                <Text>{item.name}</Text>
+            </TouchableOpacity>
+        );
+    };
 
     return (
         <SafeAreaView style={styles.body}>
