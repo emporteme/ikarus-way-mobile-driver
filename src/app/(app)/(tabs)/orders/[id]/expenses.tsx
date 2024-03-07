@@ -375,7 +375,7 @@ const ExpensesPage: React.FC = () => {
                         style={styles.button}
                         onPress={async () => {
                             await fetchSubmit();
-                            // router.back();
+                            router.back();
                         }}
                     >
                         <Text style={styles.buttonText}>Submit</Text>
