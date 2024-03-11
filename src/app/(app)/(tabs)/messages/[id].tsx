@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Platform } from 'react-native';
+import React, { useState, useCallback, useEffect, useRef, memo } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
-import { GiftedChat, IMessage, User, MessageText } from 'react-native-gifted-chat';
+import { GiftedChat, IMessage, User, MessageText, Bubble, InputToolbar, Send, SystemMessage } from 'react-native-gifted-chat';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { COLORS } from '@/constants';
+import { COLORS, FONT } from '@/constants';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { InChatFileTransfer } from '@/components';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
+import messageData from '@/api/chat.json'
 
 const pickSomething = async (handleFilePicked) => {
     try {
@@ -44,12 +47,6 @@ const pickSomething = async (handleFilePicked) => {
     }
 };
 
-const FileSendingButton = ({ onFilePicked }) => (
-    <TouchableOpacity onPress={() => pickSomething(onFilePicked)} style={styles.fileSendingButton}>
-        <Text style={styles.fileSendingButtonText}>Send File</Text>
-    </TouchableOpacity>
-);
-
 const Page = () => {
     const insets = useSafeAreaInsets();
     const { id } = useLocalSearchParams();
@@ -59,6 +56,37 @@ const Page = () => {
         _id: 1,
         avatar: 'https://placeimg.com/140/140/any',
     });
+
+    useEffect(() => {
+        setMessages([
+            ...messageData.map((message) => {
+                return {
+                    _id: message.id,
+                    text: message.msg,
+                    createdAt: new Date(message.date),
+                    user: {
+                        _id: message.from,
+                        name: message.from ? 'You' : 'Bob',
+                    },
+                    // Add any other properties you need
+                    // For example, if you want to display an image
+                    // image: message.img, // Assuming you have 'img' property for images
+                    // For files, you might have a property like 'fileUrl'
+                    // fileUrl: message.fileUrl // Add this if you have a 'fileUrl' property in your JSON
+                };
+            }),
+            {
+                _id: 0,
+                system: true,
+                text: 'All your base are belong to us',
+                createdAt: new Date(),
+                user: {
+                    _id: 0,
+                    name: 'Bot',
+                },
+            },
+        ]);
+    }, []);
 
     const onSend = (newMessages: IMessage[]) => {
         setMessages((prevMessages) => GiftedChat.append(prevMessages, newMessages));
@@ -117,7 +145,7 @@ const Page = () => {
         if (currentMessage && currentMessage.fileUri) {
             return (
                 <TouchableOpacity onPress={() => handleFileOpening(currentMessage.fileUri)}>
-                    
+
                     <MessageText {...props} />
                 </TouchableOpacity>
             );
@@ -126,33 +154,125 @@ const Page = () => {
         return <MessageText {...props} />;
     };
 
+    const renderInputToolbar = (props: any) => {
+        return (
+            <InputToolbar
+                {...props}
+                containerStyle={{ backgroundColor: COLORS.white }}
+                renderActions={() => (
+                    <TouchableOpacity onPress={() => pickSomething(handleFilePicked)}>
+                        <View style={{ height: 44, justifyContent: 'center', alignItems: 'center', left: 5 }}>
+                            <Ionicons name="attach" color={COLORS.primary} size={28} />
+                        </View>
+                    </TouchableOpacity>
+                )}
+            />
+        );
+    };
+
+    // Memoize components
+    const SystemMessageMemoized = memo(SystemMessage);
+    const BubbleMemoized = memo(Bubble);
+
+    const scrollToBottomComponent = () => {
+        return <FontAwesome name="angle-double-down" size={22} color="#333" />;
+    };
+    const [text, setText] = useState('');
+
     return (
         <SafeAreaView style={{ flex: 1, marginBottom: insets.bottom, backgroundColor: COLORS.background }}>
             <Stack.Screen options={{ title: 'Chat ID: ' + id }} />
-            <View style={{ flex: 1 }}>
-                <GiftedChat
-                    messages={messages}
-                    onSend={onSend}
-                    user={user}
-                    renderMessageText={renderMessageComponent}
-                />
-                <FileSendingButton onFilePicked={handleFilePicked} />
-            </View>
+            <>
+                <View style={{ flex: 1 }}>
+                    <GiftedChat
+                        messages={messages}
+                        onSend={(messages: any) => onSend(messages)}
+                        onInputTextChanged={setText}
+                        user={user}
+                        renderMessageText={renderMessageComponent}
+                        renderSystemMessage={(props) => (
+                            <SystemMessageMemoized {...props} textStyle={{ color: COLORS.gray }} />
+                        )}
+                        bottomOffset={insets.bottom}
+                        renderAvatar={null}
+                        maxComposerHeight={100}
+                        textInputProps={styles.composer}
+                        renderBubble={(props) => {
+                            return (
+                                <BubbleMemoized
+                                    {...props}
+                                    textStyle={{
+                                        left: {
+                                            color: COLORS.dark,
+                                            fontFamily: FONT.medium,
+                                            fontSize: 14,
+                                            lineHeight: 21,
+                                        },
+                                        right: {
+                                            color: COLORS.white,
+                                            fontFamily: FONT.medium,
+                                            fontSize: 14,
+                                            lineHeight: 21,
+                                        },
+                                    }}
+                                    wrapperStyle={{
+                                        left: {
+                                            backgroundColor: COLORS.secondary,
+                                            padding: 10,
+                                            borderRadius: 16
+                                        },
+                                        right: {
+                                            backgroundColor: COLORS.dark,
+                                            padding: 10,
+                                            borderRadius: 16
+                                        },
+                                    }}
+                                />
+                            );
+                        }}
+                        renderSend={(props) => (
+                            <View
+                                style={{
+                                    height: 44,
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: 14,
+                                    paddingHorizontal: 14,
+                                }}>
+                                {text === '' && (
+                                    <></>        // Later in future will be added a voice and camera buttons
+                                )}
+                                {text !== '' && (
+                                    <Send
+                                        {...props}
+                                        containerStyle={{
+                                            justifyContent: 'center',
+                                        }}>
+                                        <Ionicons name="send" color={COLORS.primary} size={28} />
+                                    </Send>
+                                )}
+                            </View>
+                        )}
+                        renderInputToolbar={renderInputToolbar}
+                        scrollToBottom
+                        scrollToBottomComponent={scrollToBottomComponent}
+                    />
+                    {
+                        Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding" />
+                    }
+                </View>
+            </>
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    fileSendingButton: {
-        backgroundColor: '#333',
-        borderRadius: 10,
-        padding: 10,
-        marginHorizontal: 10,
-        marginBottom: 10,
-        alignSelf: 'flex-end',
-    },
-    fileSendingButtonText: {
-        color: '#fff',
+    composer: {
+        backgroundColor: '#fff',
+        borderRadius: 14,
+        paddingHorizontal: 10,
+        fontSize: 16,
     },
 });
 
