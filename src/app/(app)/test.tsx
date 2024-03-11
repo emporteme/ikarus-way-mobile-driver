@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
-import * as SecureStore from 'expo-secure-store';
 import * as Crypto from 'expo-crypto';
+import { derivePath, getPublicKey } from 'ed25519-hd-key';
 
 export default function App() {
     const [privateKey, setPrivateKey] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export default function App() {
 
     const loadPrivateKey = async () => {
         // Load private key from secure storage
-        const storedPrivateKey = await SecureStore.getItemAsync('privateKey');
+        const storedPrivateKey = "bb5a9e04a0baaf8cda5cd8718c18d113daa752a4b47dbf10a1c6684a496b241c"; // Replace with your method for loading private key
         setPrivateKey(storedPrivateKey);
     };
 
@@ -41,9 +41,14 @@ export default function App() {
             let location = await Location.getCurrentPositionAsync({});
             setLocation(location);
 
-            // Constructing the data object to match the expected structure
+            // Generate key pair from private key
+            // const keypair = await getkeyPair(privateKey);
+
+            // Constructing the data object
             const dataToSend = {
-                data: {
+                tx: {
+                    pubkey: "40f18e72241580c95000fc9f5e6bf2c97f0da8a482ff5e8f6e6f18e6a3055876",
+                    company_id: 1,
                     coords: {
                         accuracy: location.coords.accuracy,
                         altitude: location.coords.altitude,
@@ -53,37 +58,39 @@ export default function App() {
                         longitude: location.coords.longitude,
                         speed: location.coords.speed
                     },
+                    devpubkey: "40f18e72241580c95000fc9f5e6bf2c97f0da8a482ff5e8f6e6f18e6a3055876",
                     mocked: location.mocked,
-                    timestamp: location.timestamp
+                    timestamp: location.timestamp,
+                    signature: '' // Placeholder for signature
                 },
-                tx_type: "AA05" // Assuming this is the transaction type you want to include
+                type: "AA05"
             };
 
-            // Convert location data to string for signing
-            const locationData = JSON.stringify(dataToSend);
+            // Convert data to string for signing
+            const dataString = JSON.stringify(dataToSend.tx);
 
-            // Sign location data with private key
+            // Sign data with private key
             const signature = await Crypto.digestStringAsync(
                 Crypto.CryptoDigestAlgorithm.SHA256,
-                locationData + privateKey
+                dataString + privateKey
             );
 
-            // Send signed location data to API
-            await sendToAPI(dataToSend, signature);
+            // Update the signature in the data object
+            dataToSend.tx.signature = signature;
+
+            // Send data to API
+            await sendToAPI(dataToSend);
         } catch (error) {
             console.error('Error signing location:', error);
         }
     };
 
-    const sendToAPI = async (location: any, signature: string) => {
-        // Send location and signature to API
-        const API_URL = 'http://pool.prometeochain.io/node/get_from_ledger';
-        const data = {
-            location,
-            signature
-        };
+    const sendToAPI = async (dataToSend: any) => {
+        // Send data to API
+        // Replace API_URL with your actual API endpoint
+        const API_URL = 'https://example.com/api/location';
 
-        console.log('Data being sent to API:', data); // Logging the data being sent
+        console.log('DATA TO SEND: ', dataToSend)
 
         try {
             const response = await fetch(API_URL, {
@@ -91,7 +98,7 @@ export default function App() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(dataToSend)
             });
 
             if (!response.ok) {
@@ -107,8 +114,6 @@ export default function App() {
     return (
         <View style={styles.container}>
             <Text>Private Key: {privateKey}</Text>
-            {/* <Button title="Save Private Key" onPress={() => savePrivateKey('bb5a9e04a0baaf8cda5cd8718c18d113daa752a4b47dbf10a1c6684a496b241c')} /> */}
-            {/* <Button title="Sign Location and Send to API" onPress={signLocation} /> */}
             <Text>Location: {location ? JSON.stringify(location) : 'Not available'}</Text>
         </View>
     );
@@ -119,6 +124,29 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 50
     },
 });
+
+// export async function getkeyPair(seed: string) {
+//     let privateKey: string;
+//     let publicKey: string;
+//     let privatekeyBit: Uint8Array;
+//     let publicKeyBit: Uint8Array;
+
+//     privateKey = seed;
+//     var bytes = new Uint8Array(Math.ceil(privateKey.length / 2));
+//     for (var i = 0; i < bytes.length; i++)
+//         bytes[i] = parseInt(privateKey.substr(i * 2, 2), 16);
+
+//     privatekeyBit = bytes;
+
+//     publicKeyBit = getPublicKey(Buffer.from(privatekeyBit));
+//     publicKey = publicKeyBit.toString('hex').substring(2);
+
+//     return {
+//         privateKey: privateKey,
+//         publicKey: publicKey,
+//         privatekeyBit: privatekeyBit,
+//         publicKeyBit: publicKeyBit
+//     };
+// }
