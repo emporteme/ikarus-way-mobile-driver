@@ -89,7 +89,7 @@ export default function App() {
         // Replace API_URL with your actual API endpoint
         const API_URL = 'http://pool.prometeochain.io/node/get_from_ledger';
 
-        console.log('DATA TO SEND: ', dataToSend)
+        console.log('------------------ DATA TO SEND: ', dataToSend)
 
         try {
             const response = await fetch(API_URL, {
@@ -103,7 +103,7 @@ export default function App() {
             console.log('RESPONSE: ', response)
 
             if (!response.ok) {
-                throw new Error('Failed to send data to API');
+                throw new Error('Some shit gone wrong');
             }
 
             console.log('Location sent successfully');
