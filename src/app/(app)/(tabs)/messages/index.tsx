@@ -69,7 +69,7 @@ const Func = () => (
             <Link href={'/qr'} style={{ marginTop: 20 }}>
                 <Text>QR scan (Just for now) </Text>
             </Link>
-            <Link href={'/form'} style={{ marginTop: 20 }}>
+            <Link href={'/test'} style={{ marginTop: 20 }}>
                 <Text>Form (Just for now) </Text>
             </Link>
 
