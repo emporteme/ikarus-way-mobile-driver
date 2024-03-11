@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useStorageState } from './useStorageState';
@@ -8,6 +8,9 @@ const apiClient = axios.create({
     baseURL: 'http://13.40.95.183:442/api/v1/',
 });
 
+// Create a global ref to store the setJwtToken function
+const setJwtTokenRef = useRef(null);
+
 apiClient.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -15,7 +18,7 @@ apiClient.interceptors.response.use(
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             try {
-                const { rtToken, setJwtToken } = React.useContext(AuthContext);
+                const { rtToken } = React.useContext(AuthContext);
                 const response = await axios.post(
                     'auth/refreshToken',
                     {},
@@ -28,7 +31,7 @@ apiClient.interceptors.response.use(
                 );
 
                 const newJwtToken = response.data.jwtToken;
-                await setJwtToken(newJwtToken);
+                setJwtTokenRef.current(newJwtToken); // Use the global ref to call setJwtToken
                 originalRequest.headers.Authorization = `Bearer ${newJwtToken}`;
                 return axios(originalRequest);
             } catch (refreshError) {
@@ -79,6 +82,12 @@ export function SessionProvider(props: React.PropsWithChildren) {
     const [[isLoading, session], setSession] = useStorageState('session');
     const [[isLoadingJwtToken, jwtToken], setJwtToken] = useStorageState('jwtToken');
     const [[isLoadingRtToken, rtToken], setRtToken] = useStorageState('rtToken');
+
+
+    // Update the ref whenever the setJwtToken function changes
+    useEffect(() => {
+        setJwtTokenRef.current = setJwtToken;
+    }, [setJwtToken]);
 
     return (
         <AuthContext.Provider
