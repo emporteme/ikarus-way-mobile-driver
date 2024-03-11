@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
 import * as Crypto from 'expo-crypto';
-import { derivePath, getPublicKey } from 'ed25519-hd-key';
+import { sign } from 'tweetnacl';
+import { encodeBase64, decodeUTF8 } from 'tweetnacl-util';
 
 export default function App() {
     const [privateKey, setPrivateKey] = useState<string | null>(null);
@@ -16,7 +17,7 @@ export default function App() {
     useEffect(() => {
         // Start sending location data every 10 seconds once privateKey is available
         if (privateKey) {
-            const intervalId = setInterval(signLocation, 10000);
+            const intervalId = setInterval(signAndSendLocation, 10000);
 
             // Clear interval on component unmount
             return () => clearInterval(intervalId);
@@ -29,7 +30,7 @@ export default function App() {
         setPrivateKey(storedPrivateKey);
     };
 
-    const signLocation = async () => {
+    const signAndSendLocation = async () => {
         try {
             // Get current location
             let { status } = await Location.requestForegroundPermissionsAsync();
@@ -41,13 +42,13 @@ export default function App() {
             let location = await Location.getCurrentPositionAsync({});
             setLocation(location);
 
-            // Generate key pair from private key
-            // const keypair = await getkeyPair(privateKey);
+            // Sign location data with private key
+            const signature = await signLocationData(location, privateKey);
 
-            // Constructing the data object
+            // Construct the data object to send to API
             const dataToSend = {
                 tx: {
-                    pubkey: "40f18e72241580c95000fc9f5e6bf2c97f0da8a482ff5e8f6e6f18e6a3055876",
+                    pubkey: '', // Replace with your public key
                     company_id: 1,
                     coords: {
                         accuracy: location.coords.accuracy,
@@ -58,31 +59,30 @@ export default function App() {
                         longitude: location.coords.longitude,
                         speed: location.coords.speed
                     },
-                    devpubkey: "40f18e72241580c95000fc9f5e6bf2c97f0da8a482ff5e8f6e6f18e6a3055876",
+                    devpubkey: '', // Replace with your public key
                     mocked: location.mocked,
                     timestamp: location.timestamp,
-                    signature: '' // Placeholder for signature
+                    signature: encodeBase64(signature) // Encode the signature to base64
                 },
                 type: "AA05"
             };
 
-            // Convert data to string for signing
-            const dataString = JSON.stringify(dataToSend.tx);
-
-            // Sign data with private key
-            const signature = await Crypto.digestStringAsync(
-                Crypto.CryptoDigestAlgorithm.SHA256,
-                dataString + privateKey
-            );
-
-            // Update the signature in the data object
-            dataToSend.tx.signature = signature;
-
             // Send data to API
             await sendToAPI(dataToSend);
         } catch (error) {
-            console.error('Error signing location:', error);
+            console.error('Error signing and sending location:', error);
         }
+    };
+
+    const signLocationData = async (location: any, privateKey: string) => {
+        // Convert location data to string
+        const dataString = JSON.stringify(location);
+
+        // Convert private key string to Uint8Array
+        const privateKeyUint8 = decodeUTF8(privateKey);
+
+        // Sign the data with private key
+        return sign(decodeUTF8(dataString), privateKeyUint8);
     };
 
     const sendToAPI = async (dataToSend: any) => {
@@ -126,27 +126,3 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 });
-
-// export async function getkeyPair(seed: string) {
-//     let privateKey: string;
-//     let publicKey: string;
-//     let privatekeyBit: Uint8Array;
-//     let publicKeyBit: Uint8Array;
-
-//     privateKey = seed;
-//     var bytes = new Uint8Array(Math.ceil(privateKey.length / 2));
-//     for (var i = 0; i < bytes.length; i++)
-//         bytes[i] = parseInt(privateKey.substr(i * 2, 2), 16);
-
-//     privatekeyBit = bytes;
-
-//     publicKeyBit = getPublicKey(Buffer.from(privatekeyBit));
-//     publicKey = publicKeyBit.toString('hex').substring(2);
-
-//     return {
-//         privateKey: privateKey,
-//         publicKey: publicKey,
-//         privatekeyBit: privatekeyBit,
-//         publicKeyBit: publicKeyBit
-//     };
-// }
