@@ -39,11 +39,7 @@
     "plugins": [
       "expo-router",
       "expo-build-properties",
-      "expo-secure-store",
-      "expo-file-system"
-    ],
-    "permissions": [
-      "STORAGE"
+      "expo-secure-store"
     ],
     "experiments": {
       "tsconfigPaths": true
