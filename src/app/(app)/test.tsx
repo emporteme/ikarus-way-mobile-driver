@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
 import * as Crypto from 'expo-crypto';
-import { derivePath, getPublicKey } from 'ed25519-hd-key';
 
 export default function App() {
     const [privateKey, setPrivateKey] = useState<string | null>(null);
-    const [publicKey, setPublicKey] = useState<string | null>(null);
     const [location, setLocation] = useState<any>(null);
 
     useEffect(() => {
@@ -28,14 +26,6 @@ export default function App() {
         // Load private key from secure storage
         const storedPrivateKey = "bb5a9e04a0baaf8cda5cd8718c18d113daa752a4b47dbf10a1c6684a496b241c"; // Replace with your method for loading private key
         setPrivateKey(storedPrivateKey);
-
-        // Generate public key from private key
-        try {
-            const keypair = await getkeyPair(storedPrivateKey);
-            setPublicKey(keypair.publicKey);
-        } catch (error) {
-            console.error('Error generating public key:', error);
-        }
     };
 
     const signLocation = async () => {
@@ -49,6 +39,9 @@ export default function App() {
 
             let location = await Location.getCurrentPositionAsync({});
             setLocation(location);
+
+            // Generate public key from private key
+            const publicKey = await getPublicKeyFromPrivateKey(privateKey);
 
             // Constructing the data object
             const dataToSend = {
@@ -75,26 +68,53 @@ export default function App() {
             // Convert data to string for signing
             const dataString = JSON.stringify(dataToSend.tx);
 
-            // Sign data with private key (not implemented in this code snippet)
-            // const signature = await Crypto.digestStringAsync(
-            //     Crypto.CryptoDigestAlgorithm.SHA256,
-            //     dataString + privateKey
-            // );
+            // Sign data with private key
+            const signature = await Crypto.digestStringAsync(
+                Crypto.CryptoDigestAlgorithm.SHA256,
+                dataString + privateKey
+            );
 
             // Update the signature in the data object
-            // dataToSend.tx.signature = signature;
+            dataToSend.tx.signature = signature;
 
-            // Send data to API (not implemented in this code snippet)
-            // await sendToAPI(dataToSend);
+            // Send data to API
+            await sendToAPI(dataToSend);
         } catch (error) {
             console.error('Error signing location:', error);
+        }
+    };
+
+    const sendToAPI = async (dataToSend: any) => {
+        // Send data to API
+        // Replace API_URL with your actual API endpoint
+        const API_URL = 'http://pool.prometeochain.io/node/get_from_ledger';
+
+        console.log('DATA TO SEND: ', dataToSend)
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataToSend)
+            });
+
+            console.log('RESPONSE: ', response)
+
+            if (!response.ok) {
+                throw new Error('Failed to send data to API');
+            }
+
+            console.log('Location sent successfully');
+        } catch (error) {
+            console.error('Error sending data to API:', error);
         }
     };
 
     return (
         <View style={styles.container}>
             <Text>Private Key: {privateKey}</Text>
-            <Text>Public Key: {publicKey}</Text>
             <Text>Location: {location ? JSON.stringify(location) : 'Not available'}</Text>
         </View>
     );
@@ -105,29 +125,21 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        gap: 50
     },
 });
 
-export async function getkeyPair(seed: string) {
-    let privateKey: string;
-    let publicKey: string;
-    let privatekeyBit: Uint8Array;
-    let publicKeyBit: Uint8Array;
+async function getPublicKeyFromPrivateKey(privateKey: string): Promise<string> {
+    try {
+        // Generate the public key using the private key
+        const publicKey = await Crypto.digestStringAsync(
+            Crypto.CryptoDigestAlgorithm.SHA256,
+            privateKey
+        );
 
-    privateKey = seed;
-    var bytes = new Uint8Array(Math.ceil(privateKey.length / 2));
-    for (var i = 0; i < bytes.length; i++)
-        bytes[i] = parseInt(privateKey.substr(i * 2, 2), 16);
-
-    privatekeyBit = bytes;
-
-    publicKeyBit = getPublicKey(privatekeyBit);
-    publicKey = publicKeyBit.toString('hex').substring(2);
-
-    return {
-        privateKey: privateKey,
-        publicKey: publicKey,
-        privatekeyBit: privatekeyBit,
-        publicKeyBit: publicKeyBit
-    };
+        return publicKey;
+    } catch (error) {
+        console.error('Error generating public key:', error);
+        throw error;
+    }
 }
