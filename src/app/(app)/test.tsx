@@ -13,16 +13,20 @@ export default function App() {
         loadPrivateKey();
     }, []);
 
+    useEffect(() => {
+        // Start sending location data every 10 seconds once privateKey is available
+        if (privateKey) {
+            const intervalId = setInterval(signLocation, 10000);
+
+            // Clear interval on component unmount
+            return () => clearInterval(intervalId);
+        }
+    }, [privateKey]);
+
     const loadPrivateKey = async () => {
         // Load private key from secure storage
         const storedPrivateKey = await SecureStore.getItemAsync('privateKey');
         setPrivateKey(storedPrivateKey);
-    };
-
-    const savePrivateKey = async (privateKey: string) => {
-        // Save private key to secure storage
-        await SecureStore.setItemAsync('privateKey', privateKey);
-        setPrivateKey(privateKey);
     };
 
     const signLocation = async () => {
@@ -37,8 +41,26 @@ export default function App() {
             let location = await Location.getCurrentPositionAsync({});
             setLocation(location);
 
+            // Constructing the data object to match the expected structure
+            const dataToSend = {
+                data: {
+                    coords: {
+                        accuracy: location.coords.accuracy,
+                        altitude: location.coords.altitude,
+                        altitudeAccuracy: location.coords.altitudeAccuracy,
+                        heading: location.coords.heading,
+                        latitude: location.coords.latitude,
+                        longitude: location.coords.longitude,
+                        speed: location.coords.speed
+                    },
+                    mocked: location.mocked,
+                    timestamp: location.timestamp
+                },
+                tx_type: "AA05" // Assuming this is the transaction type you want to include
+            };
+
             // Convert location data to string for signing
-            const locationData = JSON.stringify(location);
+            const locationData = JSON.stringify(dataToSend);
 
             // Sign location data with private key
             const signature = await Crypto.digestStringAsync(
@@ -47,7 +69,7 @@ export default function App() {
             );
 
             // Send signed location data to API
-            await sendToAPI(location, signature);
+            await sendToAPI(dataToSend, signature);
         } catch (error) {
             console.error('Error signing location:', error);
         }
@@ -55,12 +77,13 @@ export default function App() {
 
     const sendToAPI = async (location: any, signature: string) => {
         // Send location and signature to API
-        // Replace API_URL with your actual API endpoint
-        const API_URL = 'https://example.com/api/location';
+        const API_URL = 'http://pool.prometeochain.io/node/get_from_ledger';
         const data = {
             location,
             signature
         };
+
+        console.log('Data being sent to API:', data); // Logging the data being sent
 
         try {
             const response = await fetch(API_URL, {
@@ -84,8 +107,8 @@ export default function App() {
     return (
         <View style={styles.container}>
             <Text>Private Key: {privateKey}</Text>
-            <Button title="Save Private Key" onPress={() => savePrivateKey('bb5a9e04a0baaf8cda5cd8718c18d113daa752a4b47dbf10a1c6684a496b241c')} />
-            <Button title="Sign Location and Send to API" onPress={signLocation} />
+            {/* <Button title="Save Private Key" onPress={() => savePrivateKey('bb5a9e04a0baaf8cda5cd8718c18d113daa752a4b47dbf10a1c6684a496b241c')} /> */}
+            {/* <Button title="Sign Location and Send to API" onPress={signLocation} /> */}
             <Text>Location: {location ? JSON.stringify(location) : 'Not available'}</Text>
         </View>
     );
@@ -96,6 +119,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 20
+        gap: 50
     },
 });
