@@ -77,6 +77,7 @@
     "react-native-tcp": "^3.2.1",
     "react-native-tweetnacl": "^1.0.5",
     "react-native-udp": "^2.1.0",
+    "react-native-virgil-crypto": "^0.6.3",
     "react-native-web": "~0.19.6",
     "readable-stream": "^1.0.33",
     "sharp": "^0.33.2",
