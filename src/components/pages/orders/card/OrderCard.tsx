@@ -9,8 +9,8 @@ import styles from './card.style'
 
 const OrderCard: React.FC<OrderType> = (order) => {
     // Convert timestamps to Date objects
-    const departureDate = new Date(order.departure_date);
-    const arrivalDate = new Date(order.arrival_date);
+    const departureDate = new Date(order?.departure_date);
+    const arrivalDate = new Date(order?.arrival_date);
 
     // Function to format date to "dd MMM" format
     const formatDate = (date) => {
@@ -27,7 +27,7 @@ const OrderCard: React.FC<OrderType> = (order) => {
     };
 
     // Calculate volumes of all cargo items separately
-    const volumes = order.cargo_details_list.map(cargo => calculateVolume(cargo));
+    const volumes = order?.cargo_details_list?.map(cargo => calculateVolume(cargo));
 
     // Calculate total volume by summing up volumes of all cargo items
     const totalVolume = volumes.reduce((acc, curr) => acc + curr, 0);
@@ -109,10 +109,10 @@ const OrderCard: React.FC<OrderType> = (order) => {
                     </View>
                     <View style={styles.last}>
                         {/* <Text style={styles.detailsText}>{order.volume} m³</Text> */}
-                        {volumes.map((volume, index) => (
+                        {volumes?.map((volume, index) => (
                             <Text key={index}>{index > 0 ? ', ' : ''}{volume} m³</Text>
                         ))}
-                        <Text style={styles.detailsText}>{totalPrice}  {order.cargo_details_list[0].currency}</Text>
+                        <Text style={styles.detailsText}>{totalPrice}  {order?.cargo_details_list[0]?.currency}</Text>
                     </View>
                 </View>
             </Pressable>
