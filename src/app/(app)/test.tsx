@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
-import { sign, utils } from '@noble/ed25519'; // Import the noble-ed25519 library
+import * as Crypto from 'expo-crypto';
 
 export default function App() {
-    const [privateKey, setPrivateKey] = useState<Uint8Array | null>(null);
+    const [privateKey, setPrivateKey] = useState<string | null>(null);
     const [location, setLocation] = useState<any>(null);
 
     useEffect(() => {
@@ -25,7 +25,7 @@ export default function App() {
     const loadPrivateKey = async () => {
         // Load private key from secure storage
         const storedPrivateKey = "bb5a9e04a0baaf8cda5cd8718c18d113daa752a4b47dbf10a1c6684a496b241c"; // Replace with your method for loading private key
-        setPrivateKey(utils.hexToBytes(storedPrivateKey));
+        setPrivateKey(storedPrivateKey);
     };
 
     const signLocation = async () => {
@@ -41,7 +41,7 @@ export default function App() {
             setLocation(location);
 
             // Generate public key from private key
-            const publicKey = utils.getPublicKey(privateKey);
+            const publicKey = await getPublicKeyFromPrivateKey(privateKey);
 
             // Constructing the data object
             const dataToSend = {
@@ -56,7 +56,7 @@ export default function App() {
                         longitude: location.coords.longitude,
                         speed: location.coords.speed
                     },
-                    devpubkey: utils.bytesToHex(publicKey),
+                    devpubkey: publicKey,
                     mocked: location.mocked,
                     timestamp: location.timestamp,
                 },
@@ -65,12 +65,12 @@ export default function App() {
 
             console.log('------------------ DATA BEFORE: ', dataToSend);
 
-            // Sign the 'tx' object
+            // Sign the 'tx' object without pubkey and signature
             const { signature, orderedData } = await signData(dataToSend.tx, privateKey, publicKey);
 
             // Update the 'tx' object with the signature and public key
-            orderedData.pubkey = utils.bytesToHex(publicKey);
-            orderedData.signature = utils.bytesToHex(signature);
+            orderedData.pubkey = publicKey;
+            orderedData.signature = signature;
             dataToSend.tx = orderedData;
 
             // Send data to API
@@ -110,7 +110,7 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <Text>Private Key: {privateKey ? utils.bytesToHex(privateKey) : 'Not available'}</Text>
+            <Text>Private Key: {privateKey}</Text>
             <Text>Location: {location ? JSON.stringify(location) : 'Not available'}</Text>
         </View>
     );
@@ -125,7 +125,22 @@ const styles = StyleSheet.create({
     },
 });
 
-async function signData(data: any, privateKey: Uint8Array, publicKey: Uint8Array) {
+async function getPublicKeyFromPrivateKey(privateKey: string): Promise<string> {
+    try {
+        // Generate the public key using the private key
+        const publicKey = await Crypto.digestStringAsync(
+            Crypto.CryptoDigestAlgorithm.SHA256,
+            privateKey
+        );
+
+        return publicKey;
+    } catch (error) {
+        console.error('Error generating public key:', error);
+        throw error;
+    }
+}
+
+async function signData(data: any, privateKey: string, publicKey: string) {
     try {
         // Sort the keys in the data object
         const orderedData = sortObjectKeys(data);
@@ -133,11 +148,14 @@ async function signData(data: any, privateKey: Uint8Array, publicKey: Uint8Array
         // Convert the ordered data object to a string
         const dataString = JSON.stringify(orderedData);
 
-        // Convert the data string to bytes
-        const messageBytes = utils.utf8ToBytes(dataString);
+        // Convert the data string to a hex string
+        const hexMessage = jsonToUnicodeHex(JSON.parse(dataString));
 
-        // Sign the message with the private key using noble-ed25519
-        const signature = await sign(messageBytes, privateKey);
+        // Sign the hex message with the private key
+        const signature = await Crypto.digestStringAsync(
+            Crypto.CryptoDigestAlgorithm.SHA256,
+            hexMessage + privateKey
+        );
 
         return { signature, orderedData };
     } catch (error) {
@@ -164,3 +182,25 @@ const sortObjectKeys = (obj: any): any => {
 
     return sortedObj as any;
 };
+
+function jsonToUnicodeHex(json: object): string {
+    let jsonString = JSON.stringify(json);
+
+    let unicodeString = '';
+    for (let i = 0; i < jsonString.length; i++) {
+        let charCode = jsonString.charCodeAt(i);
+        if (charCode > 127) {  // Non-Latin characters
+            unicodeString += '\\u' + ('0000' + charCode.toString(16)).slice(-4);
+        } else {
+            unicodeString += jsonString[i];
+        }
+    }
+
+    // Now convert to hex
+    let hexString = '';
+    for (let i = 0; i < unicodeString.length; i++) {
+        hexString += unicodeString.charCodeAt(i).toString(16);
+    }
+
+    return hexString;
+}
