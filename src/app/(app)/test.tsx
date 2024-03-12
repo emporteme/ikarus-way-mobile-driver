@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
-import * as Crypto from 'expo-crypto';
+import { sign, utils } from '@noble/ed25519'; // Import the noble-ed25519 library
 
 export default function App() {
-    const [privateKey, setPrivateKey] = useState<string | null>(null);
+    const [privateKey, setPrivateKey] = useState<Uint8Array | null>(null);
     const [location, setLocation] = useState<any>(null);
 
     useEffect(() => {
@@ -15,7 +15,7 @@ export default function App() {
     useEffect(() => {
         // Start sending location data every 10 seconds once privateKey is available
         if (privateKey) {
-            const intervalId = setInterval(signLocation, 10000);
+            const intervalId = setInterval(signLocation, 10 * 1000);
 
             // Clear interval on component unmount
             return () => clearInterval(intervalId);
@@ -25,7 +25,7 @@ export default function App() {
     const loadPrivateKey = async () => {
         // Load private key from secure storage
         const storedPrivateKey = "bb5a9e04a0baaf8cda5cd8718c18d113daa752a4b47dbf10a1c6684a496b241c"; // Replace with your method for loading private key
-        setPrivateKey(storedPrivateKey);
+        setPrivateKey(utils.hexToBytes(storedPrivateKey));
     };
 
     const signLocation = async () => {
@@ -41,12 +41,11 @@ export default function App() {
             setLocation(location);
 
             // Generate public key from private key
-            const publicKey = await getPublicKeyFromPrivateKey(privateKey);
+            const publicKey = utils.getPublicKey(privateKey);
 
             // Constructing the data object
             const dataToSend = {
                 tx: {
-                    pubkey: publicKey,
                     company_id: 1,
                     coords: {
                         accuracy: location.coords.accuracy,
@@ -57,25 +56,22 @@ export default function App() {
                         longitude: location.coords.longitude,
                         speed: location.coords.speed
                     },
-                    devpubkey: publicKey,
+                    devpubkey: utils.bytesToHex(publicKey),
                     mocked: location.mocked,
                     timestamp: location.timestamp,
-                    signature: '' // Placeholder for signature
                 },
                 type: "AA05"
             };
 
-            // Convert data to string for signing
-            const dataString = JSON.stringify(dataToSend.tx);
+            console.log('------------------ DATA BEFORE: ', dataToSend);
 
-            // Sign data with private key
-            const signature = await Crypto.digestStringAsync(
-                Crypto.CryptoDigestAlgorithm.SHA256,
-                dataString + privateKey
-            );
+            // Sign the 'tx' object
+            const { signature, orderedData } = await signData(dataToSend.tx, privateKey, publicKey);
 
-            // Update the signature in the data object
-            dataToSend.tx.signature = signature;
+            // Update the 'tx' object with the signature and public key
+            orderedData.pubkey = utils.bytesToHex(publicKey);
+            orderedData.signature = utils.bytesToHex(signature);
+            dataToSend.tx = orderedData;
 
             // Send data to API
             await sendToAPI(dataToSend);
@@ -89,7 +85,7 @@ export default function App() {
         // Replace API_URL with your actual API endpoint
         const API_URL = 'http://pool.prometeochain.io/node/get_from_ledger';
 
-        console.log('------------------ DATA TO SEND: ', dataToSend)
+        console.log('------------------ DATA TO SEND: ', dataToSend);
 
         try {
             const response = await fetch(API_URL, {
@@ -100,7 +96,7 @@ export default function App() {
                 body: JSON.stringify(dataToSend)
             });
 
-            console.log('RESPONSE: ', response)
+            console.log('RESPONSE: ', response);
 
             if (!response.ok) {
                 throw new Error('Some shit gone wrong');
@@ -114,7 +110,7 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <Text>Private Key: {privateKey}</Text>
+            <Text>Private Key: {privateKey ? utils.bytesToHex(privateKey) : 'Not available'}</Text>
             <Text>Location: {location ? JSON.stringify(location) : 'Not available'}</Text>
         </View>
     );
@@ -129,17 +125,42 @@ const styles = StyleSheet.create({
     },
 });
 
-async function getPublicKeyFromPrivateKey(privateKey: string): Promise<string> {
+async function signData(data: any, privateKey: Uint8Array, publicKey: Uint8Array) {
     try {
-        // Generate the public key using the private key
-        const publicKey = await Crypto.digestStringAsync(
-            Crypto.CryptoDigestAlgorithm.SHA256,
-            privateKey
-        );
+        // Sort the keys in the data object
+        const orderedData = sortObjectKeys(data);
 
-        return publicKey;
+        // Convert the ordered data object to a string
+        const dataString = JSON.stringify(orderedData);
+
+        // Convert the data string to bytes
+        const messageBytes = utils.utf8ToBytes(dataString);
+
+        // Sign the message with the private key using noble-ed25519
+        const signature = await sign(messageBytes, privateKey);
+
+        return { signature, orderedData };
     } catch (error) {
-        console.error('Error generating public key:', error);
+        console.error('Error signing data:', error);
         throw error;
     }
 }
+
+const sortObjectKeys = (obj: any): any => {
+    if (typeof obj !== 'object' || obj === null) {
+        return obj;
+    }
+
+    if (Array.isArray(obj)) {
+        return obj.map(sortObjectKeys) as any;
+    }
+
+    const sortedObj = {} as { [key: string]: any };
+    Object.keys(obj)
+        .sort()
+        .forEach((key) => {
+            sortedObj[key] = sortObjectKeys(obj[key]);
+        });
+
+    return sortedObj as any;
+};
