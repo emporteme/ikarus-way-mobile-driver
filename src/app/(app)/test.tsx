@@ -138,8 +138,10 @@ async function getPublicKeyFromPrivateKey(privateKey: string): Promise<string> {
     try {
         console.log('CHECK')
         console.log('CHECK 2')
+        console.log('CHECK 2 2')
         const { getPublicKey } = require('ed25519-hd-key');
         console.log('CHECK 3')
+
         var bytes = new Uint8Array(Math.ceil(privateKey.length / 2));
         for (var i = 0; i < bytes.length; i++)
             bytes[i] = parseInt(privateKey.substr(i * 2, 2), 16);
@@ -175,11 +177,16 @@ async function signData(data: any, privateKey: any, publicKey: string) {
         console.log('------------------ DATA AFTER HEX: ', hexMessage);
 
         // Sign the hex message with the private key
+        const signature = await ed.sign(hexMessage, privateKey);
+        console.log('signature', signature)
+        const isValid = await ed.verify(signature, hexMessage, privateKey);
+        console.log('isValid', isValid)
 
-        const signature = await Crypto.digestStringAsync(
-            Crypto.CryptoDigestAlgorithm.SHA256,
-            hexMessage + privateKey
-        );
+        console.log('SIGN DEVICE END');
+        // const signature = await Crypto.digestStringAsync(
+        //     Crypto.CryptoDigestAlgorithm.SHA256,
+        //     hexMessage + privateKey
+        // );
 
         console.log('------------------ SIGNATURE: ', signature);
 
