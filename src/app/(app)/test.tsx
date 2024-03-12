@@ -1,31 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
-import { generatePrivateKey, generatePublicKey, sign, verify } from '@/components/core/sign';
-import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
+import * as Crypto from 'expo-crypto';
+import * as nacl from 'tweetnacl';
+import { createHash, createSign } from 'react-native-crypto';
 
 export default function App() {
-    const [privateKey, setPrivateKey] = useState<Uint8Array | null>(null);
-    const [publicKey, setPublicKey] = useState<Uint8Array | null>(null);
+    const [privateKey, setPrivateKey] = useState<string | null>(null);
     const [location, setLocation] = useState<any>(null);
 
     useEffect(() => {
-        // Generate private key and public key when the component mounts
-        const newPrivateKey = generatePrivateKey();
-        const newPublicKey = generatePublicKey(newPrivateKey);
-        setPrivateKey(newPrivateKey);
-        setPublicKey(newPublicKey);
+        // Load private key from secure storage when the component mounts
+        loadPrivateKey();
     }, []);
 
     useEffect(() => {
-        // Start sending location data every 10 seconds once privateKey and publicKey are available
-        if (privateKey && publicKey) {
+        // Start sending location data every 10 seconds once privateKey is available
+        if (privateKey) {
             const intervalId = setInterval(signLocation, 10 * 1000);
 
             // Clear interval on component unmount
             return () => clearInterval(intervalId);
         }
-    }, [privateKey, publicKey]);
+    }, [privateKey]);
+
+    const loadPrivateKey = async () => {
+        // Load private key from secure storage
+        const storedPrivateKey = "bb5a9e04a0baaf8cda5cd8718c18d113daa752a4b47dbf10a1c6684a496b241c"; // Replace with your method for loading private key
+        setPrivateKey(storedPrivateKey);
+    };
 
     const signLocation = async () => {
         try {
@@ -39,6 +42,10 @@ export default function App() {
             let location = await Location.getCurrentPositionAsync({});
             setLocation(location);
 
+            // Generate public key from private key
+            const publicKey = await getPublicKeyFromPrivateKey(privateKey);
+
+            // Constructing the data object
             const dataToSend = {
                 tx: {
                     company_id: 1,
@@ -51,7 +58,7 @@ export default function App() {
                         longitude: location.coords.longitude,
                         speed: location.coords.speed
                     },
-                    devpubkey: bytesToHex(publicKey!),
+                    devpubkey: publicKey,
                     mocked: location.mocked,
                     timestamp: location.timestamp,
                 },
@@ -61,25 +68,12 @@ export default function App() {
             console.log('------------------ DATA BEFORE: ', dataToSend);
 
             // Sign the 'tx' object without pubkey and signature
-            const { signature, orderedData } = await signData(dataToSend.tx, privateKey!, publicKey!);
+            const { signature, orderedData } = await signData(dataToSend.tx, privateKey);
 
             // Update the 'tx' object with the signature and public key
-            const updatedData = {
-                ...orderedData,
-                pubkey: bytesToHex(publicKey!),
-                signature: signature,
-                coords: {
-                    accuracy: dataToSend.tx.coords.accuracy,
-                    altitude: dataToSend.tx.coords.altitude,
-                    altitudeAccuracy: dataToSend.tx.coords.altitudeAccuracy,
-                    heading: dataToSend.tx.coords.heading,
-                    latitude: dataToSend.tx.coords.latitude,
-                    longitude: dataToSend.tx.coords.longitude,
-                    speed: dataToSend.tx.coords.speed
-                },
-                devpubkey: dataToSend.tx.devpubkey
-            };
-            dataToSend.tx = updatedData;
+            orderedData.pubkey = publicKey;
+            orderedData.signature = signature;
+            dataToSend.tx = orderedData;
 
             // Send data to API
             await sendToAPI(dataToSend);
@@ -89,8 +83,14 @@ export default function App() {
     };
 
     const sendToAPI = async (dataToSend: any) => {
+        // Send data to API
+        // Replace API_URL with your actual API endpoint
+        const API_URL = 'http://pool.prometeochain.io/node/get_from_ledger';
+
+        console.log('------------------ DATA TO SEND: ', dataToSend);
+
         try {
-            const response = await fetch('https://api.example.com/location', {
+            const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -98,46 +98,22 @@ export default function App() {
                 body: JSON.stringify(dataToSend)
             });
 
-            if (response.ok) {
-                console.log('Location data sent successfully');
-            } else {
-                console.error('Error sending location data:', response.status);
+            console.log('RESPONSE: ', response);
+
+            if (!response.ok) {
+                throw new Error('Some shit gone wrong');
             }
+
+            console.log('Location sent successfully');
         } catch (error) {
-            console.error('Error sending location data:', error);
+            console.error('Error sending data to API:', error);
         }
-    };
-
-    const signData = async (data: any, privateKey: Uint8Array, publicKey: Uint8Array) => {
-        // Convert data to string and then to bytes
-        const dataString = JSON.stringify(data);
-        const dataBytes = new TextEncoder().encode(dataString);
-
-        // Sign the data using the private key
-        const signature = bytesToHex(sign(dataBytes, privateKey));
-
-        // Order the data according to the API requirements
-        const orderedData = {
-            accuracy: data.coords.accuracy,
-            altitude: data.coords.altitude,
-            altitudeAccuracy: data.coords.altitudeAccuracy,
-            company_id: data.company_id,
-            heading: data.coords.heading,
-            latitude: data.coords.latitude,
-            longitude: data.coords.longitude,
-            mocked: data.mocked,
-            speed: data.coords.speed,
-            timestamp: data.timestamp,
-        };
-
-        return { signature, orderedData };
     };
 
     return (
         <View style={styles.container}>
-            <Text>Private Key: {privateKey ? bytesToHex(privateKey) : 'Loading...'}</Text>
-            <Text>Public Key: {publicKey ? bytesToHex(publicKey) : 'Loading...'}</Text>
-            <Text>Location: {location ? JSON.stringify(location) : 'Loading...'}</Text>
+            <Text>Private Key: {privateKey}</Text>
+            <Text>Location: {location ? JSON.stringify(location) : 'Not available'}</Text>
         </View>
     );
 }
@@ -145,8 +121,85 @@ export default function App() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+        gap: 50
     },
 });
+
+async function getPublicKeyFromPrivateKey(privateKey: string): Promise<string> {
+    try {
+        // Generate the public key using the private key
+        const publicKey = await Crypto.digestStringAsync(
+            Crypto.CryptoDigestAlgorithm.SHA256,
+            privateKey
+        );
+
+        return publicKey;
+    } catch (error) {
+        console.error('Error generating public key:', error);
+        throw error;
+    }
+}
+
+async function signData(data: any, privateKey: string) {
+    try {
+        // Sort the keys in the data object
+        const orderedData = sortObjectKeys(data);
+
+        // Convert the ordered data object to a string
+        const dataString = JSON.stringify(orderedData);
+
+        // Sign the data with Ed25519
+        const signature = nacl.sign.detached(
+            Buffer.from(dataString, 'utf8'),
+            Buffer.from(privateKey, 'hex')
+        );
+
+        return { signature: Buffer.from(signature).toString('hex'), orderedData };
+    } catch (error) {
+        console.error('Error signing data:', error);
+        throw error;
+    }
+}
+
+const sortObjectKeys = (obj: any): any => {
+    if (typeof obj !== 'object' || obj === null) {
+        return obj;
+    }
+
+    if (Array.isArray(obj)) {
+        return obj.map(sortObjectKeys) as any;
+    }
+
+    const sortedObj = {} as { [key: string]: any };
+    Object.keys(obj)
+        .sort()
+        .forEach((key) => {
+            sortedObj[key] = sortObjectKeys(obj[key]);
+        });
+
+    return sortedObj as any;
+};
+
+function jsonToUnicodeHex(json: object): string {
+    let jsonString = JSON.stringify(json);
+
+    let unicodeString = '';
+    for (let i = 0; i < jsonString.length; i++) {
+        let charCode = jsonString.charCodeAt(i);
+        if (charCode > 127) {  // Non-Latin characters
+            unicodeString += '\\u' + ('0000' + charCode.toString(16)).slice(-4);
+        } else {
+            unicodeString += jsonString[i];
+        }
+    }
+
+    // Now convert to hex
+    let hexString = '';
+    for (let i = 0; i < unicodeString.length; i++) {
+        hexString += unicodeString.charCodeAt(i).toString(16);
+    }
+
+    return hexString;
+}
