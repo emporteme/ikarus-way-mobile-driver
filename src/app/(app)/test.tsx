@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
 import * as Crypto from 'expo-crypto';
 import * as ed from 'noble-ed25519';
+import { getPublicKeyFromPrivateKey as getPublicKey } from '@/components/core/publicKey';
 
 export default function App() {
     const [privateKey, setPrivateKey] = useState<string | null>(null);
@@ -130,32 +131,14 @@ const styles = StyleSheet.create({
 });
 // import {getPublicKey} from 'ed25519-hd-key'
 
-async function getPublicKeyFromPrivateKey(privateKey: string): Promise<string> {
+async function getPublicKeyFromPrivateKey(privateKey: string): Promise<any> {
     // let privateKey: string;
     let publicKey: string;
     let privatekeyBit: Uint8Array;
     let publicKeyBit: Uint8Array;
     try {
-        console.log('CHECK')
-        console.log('CHECK 2')
-        console.log('CHECK 2 2')
-        const { getPublicKey } = require('ed25519-hd-key');
-        console.log('CHECK 3')
-
-        var bytes = new Uint8Array(Math.ceil(privateKey.length / 2));
-        for (var i = 0; i < bytes.length; i++)
-            bytes[i] = parseInt(privateKey.substr(i * 2, 2), 16);
-        console.log(bytes);
-
-        privatekeyBit = bytes
-        console.log('private key bits', privatekeyBit)
-
-        publicKeyBit = getPublicKey(privatekeyBit);
-        publicKey = getPublicKey(privatekeyBit).toString('hex').substring(2);
-        console.log("PUBLICK KEY", publicKey);
-        // publicKey = ""
-
-        return publicKey;
+        const publicKey = await getPublicKey(privateKey);
+        console.log('Public Key:', publicKey);
     } catch (error) {
         console.error('Error generating public key:', error);
         throw error;
