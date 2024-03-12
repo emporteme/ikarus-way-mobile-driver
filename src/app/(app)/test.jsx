@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
-import * as Crypto from 'expo-crypto';
+import nacl from 'tweetnacl';
+import { decodeUTF8, encodeUTF8, encodeBase64 } from 'tweetnacl-util';
 
 export default function App() {
-    const [privateKey, setPrivateKey] = useState<string | null>(null);
-    const [location, setLocation] = useState<any>(null);
+    const [privateKey, setPrivateKey] = useState < Uint8Array | null > (null);
+    const [location, setLocation] = useState < any > (null);
 
     useEffect(() => {
         // Load private key from secure storage when the component mounts
@@ -25,7 +26,7 @@ export default function App() {
     const loadPrivateKey = async () => {
         // Load private key from secure storage
         const storedPrivateKey = "bb5a9e04a0baaf8cda5cd8718c18d113daa752a4b47dbf10a1c6684a496b241c"; // Replace with your method for loading private key
-        setPrivateKey(storedPrivateKey);
+        setPrivateKey(nacl.util.decodeUTF8(storedPrivateKey));
     };
 
     const signLocation = async () => {
@@ -63,7 +64,8 @@ export default function App() {
                 type: "AA05"
             };
 
-            console.log('------------------ DATA BEFORE: ', dataToSend);
+            console.log('Start');
+            console.log(dataToSend.tx);
 
             // Sign the 'tx' object without pubkey and signature
             const { signature, orderedData } = await signData(dataToSend.tx, privateKey, publicKey);
@@ -80,7 +82,7 @@ export default function App() {
         }
     };
 
-    const sendToAPI = async (dataToSend: any) => {
+    const sendToAPI = async (dataToSend) => {
         // Send data to API
         // Replace API_URL with your actual API endpoint
         const API_URL = 'http://pool.prometeochain.io/node/get_from_ledger';
@@ -110,7 +112,7 @@ export default function App() {
 
     return (
         <View style={styles.container}>
-            <Text>Private Key: {privateKey}</Text>
+            <Text>Private Key: {privateKey ? nacl.util.encodeBase64(privateKey) : 'Not available'}</Text>
             <Text>Location: {location ? JSON.stringify(location) : 'Not available'}</Text>
         </View>
     );
@@ -125,22 +127,17 @@ const styles = StyleSheet.create({
     },
 });
 
-async function getPublicKeyFromPrivateKey(privateKey: string): Promise<string> {
+async function getPublicKeyFromPrivateKey(privateKey) {
     try {
-        // Generate the public key using the private key
-        const publicKey = await Crypto.digestStringAsync(
-            Crypto.CryptoDigestAlgorithm.SHA256,
-            privateKey
-        );
-
-        return publicKey;
+        const publicKeyBytes = nacl.sign.keyPair.fromSeed(privateKey).publicKey;
+        return nacl.util.encodeBase64(publicKeyBytes);
     } catch (error) {
         console.error('Error generating public key:', error);
         throw error;
     }
 }
 
-async function signData(data: any, privateKey: string, publicKey: string) {
+async function signData(data, privateKey, publicKey) {
     try {
         // Sort the keys in the data object
         const orderedData = sortObjectKeys(data);
@@ -148,14 +145,14 @@ async function signData(data: any, privateKey: string, publicKey: string) {
         // Convert the ordered data object to a string
         const dataString = JSON.stringify(orderedData);
 
-        // Convert the data string to a hex string
-        const hexMessage = jsonToUnicodeHex(JSON.parse(dataString));
+        // Convert the data string to a Uint8Array
+        const dataBytes = encodeUTF8(dataString);
 
-        // Sign the hex message with the private key
-        const signature = await Crypto.digestStringAsync(
-            Crypto.CryptoDigestAlgorithm.SHA256,
-            hexMessage + privateKey
-        );
+        // Sign the data bytes with the private key
+        const signedMessage = nacl.sign(dataBytes, privateKey);
+
+        // Extract the signature from the signed message
+        const signature = nacl.util.encodeBase64(signedMessage.slice(0, nacl.sign.signatureLength));
 
         return { signature, orderedData };
     } catch (error) {
@@ -164,43 +161,21 @@ async function signData(data: any, privateKey: string, publicKey: string) {
     }
 }
 
-const sortObjectKeys = (obj: any): any => {
+const sortObjectKeys = (obj) => {
     if (typeof obj !== 'object' || obj === null) {
         return obj;
     }
 
     if (Array.isArray(obj)) {
-        return obj.map(sortObjectKeys) as any;
+        return obj.map(sortObjectKeys);
     }
 
-    const sortedObj = {} as { [key: string]: any };
+    const sortedObj = {};
     Object.keys(obj)
         .sort()
         .forEach((key) => {
             sortedObj[key] = sortObjectKeys(obj[key]);
         });
 
-    return sortedObj as any;
+    return sortedObj;
 };
-
-function jsonToUnicodeHex(json: object): string {
-    let jsonString = JSON.stringify(json);
-
-    let unicodeString = '';
-    for (let i = 0; i < jsonString.length; i++) {
-        let charCode = jsonString.charCodeAt(i);
-        if (charCode > 127) {  // Non-Latin characters
-            unicodeString += '\\u' + ('0000' + charCode.toString(16)).slice(-4);
-        } else {
-            unicodeString += jsonString[i];
-        }
-    }
-
-    // Now convert to hex
-    let hexString = '';
-    for (let i = 0; i < unicodeString.length; i++) {
-        hexString += unicodeString.charCodeAt(i).toString(16);
-    }
-
-    return hexString;
-}
