@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
-import * as Crypto from 'expo-crypto';
-import * as nacl from 'tweetnacl';
-import { createHash, createSign } from 'react-native-crypto';
+import { sign, getPublicKey } from '@noble/ed25519';
 
 export default function App() {
-    const [privateKey, setPrivateKey] = useState<string | null>(null);
+    const [privateKey, setPrivateKey] = useState<Uint8Array | null>(null);
     const [location, setLocation] = useState<any>(null);
 
     useEffect(() => {
@@ -27,7 +25,8 @@ export default function App() {
     const loadPrivateKey = async () => {
         // Load private key from secure storage
         const storedPrivateKey = "bb5a9e04a0baaf8cda5cd8718c18d113daa752a4b47dbf10a1c6684a496b241c"; // Replace with your method for loading private key
-        setPrivateKey(storedPrivateKey);
+        const privateKeyBytes = hexToBytes(storedPrivateKey);
+        setPrivateKey(privateKeyBytes);
     };
 
     const signLocation = async () => {
@@ -43,7 +42,7 @@ export default function App() {
             setLocation(location);
 
             // Generate public key from private key
-            const publicKey = await getPublicKeyFromPrivateKey(privateKey);
+            const publicKey = bytesToHex(getPublicKey(privateKey));
 
             // Constructing the data object
             const dataToSend = {
@@ -67,13 +66,20 @@ export default function App() {
 
             console.log('------------------ DATA BEFORE: ', dataToSend);
 
-            // Sign the 'tx' object without pubkey and signature
-            const { signature, orderedData } = await signData(dataToSend.tx, privateKey);
+            // Convert tx object to string for signing
+            const txString = JSON.stringify(dataToSend.tx);
 
-            // Update the 'tx' object with the signature and public key
-            orderedData.pubkey = publicKey;
-            orderedData.signature = signature;
-            dataToSend.tx = orderedData;
+            // Sign tx with private key
+            const signature = bytesToHex(sign(txString, privateKey));
+
+            // Create a new object with the tx properties and the signature
+            const signedTx = {
+                ...dataToSend.tx,
+                signature
+            };
+
+            // Update the dataToSend object
+            dataToSend.tx = signedTx;
 
             // Send data to API
             await sendToAPI(dataToSend);
@@ -110,10 +116,23 @@ export default function App() {
         }
     };
 
+    // Helper functions for converting between hex strings and byte arrays
+    function hexToBytes(hex: string): Uint8Array {
+        const bytes = new Uint8Array(hex.length / 2);
+        for (let i = 0; i < hex.length; i += 2) {
+            bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+        }
+        return bytes;
+    }
+
+    function bytesToHex(bytes: Uint8Array): string {
+        return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+
     return (
         <View style={styles.container}>
-            <Text>Private Key: {privateKey}</Text>
-            <Text>Location: {location ? JSON.stringify(location) : 'Not available'}</Text>
+            <Text>Private Key: {privateKey ? bytesToHex(privateKey) : 'Not available'}</Text>
+            <Text>Location: {location ? JSON.stringify(location) : 'Not available NOW'}</Text>
         </View>
     );
 }
@@ -126,80 +145,3 @@ const styles = StyleSheet.create({
         gap: 50
     },
 });
-
-async function getPublicKeyFromPrivateKey(privateKey: string): Promise<string> {
-    try {
-        // Generate the public key using the private key
-        const publicKey = await Crypto.digestStringAsync(
-            Crypto.CryptoDigestAlgorithm.SHA256,
-            privateKey
-        );
-
-        return publicKey;
-    } catch (error) {
-        console.error('Error generating public key:', error);
-        throw error;
-    }
-}
-
-async function signData(data: any, privateKey: string) {
-    try {
-        // Sort the keys in the data object
-        const orderedData = sortObjectKeys(data);
-
-        // Convert the ordered data object to a string
-        const dataString = JSON.stringify(orderedData);
-
-        // Sign the data with Ed25519
-        const signature = nacl.sign.detached(
-            Buffer.from(dataString, 'utf8'),
-            Buffer.from(privateKey, 'hex')
-        );
-
-        return { signature: Buffer.from(signature).toString('hex'), orderedData };
-    } catch (error) {
-        console.error('Error signing data:', error);
-        throw error;
-    }
-}
-
-const sortObjectKeys = (obj: any): any => {
-    if (typeof obj !== 'object' || obj === null) {
-        return obj;
-    }
-
-    if (Array.isArray(obj)) {
-        return obj.map(sortObjectKeys) as any;
-    }
-
-    const sortedObj = {} as { [key: string]: any };
-    Object.keys(obj)
-        .sort()
-        .forEach((key) => {
-            sortedObj[key] = sortObjectKeys(obj[key]);
-        });
-
-    return sortedObj as any;
-};
-
-function jsonToUnicodeHex(json: object): string {
-    let jsonString = JSON.stringify(json);
-
-    let unicodeString = '';
-    for (let i = 0; i < jsonString.length; i++) {
-        let charCode = jsonString.charCodeAt(i);
-        if (charCode > 127) {  // Non-Latin characters
-            unicodeString += '\\u' + ('0000' + charCode.toString(16)).slice(-4);
-        } else {
-            unicodeString += jsonString[i];
-        }
-    }
-
-    // Now convert to hex
-    let hexString = '';
-    for (let i = 0; i < unicodeString.length; i++) {
-        hexString += unicodeString.charCodeAt(i).toString(16);
-    }
-
-    return hexString;
-}
