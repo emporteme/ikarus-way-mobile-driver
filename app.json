@@ -41,9 +41,6 @@
       "expo-build-properties",
       "expo-secure-store"
     ],
-    "assetPlugins": [
-      "expo-asset/tools/hashAssetFiles"
-    ],
     "experiments": {
       "tsconfigPaths": true
     },

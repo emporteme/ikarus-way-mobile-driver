@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
 import * as Crypto from 'expo-crypto';
-import * as ed from 'noble-ed25519';
-import { getPublicKeyFromPrivateKey as getPublicKey } from '@/components/core/publicKey';
+import * as forge from 'node-forge';
+import { ColorSpace } from 'react-native-reanimated';
 
 export default function App() {
     const [privateKey, setPrivateKey] = useState<string | null>(null);
@@ -65,10 +65,7 @@ export default function App() {
                 type: "AA05"
             };
 
-            // console.log('------------------ DATA BEFORE: ', dataToSend);
-            console.log('Start');
-            console.log(dataToSend.tx);
-
+            console.log('------------------ DATA BEFORE: ', dataToSend);
 
             // Sign the 'tx' object without pubkey and signature
             const { signature, orderedData } = await signData(dataToSend.tx, privateKey, publicKey);
@@ -129,49 +126,35 @@ const styles = StyleSheet.create({
         gap: 50
     },
 });
-// import {getPublicKey} from 'ed25519-hd-key'
 
-async function getPublicKeyFromPrivateKey(privateKey: string): Promise<any> {
-    // let privateKey: string;
-    let publicKey: string;
-    let privatekeyBit: Uint8Array;
-    let publicKeyBit: Uint8Array;
+async function getPublicKeyFromPrivateKey(privateKey: string): Promise<string> {
     try {
-        const publicKey = await getPublicKey(privateKey);
-        console.log('Public Key:', publicKey);
+        // Создаем объект ed25519 из приватного ключа
+        const privateKeyObject = forge.pki.ed25519.makeKeypair({ priv: forge.util.hexToBytes(privateKey) });
+
+        // Получаем публичный ключ в шестнадцатеричном формате
+        const publicKey = forge.util.bytesToHex(privateKeyObject.publicKey);
+
+        return publicKey;
     } catch (error) {
         console.error('Error generating public key:', error);
         throw error;
     }
 }
 
-async function signData(data: any, privateKey: any, publicKey: string) {
+async function signData(data: any, privateKey: string, publicKey: string) {
     try {
         // Sort the keys in the data object
         const orderedData = sortObjectKeys(data);
-        console.log('------------------ DATA AFTER ORDER: ', orderedData);
 
         // Convert the ordered data object to a string
         const dataString = JSON.stringify(orderedData);
-        console.log('------------------ DATA AFTER STRINGIFY: ', dataString);
 
-        // Convert the data string to a hex string
-        const hexMessage = jsonToUnicodeHex(JSON.parse(dataString));
-        console.log('------------------ DATA AFTER HEX: ', hexMessage);
+        // Convert the data string to a buffer
+        const buffer = Buffer.from(dataString);
 
-        // Sign the hex message with the private key
-        const signature = await ed.sign(hexMessage, privateKey);
-        console.log('signature', signature)
-        const isValid = await ed.verify(signature, hexMessage, privateKey);
-        console.log('isValid', isValid)
-
-        console.log('SIGN DEVICE END');
-        // const signature = await Crypto.digestStringAsync(
-        //     Crypto.CryptoDigestAlgorithm.SHA256,
-        //     hexMessage + privateKey
-        // );
-
-        console.log('------------------ SIGNATURE: ', signature);
+        // Подписываем данные приватным ключом
+        const signature = forge.util.bytesToHex(forge.pki.ed25519.sign({ message: buffer, encoding: 'binary' }, forge.util.hexToBytes(privateKey)));
 
         return { signature, orderedData };
     } catch (error) {
