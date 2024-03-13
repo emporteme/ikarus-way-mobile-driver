@@ -90,6 +90,7 @@ export default function App() {
             // Constructing the data object
             const dataToSend = {
                 tx: {
+                    pubkey: publicKey,
                     company_id: 1,
                     coords: {
                         accuracy: location.coords.accuracy,
@@ -102,7 +103,7 @@ export default function App() {
                     },
                     devpubkey: publicKey,
                     mocked: location.mocked,
-                    timestamp: location.timestamp,
+                    timestamp: location.timestamp / 1000,
                 },
                 type: 'AA05',
             };
@@ -113,12 +114,27 @@ export default function App() {
             const { signature, orderedData } = signData(dataToSend.tx, privateKey);
 
             // Update the 'tx' object with the signature and public key
-            orderedData.pubkey = publicKey;
             orderedData.signature = signature;
             dataToSend.tx = orderedData;
 
+            console.log('------------------ ORDEREDDATA: ', orderedData);
+            const tx = {
+                pubkey: publicKey,
+                ...orderedData,
+                signature: signature
+            }
+
+            console.log('------------------ TX: ', tx);
+
+            const sendToPool = {
+                'tx': tx,
+                'type': 'AA05'
+            }
+
+            const strigify = JSON.stringify(sendToPool)
+            console.log('------------------ STRINGIFY: ', strigify);
             // Send data to API
-            await sendToAPI(dataToSend);
+            await sendToAPI(strigify);
         } catch (error) {
             console.error('Error signing location:', error);
         }
@@ -137,7 +153,7 @@ export default function App() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(dataToSend),
+                body: dataToSend
             });
 
             console.log('RESPONSE: ', response);
@@ -152,6 +168,28 @@ export default function App() {
         }
     };
 
+    function jsonToUnicodeHex(json: object): string {
+        let jsonString = JSON.stringify(json);
+
+        let unicodeString = '';
+        for (let i = 0; i < jsonString.length; i++) {
+            let charCode = jsonString.charCodeAt(i);
+            if (charCode > 127) {  // Non-Latin characters
+                unicodeString += '\\u' + ('0000' + charCode.toString(16)).slice(-4);
+            } else {
+                unicodeString += jsonString[i];
+            }
+        }
+
+        // Now convert to hex
+        let hexString = '';
+        for (let i = 0; i < unicodeString.length; i++) {
+            hexString += unicodeString.charCodeAt(i).toString(16);
+        }
+
+        return hexString;
+    }
+
     const signData = (data: any, privateKey: string) => {
         try {
             // Sort the keys in the data object
@@ -161,13 +199,12 @@ export default function App() {
             const dataString = JSON.stringify(orderedData);
 
             // Convert the data string to an array of character codes
-            const messageArray = codifyMessage(dataString);
-
+            //const messageArray = codifyMessage(dataString);
+            const hexMessage = jsonToUnicodeHex(JSON.parse(dataString))
             // Import private key
             const key = ec.keyFromSecret(fromHex(privateKey));
-
             // Sign the message array with the private key
-            const signature = toHex(key.sign(messageArray).toBytes());
+            const signature = toHex(key.sign(hexMessage).toBytes());
 
             return { signature, orderedData };
         } catch (error) {
@@ -195,6 +232,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         gap: 50,
+        padding: 20,
     },
 });
 
