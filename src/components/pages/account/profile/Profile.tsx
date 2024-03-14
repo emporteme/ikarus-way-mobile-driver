@@ -112,14 +112,6 @@ const Profile: React.FC = () => {
                                         <Text style={styles.value}>{profileData?.department}</Text>
                                     </View>
                                     : <></>}
-                                <View style={styles.detail}>
-                                    <Text style={styles.label}>Truck plate</Text>
-                                    <Text style={styles.value}>KZ411ABX15</Text>
-                                </View>
-                                <View style={styles.detail}>
-                                    <Text style={styles.label}>IoT devices</Text>
-                                    <Text style={styles.value}>x 12</Text>
-                                </View>
                             </View>
                         </>
                     </View>
