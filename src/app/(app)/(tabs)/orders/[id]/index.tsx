@@ -175,37 +175,54 @@ const OrderDetail: React.FC<OrderType> = () => {
             });
     }
 
-    const downloadFile = async (fileId) => {
+    // const downloadFile = async (fileId) => {
+    //     try {
+    //         const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+    //         const url = `${apiUrl}receipts/download/${id}/${fileId}`;
+
+    //         const response = await fetch(url, {
+    //             method: 'GET',
+    //             headers: {
+    //                 'Authorization': `Bearer ${jwtToken}`,
+    //             },
+    //         });
+
+    //         if (!response.ok) {
+    //             throw new Error(`Failed to download file: ${response.status}`);
+    //         }
+
+    //         const byteArray = await response.arrayBuffer();
+    //         const fileExtension = getFileExtension(response.headers.get('Content-Type'));
+    //         const fileName = `file_${fileId}.${fileExtension}`;
+
+    //         const fileUri = `${FileSystem.cacheDirectory}${fileName}`;
+    //         await FileSystem.writeAsStringAsync(fileUri, Buffer.from(byteArray).toString('base64'), { encoding: FileSystem.EncodingType.Base64 });
+
+    //         const downloadOptions = {
+    //             mimeType: response.headers.get('Content-Type'),
+    //             uri: fileUri,
+    //         };
+
+    //         await Sharing.shareAsync(downloadOptions.uri);
+
+    //         console.log('File shared successfully!');
+    //     } catch (error) {
+    //         console.error('Error downloading file:', error);
+    //     }
+    // };
+
+    const downloadFile = async (id, fileId, fileName) => {
         try {
             const apiUrl = process.env.EXPO_PUBLIC_API_URL;
             const url = `${apiUrl}receipts/download/${id}/${fileId}`;
+            const downloadResumable = FileSystem.createDownloadResumable(
+                url,
+                FileSystem.documentDirectory + fileName
+            );
 
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${jwtToken}`,
-                },
-            });
+            const { uri } = await downloadResumable.downloadAsync();
 
-            if (!response.ok) {
-                throw new Error(`Failed to download file: ${response.status}`);
-            }
-
-            const byteArray = await response.arrayBuffer();
-            const fileExtension = getFileExtension(response.headers.get('Content-Type'));
-            const fileName = `file_${fileId}.${fileExtension}`;
-
-            const fileUri = `${FileSystem.cacheDirectory}${fileName}`;
-            await FileSystem.writeAsStringAsync(fileUri, Buffer.from(byteArray).toString('base64'), { encoding: FileSystem.EncodingType.Base64 });
-
-            const downloadOptions = {
-                mimeType: response.headers.get('Content-Type'),
-                uri: fileUri,
-            };
-
-            await Sharing.shareAsync(downloadOptions.uri);
-
-            console.log('File shared successfully!');
+            console.log('File downloaded successfully:', uri);
         } catch (error) {
             console.error('Error downloading file:', error);
         }
@@ -535,7 +552,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                                             </Text>
                                             <View style={styles.fileContainer}>
                                                 {receipt.filesInfo.map((file) => (
-                                                    <Pressable key={file.file_id} onPress={() => downloadFile(file.file_id)} style={styles.fileItem}>
+                                                    <Pressable key={file.file_id} onPress={() => downloadFile(receipt.id, file.file_id, file.name)} style={styles.fileItem}>
                                                         <Image source={icons.attach} style={styles.fileIcon} />
                                                         <Text style={styles.fileText}>{file.name}</Text>
                                                     </Pressable>
