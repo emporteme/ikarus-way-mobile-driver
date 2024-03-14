@@ -5,6 +5,7 @@ import { OrderType } from '@/types';
 import { icons } from '@/constants';
 // import CountryFlag from 'react-native-country-flags';
 import CountryFlag from "react-native-country-flag";
+import { orderDetailsStatusName } from './orderDetailsStatusName';
 import styles from './card.style'
 
 const OrderCard: React.FC<OrderType> = (order) => {
@@ -76,6 +77,10 @@ const OrderCard: React.FC<OrderType> = (order) => {
     const shortenName = (name) => {
         return name?.length > 15 ? name.substring(0, 15) : name;
     };
+
+    // Get the mapped status name
+    const statusName = orderDetailsStatusName[order.status]?.name || 'Unknown Status';
+
     return (
         <Link href={`/orders/${order.order_id}`} asChild>
             <Pressable style={styles.card}>
@@ -96,7 +101,7 @@ const OrderCard: React.FC<OrderType> = (order) => {
                         </View>
                     </View>
                     <View style={styles.status}>
-                        <Text style={styles.statusText}>{order.status}</Text>
+                        <Text style={styles.statusText}>{statusName}</Text>
                     </View>
                 </View>
                 <View style={styles.bottom}>
