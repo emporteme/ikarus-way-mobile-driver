@@ -1,21 +1,18 @@
 import { View, FlatList } from 'react-native'
 import React, { useState, useEffect } from 'react'
+import { useSession } from '@/components/core/Context';
 import OrderCard from '@/components/pages/orders/card/OrderCard'
 import EmptyOrders from '@/components/pages/orders/empty/Empty'
-// import { orders } from '@/api/orders'
 import styles from './list.style'
-import { useSession } from '@/components/core/Context';
-
-// Mock data of orders
-
 
 const OrderList: React.FC<{ status: string }> = ({ status }) => {
     // Auth context
-    const { jwtToken} = useSession(); // Destructure jwtToken from useSession
-    
+    const { jwtToken } = useSession(); // Destructure jwtToken from useSession
+
     // Data fetching
     const [orders, setOrders] = useState<any>([]);
-    const apiURL = `http://13.40.95.183:442/api/v1/carrier/orders?filter=${status}`
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+    const apiURL = `${apiUrl}carrier/orders?filter=${status}&page=1&size=10`  // For now will be 10 orders
 
     useEffect(() => {
         fetchOrders(jwtToken); // Pass jwtToken as parameter
@@ -40,8 +37,16 @@ const OrderList: React.FC<{ status: string }> = ({ status }) => {
             }
 
             const data = await response.json(); // Parse response data
-            setOrders(data.data); // Update state with fetched data
-            console.log(data);
+
+            // Check if orders exist in response
+            if (data && data.data && Array.isArray(data.data)) {
+                setOrders(data.data); // Update state with fetched data
+            } else {
+                console.warn('No orders found in response');
+            }
+
+            // setOrders(data.data); // Update state with fetched data
+            // console.log(data);
         } catch (error) {
             console.error('Error fetching orders:', error);
             alert('Failed to fetch orders data');

@@ -50,9 +50,7 @@ const OrdersPage: React.FC = () => {
                             <Text
                                 style={{
                                     fontSize: 16,
-                                    // fontWeight: focused ? '500' : '500',
                                     color: focused ? 'black' : '#33333340',
-                                    // backgroundColor:'red'
                                     fontFamily: FONT.medium
                                 }}
                             >
