@@ -26,9 +26,10 @@ async function fetchAuth(email: string, password: string, signIn: (jwt: string, 
         email: email,
         password: password
     };
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
     try {
-        const url = 'https://app-test.prometeochain.io/api/v1/auth/authenticate';
+        const url = `${apiUrl}auth/authenticate`;
         const response = await fetch(url, {
             method: 'POST',
             headers: {
