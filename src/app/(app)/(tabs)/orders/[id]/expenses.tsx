@@ -52,7 +52,7 @@ const ExpensesPage: React.FC = () => {
             console.log(data);
         } catch (error) {
             console.error('Error fetching order:', error);
-            alert('Failed to fetch order data');
+            // alert('Failed to fetch order data');
         }
     }
 
@@ -222,7 +222,7 @@ const ExpensesPage: React.FC = () => {
 
         } catch (error) {
             console.error(error);
-            alert('Failed to submit expenses');
+            // alert('Failed to submit expenses');
         }
     };
 
