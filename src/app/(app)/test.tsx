@@ -18,6 +18,7 @@ export default function App() {
     const [privateKey, setPrivateKey] = useState<string | null>(null);
     const [publicKey, setPublicKey] = useState<string | null>(null);
     const [devPubKey, setDevPubKey] = useState<string | null>(null);
+    const [isDevKeyRegistered, setIsDevKeyRegistered] = useState(false);
     const [location, setLocation] = useState<any>(null);
 
     useEffect(() => {
@@ -27,27 +28,28 @@ export default function App() {
 
     useEffect(() => {
         // Start sending location data every 10 seconds once privateKey is available
-        if (privateKey) {
+        if (privateKey && !isDevKeyRegistered) {
+            signDevkey(devPubKey, privateKey); // Fix: Pass both devPubKey and privateKey as arguments
+            setIsDevKeyRegistered(true);
+        } else if (privateKey) {
             const intervalId = setInterval(signLocation, 10 * 1000);
 
             // Clear interval on component unmount
             return () => clearInterval(intervalId);
         }
-    }, [privateKey]);
+    }, [privateKey, isDevKeyRegistered, devPubKey]);
 
     const loadPrivateKey = async () => {
         // Load private key from secure storage
         const storedPrivateKey = 'fe4a67b5b9a2a3e835880ba071eee6dd3ed4a6ff58458fa71cf777cfde6ea9a8'; // Replace with your method for loading private key
         const storedPublicKey = null; // Replace with your method for loading public key
-        const storedDevKey = null; 
 
         // If private and public keys are not stored, generate a new key pair
-        if (!storedPrivateKey || !storedPublicKey || !storedDevKey) {
+        if (!storedPrivateKey || !storedPublicKey) {
             generateKeyPair();
         } else {
             setPrivateKey(storedPrivateKey);
             setPublicKey(storedPublicKey);
-            setDevPubKey(storedDevKey)
         }
     };
 
@@ -55,36 +57,26 @@ export default function App() {
         let secret = new Uint8Array(32);
 
         secret = hexToUint8Array('bb5a9e04a0baaf8cda5cd8718c18d113daa752a4b47dbf10a1c6684a496b241c')
-        
-        // if (window.crypto && window.crypto.getRandomValues) {
-        //     secret = new Uint8Array(32);
-        //     window.crypto.getRandomValues(secret);
-        // } else {
-        //     console.warn('Warning: Using insecure methods to generate private key');
-        //     secret = [];
-        //     for (let i = 0; i < 32; i++) {
-        //         secret.push(Math.random() * 9007199254740991); // aka Number.MAX_SAFE_INTEGER
-        //     }
-        // }
-        
-        let devSecret = new Uint8Array(32);
-        devSecret = hexToUint8Array('bb5a9e04a0baaf8cda5cd8718c18d113daa752a4b47dbf10a1c6684a496b241c')
 
-        // if (window.crypto && window.crypto.getRandomValues) {
-        //     devSecret = new Uint8Array(32);
-        //     window.crypto.getRandomValues(devSecret);
-        // } else {
-        //     console.warn('Warning: Using insecure methods to generate private key');
-        //     devSecret = [];
-        //     for (let i = 0; i < 32; i++) {
-        //         secret.devSecret(Math.random() * 9007199254740991); // aka Number.MAX_SAFE_INTEGER
-        //     }
-        // }
+        let devSecret;
+        function getRandomString(n: number): string {
+            const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            const charactersLength = characters.length;
+            for (let i = 0; i < n; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        }
+        devSecret = getRandomString(64);
+        // Example usage:
+        console.log(getRandomString(64));
+        console.log('DEV PUB KEYYY: ', devSecret);
 
         const key = ec.keyFromSecret(secret);
         const privateKeyHex = toHex(key.getSecret());
         const publicKeyHex = toHex(key.getPublic());
-        const devKeyHex = toHex(key.getPublic());
+        const devKeyHex = devSecret;
 
         // Save keys to secure storage
         // Replace with your method for saving private and public keys
@@ -92,6 +84,80 @@ export default function App() {
         setPublicKey(publicKeyHex);
         setDevPubKey(devKeyHex);
     };
+
+    const signDevkey = async (devpubkey, privateKey) => {
+        const API_URL = 'http://pool.prometeochain.io/node/get_from_ledger';
+
+        // Get current location
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            console.error('Permission to access location was denied');
+            return;
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+
+        const DEVREG_SC = {
+            data: {
+                name: "Если ты это читаешь... ты гей",
+                devpubkey: devpubkey,
+                pubkey: publicKey,
+                sw: 'true',
+                timestamp: location.timestamp / 1000,
+            },
+            tx_type: "BB00"
+        }
+
+        console.log('ONE TIME DATA: ', DEVREG_SC);
+
+        try {
+            // Sign the 'data' object
+            const { signature, orderedData } = signData(DEVREG_SC.data, privateKey);
+
+            // Add the signature to the 'data' object
+            orderedData.signature = signature;
+
+            // Update the 'tx' object with the signature and public key
+            orderedData.signature = signature;
+            DEVREG_SC.data = orderedData;
+
+            console.log('------------------ ORDEREDDATA: ', orderedData);
+            const data = {
+                pubkey: publicKey,
+                ...orderedData,
+                signature: signature
+            }
+
+            console.log('------------------ data: ', data);
+
+            const sendToPool = {
+                'tx': data,
+                'type': 'BB00'
+            }
+
+            const strigify = JSON.stringify(sendToPool)
+            console.log('------------------ STRINGIFY: ', strigify);
+
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: strigify
+            });
+
+            console.log('RESPONSE: ', response);
+
+            if (!response.ok) {
+                throw new Error('Some error occurred');
+            }
+
+            console.log('Device key registered successfully');
+        } catch (error) {
+            console.error('Error registering device key:', error);
+        }
+    }
 
     const signLocation = async () => {
         try {
@@ -229,10 +295,6 @@ export default function App() {
             console.error('Error signing data:', error);
             throw error;
         }
-    };
-
-    const codifyMessage = (message: string) => {
-        return message.split('').map((m) => m.charCodeAt(0));
     };
 
     return (
