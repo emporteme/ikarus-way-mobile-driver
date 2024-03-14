@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, ScrollView, TextInput, TouchableOpacity, Platform, Button, Image, Pressable, FlatList } from 'react-native';
 import { useLocalSearchParams, Stack, Link, router } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import * as DocumentPicker from 'expo-document-picker';
 import { icons } from '@/constants';
 import styles from '@/styles/expenses.style';
 import { OuterDropdown, InnerDropdown } from '@/components';
@@ -11,11 +10,13 @@ import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
+import * as DocumentPicker from 'expo-document-picker';
 import Constants from 'expo-constants';
 
 
 const ExpensesPage: React.FC = () => {
     const { id } = useLocalSearchParams();
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
     // Auth context
     const { jwtToken } = useSession(); // Destructure jwtToken from useSession
@@ -32,8 +33,9 @@ const ExpensesPage: React.FC = () => {
             if (!jwtToken) {
                 throw new Error('JWT token not found');
             }
+            const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
-            const response = await fetch(`http://13.40.95.183:442/api/v1/carrier/orders/${id}`, {
+            const response = await fetch(`${apiUrl}carrier/orders/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -59,8 +61,6 @@ const ExpensesPage: React.FC = () => {
     const [cost, setCost] = useState<string>('');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const [selectedTime, setSelectedTime] = useState(new Date());
-    const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
     const [selectedFiles, setSelectedFiles] = useState<any[]>([]); // State to store selected files
 
     const showDatePicker = () => {
@@ -77,60 +77,6 @@ const ExpensesPage: React.FC = () => {
         }
         hideDatePicker();
     };
-
-    const showTimePicker = () => {
-        setTimePickerVisibility(true);
-    };
-
-    const hideTimePicker = () => {
-        setTimePickerVisibility(false);
-    };
-
-    const handleTimeChange = (event: any, selectedTime: Date) => {
-        if (selectedTime) {
-            setSelectedTime(selectedTime);
-        }
-        hideTimePicker();
-    };
-
-    const selectFile = async () => {
-        try {
-            const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-            if (permissionResult.granted === false) {
-                alert("Permission to access camera roll is required!");
-                return;
-            }
-
-            const result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true,
-                quality: 1,
-            });
-            console.log(result);
-            // // THIS PART IS NOT WORKING || FIND A SOLUTION
-
-            // if (!result.cancelled) {
-            //     // Here you can do something with the selected image
-            //     console.log(result.uri);
-            // }
-        } catch (error) {
-            console.log('Error picking image: ', error);
-        }
-    };
-
-    // const pickSomething = async () => {
-    //     try {
-    //         const docRes = await DocumentPicker.getDocumentAsync({
-    //             type: "**/*",
-    //         });
-
-    //         console.log(docRes);
-    //     } catch (error) {
-    //         console.log("Error while selecting file: ", error);
-    //     }
-    // };
-
 
     const pickSomething = async () => {
         try {
@@ -161,24 +107,62 @@ const ExpensesPage: React.FC = () => {
         }
     };
 
-    async function fetchSubmit() {
-        // const dateMilliseconds = selectedDate.getTime();
-        // const timeMilliseconds = selectedTime.getTime();
-        // // const timestamp = dateMilliseconds + timeMilliseconds - new Date().getTimezoneOffset() * 60000;
-        // // const timestamp = new Date(dateMilliseconds + timeMilliseconds).toISOString();
-        // const timestamp = dateMilliseconds + timeMilliseconds;
-        // console.log('Timestamp:', timestamp);
 
-        // const dateString = selectedDate.toISOString().split('T')[0];
-        // const timeString = selectedTime.toISOString().split('T')[1];
-        // const timestamp = `${dateString}T${timeString}`;
-        // console.log('Timestamp:', timestamp);
+    // const pickSomething = async () => {
+    //     try {
+    //         const docRes = await DocumentPicker.getDocumentAsync({
+    //             type: "*/*",
+    //             multiple: true, // Allow selecting multiple files
+    //         });
 
+    //         if (!docRes.canceled) {
+    //             const assets = docRes.assets;
+    //             if (assets) {
+    //                 setSelectedFiles([...selectedFiles, ...assets]); // Update selectedFiles state
+    //             }
+    //         }
+    //     } catch (error) {
+    //         console.log("Error while selecting files: ", error);
+    //     }
+    // };
+
+    const uploadFilesToServer = async (files: any[]) => {
+        const uploadedFiles = [];
+
+        for (const file of files) {
+            try {
+                const formData = new FormData();
+                formData.append('file', {
+                    uri: file.uri,
+                    name: file.name,
+                    type: file.mimeType,
+                } as any);
+                const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+                const response = await axios.post(`${apiUrl}carrier/orders/${id}`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': 'Bearer ' + jwtToken,
+                    },
+                });
+
+                if (response.status === 201) {
+                    const serverFileUrl = response.data.fileUrl; // Assuming the server returns the file URL
+                    uploadedFiles.push(serverFileUrl);
+                } else {
+                    console.error(`Error uploading file ${file.name}: ${response.status}`);
+                }
+            } catch (error) {
+                console.error(`Error uploading file ${file.name}: ${error}`);
+            }
+        }
+
+        return uploadedFiles;
+    };
+
+    const fetchSubmit = async () => {
         const timestamp = new Date(selectedDate).getTime();
-        // const time = new Date(selectedTime);
-        // const timestamp = date.getTime() + time.getTime() - (new Date()).setHours(0, 0, 0, 0);
-
-        console.log('Timestamp:', timestamp, selectedDate, selectedTime);
+        console.log('Timestamp:', timestamp, selectedDate);
 
         const credentials = {
             receiptType: selectedOption,
@@ -195,6 +179,11 @@ const ExpensesPage: React.FC = () => {
         formData.append('currency', credentials.currency);
         formData.append('timestamp', credentials.timestamp.toString());
 
+        // // Append selected files to the form data
+        // selectedFiles.forEach((file) => {
+        //     formData.append('files', file as any);
+        // });
+
         // Append selected files to FormData
         credentials.files.forEach((uri, index) => {
             const fileExtension = uri.split('.').pop();
@@ -207,9 +196,10 @@ const ExpensesPage: React.FC = () => {
             formData.append('files', fileData);
         });
 
-        console.log('FORMDATA: ', formData);
+        console.log('Form data:', formData);
+
         try {
-            const url = `http://13.40.95.183:442/api/v1/receipts/${id}`;
+            const url = `${apiUrl}receipts/${id}`;
             const response = await axios.post(url, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -217,19 +207,24 @@ const ExpensesPage: React.FC = () => {
                 },
                 data: formData
             });
-            // console.log("RESPONSE: ", response, response.status)
-            // if (response.status !== 201) {
-            //     throw new Error('Failed to submit expenses');
+
+            // if (response.status === 201) {
+            //     console.log('Expenses submitted successfully');
+            //     router.back();
+            // } else {
+            //     console.error('Failed to submit expenses');
+            //     alert('Failed to submit expenses');
             // }
 
             const json = response.data;
             console.log(json);
             console.log(json.status);
+
         } catch (error) {
             console.error(error);
             alert('Failed to submit expenses');
         }
-    }
+    };
 
     const renderFileItem = ({ item }) => {
         const handleFilePress = async () => {
