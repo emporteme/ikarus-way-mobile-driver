@@ -210,7 +210,7 @@ const ExpensesPage: React.FC = () => {
 
             // if (response.status === 201) {
             //     console.log('Expenses submitted successfully');
-            //     router.back();
+            //     router.push(`/orders/${id}`);
             // } else {
             //     console.error('Failed to submit expenses');
             //     alert('Failed to submit expenses');
@@ -384,7 +384,7 @@ const ExpensesPage: React.FC = () => {
                         style={styles.button}
                         onPress={async () => {
                             await fetchSubmit();
-                            router.back();
+                            router.push(`/orders/${id}`);
                         }}
                     >
                         <Text style={styles.buttonText}>Submit</Text>

@@ -51,11 +51,14 @@ const styles = StyleSheet.create({
         // flex: 1,
     },
     column: {
+        flexDirection: 'column',
         gap: 0,
         flex: 1
     },
     column2: {
-        gap: 4
+        flexDirection: 'column',
+        gap: 4,
+        flex: 1
     },
     medSemiMedium: {
         fontSize: SIZES.semiMedium,  // 14

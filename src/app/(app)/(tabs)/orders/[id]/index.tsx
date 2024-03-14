@@ -408,9 +408,9 @@ const OrderDetail: React.FC<OrderType> = () => {
                                 <Text style={styles.regSmall2}>"50% payment is required upfront before commencing the design work, with the remaining 50% due upon project completion."</Text>
                             </View>
                         </View>
-                        <View style={styles.lineH} />
+                        {/* <View style={styles.lineH} /> */}
                         {/* Expenses */}
-                        <View style={styles.section}>
+                        {/* <View style={styles.section}>
                             <Text style={styles.title}>Expenses</Text>
                             <View style={styles.column2}>
                                 <Text style={styles.regSmall2}>14.01.2024</Text>
@@ -418,8 +418,6 @@ const OrderDetail: React.FC<OrderType> = () => {
                                     <Text style={styles.regSemiMedium}>Food</Text>
                                     <Text style={styles.medSemiMedium}>  ·  </Text>
                                     <Text style={styles.medSemiMedium2}>29.99 USD</Text>
-                                    // Here you can add a button to view the receipt
-                                // Here should be a time
                                 </Text>
                                 <Text style={styles.row}>
                                     <Text style={styles.regSemiMedium}>Hotel</Text>
@@ -429,11 +427,14 @@ const OrderDetail: React.FC<OrderType> = () => {
                             </View>
                             <View style={styles.column2}>
                                 <Text style={styles.regSmall2}>15.01.2024</Text>
-                                <Text style={styles.row}>
-                                    <Text style={styles.regSemiMedium}>Fuel</Text>
-                                    <Text style={styles.medSemiMedium}>  ·  </Text>
-                                    <Text style={styles.medSemiMedium2}>4.99 USD</Text>
-                                </Text>
+                                <View style={styles.column}>
+                                    <Text style={styles.row}>
+                                        <Text style={styles.regSemiMedium}>Fuel</Text>
+                                        <Text style={styles.medSemiMedium}>  ·  </Text>
+                                        <Text style={styles.medSemiMedium2}>4.99 USD</Text>
+                                    </Text>
+                                    <Text>Yo</Text>
+                                </View>
                                 <Text style={styles.row}>
                                     <Text style={styles.regSemiMedium}>Food</Text>
                                     <Text style={styles.medSemiMedium}>  ·  </Text>
@@ -450,29 +451,30 @@ const OrderDetail: React.FC<OrderType> = () => {
                                     <Text style={styles.medSemiMedium2}>39.99 USD</Text>
                                 </Text>
                             </View>
-                        </View>
+                        </View> */}
                         <View style={styles.lineH} />
-                        <>
-                            <View>
-                                {Object.entries(groupedReceipts).map(([date, receipts]) => (
-                                    <View key={date}>
-                                        <Text style={{ marginVertical: 20, fontSize: 20 }}>{date}</Text>
-                                        {receipts.map((receipt) => (
-                                            <View key={receipt.receiptId}>
-                                                <Text style={{ marginTop: 20 }}>{receipt.timestamp}</Text>
-                                                <Text>{receipt.receiptType}</Text>
-                                                <Text>{receipt.price} {receipt.currency}</Text>
-                                                {receipt.filesInfo.map((file) => (
-                                                    <TouchableOpacity key={file.file_id}>
-                                                        <Text>{file.name}</Text>
-                                                    </TouchableOpacity>
-                                                ))}
-                                            </View>
-                                        ))}
-                                    </View>
-                                ))}
-                            </View>
-                        </>
+                        <View style={styles.section}>
+                            <Text style={styles.title}>Expenses</Text>
+                            {Object.entries(groupedReceipts).map(([date, receipts]) => (
+                                <View key={date} style={styles.column2}>
+                                    <Text style={styles.regSmall2}>{date}</Text>
+                                    {receipts.map((receipt) => (
+                                        <View key={receipt.receiptId} style={styles.column2}>
+                                            <Text style={styles.row}>
+                                                <Text style={styles.regSemiMedium}>{receipt.receiptType}</Text>
+                                                <Text style={styles.medSemiMedium}>  ·  </Text>
+                                                <Text style={styles.medSemiMedium2}>{receipt.price} {receipt.currency}</Text>
+                                            </Text>
+                                            {receipt.filesInfo.map((file) => (
+                                                <TouchableOpacity key={file.file_id}>
+                                                    <Text>{file.name}</Text>
+                                                </TouchableOpacity>
+                                            ))}
+                                        </View>
+                                    ))}
+                                </View>
+                            ))}
+                        </View>
                         <View style={styles.lineH} />
                         {/* Team members */}
                         <View style={styles.section}>
