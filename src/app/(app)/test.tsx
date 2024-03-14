@@ -36,7 +36,7 @@ export default function App() {
 
     const loadPrivateKey = async () => {
         // Load private key from secure storage
-        const storedPrivateKey = 'bb5a9e04a0baaf8cda5cd8718c18d113daa752a4b47dbf10a1c6684a496b241c'; // Replace with your method for loading private key
+        const storedPrivateKey = 'fe4a67b5b9a2a3e835880ba071eee6dd3ed4a6ff58458fa71cf777cfde6ea9a8'; // Replace with your method for loading private key
         const storedPublicKey = null; // Replace with your method for loading public key
 
         // If private and public keys are not stored, generate a new key pair
