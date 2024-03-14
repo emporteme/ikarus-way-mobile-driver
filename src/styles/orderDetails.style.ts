@@ -164,6 +164,34 @@ const styles = StyleSheet.create({
         lineHeight: (SIZES.semiMedium * 3 / 2),
         fontFamily: FONT.regular,
     },
+    fileContainer: {
+        flexDirection: 'row',
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        flexWrap: 'wrap',
+        gap: 10,
+    },
+    fileItem: {
+        backgroundColor: '#A0A3BD80',
+        borderRadius: 8,
+        paddingHorizontal: 14,
+        paddingVertical: 8,
+        flexDirection: 'row',
+        alignItems: 'center',
+        // marginBottom: 10,
+        // flex: 1
+    },
+    fileIcon: {
+        tintColor: COLORS.white,
+        height: 14,
+        width: 14
+    },
+    fileText: {
+        color: COLORS.white,
+        fontFamily: FONT.medium,
+        fontSize: SIZES.semiMedium,
+        marginLeft: 10,
+    },
 })
 
 export default styles

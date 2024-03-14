@@ -1,6 +1,8 @@
 import { View, Text, SafeAreaView, ScrollView, Image, Pressable, Linking, Button, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useLocalSearchParams, Stack, Link } from 'expo-router';
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
 import { icons } from '@/constants';
 import { useSession } from '@/components/core/Context';
 import { OrderType } from '@/types';
@@ -150,6 +152,68 @@ const OrderDetail: React.FC<OrderType> = () => {
     };
 
     const groupedReceipts = receiptsData ? groupReceiptsByDate(receiptsData) : {};
+
+    const downloadPdf = (file_id) => {
+        const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+        fetch(`${apiUrl}receipts/download/${id}/${file_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + jwtToken
+            },
+        })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(new Blob([blob]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'file.pdf');
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode.removeChild(link);
+            });
+    }
+
+    const downloadFile = async (fileId) => {
+        try {
+            const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+            const url = `${apiUrl}receipts/download/${id}/${fileId}`;
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${jwtToken}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to download file: ${response.status}`);
+            }
+
+            const byteArray = await response.arrayBuffer();
+            const fileExtension = getFileExtension(response.headers.get('Content-Type'));
+            const fileName = `file_${fileId}.${fileExtension}`;
+
+            const fileUri = `${FileSystem.cacheDirectory}${fileName}`;
+            await FileSystem.writeAsStringAsync(fileUri, Buffer.from(byteArray).toString('base64'), { encoding: FileSystem.EncodingType.Base64 });
+
+            const downloadOptions = {
+                mimeType: response.headers.get('Content-Type'),
+                uri: fileUri,
+            };
+
+            await Sharing.shareAsync(downloadOptions.uri);
+
+            console.log('File shared successfully!');
+        } catch (error) {
+            console.error('Error downloading file:', error);
+        }
+    };
+
+    const getFileExtension = (mimeType) => {
+        const extension = mimeType.split('/')[1];
+        return extension;
+    };
 
     return (
         <SafeAreaView style={styles.body}>
@@ -465,11 +529,14 @@ const OrderDetail: React.FC<OrderType> = () => {
                                                 <Text style={styles.medSemiMedium}>  ·  </Text>
                                                 <Text style={styles.medSemiMedium2}>{receipt.price} {receipt.currency}</Text>
                                             </Text>
-                                            {receipt.filesInfo.map((file) => (
-                                                <TouchableOpacity key={file.file_id}>
-                                                    <Text>{file.name}</Text>
-                                                </TouchableOpacity>
-                                            ))}
+                                            <View style={styles.fileContainer}>
+                                                {receipt.filesInfo.map((file) => (
+                                                    <Pressable key={file.file_id} onPress={() => downloadFile(file.file_id)} style={styles.fileItem}>
+                                                        <Image source={icons.attach} style={styles.fileIcon} />
+                                                        <Text style={styles.fileText}>{file.name}</Text>
+                                                    </Pressable>
+                                                ))}
+                                            </View>
                                         </View>
                                     ))}
                                 </View>

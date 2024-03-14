@@ -145,7 +145,6 @@ const Page = () => {
         if (currentMessage && currentMessage.fileUri) {
             return (
                 <TouchableOpacity onPress={() => handleFileOpening(currentMessage.fileUri)}>
-
                     <MessageText {...props} />
                 </TouchableOpacity>
             );

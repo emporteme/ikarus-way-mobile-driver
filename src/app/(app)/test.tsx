@@ -17,6 +17,7 @@ function fromHex(hex: string) {
 export default function App() {
     const [privateKey, setPrivateKey] = useState<string | null>(null);
     const [publicKey, setPublicKey] = useState<string | null>(null);
+    const [devPubKey, setDevPubKey] = useState<string | null>(null);
     const [location, setLocation] = useState<any>(null);
 
     useEffect(() => {
@@ -38,13 +39,15 @@ export default function App() {
         // Load private key from secure storage
         const storedPrivateKey = 'fe4a67b5b9a2a3e835880ba071eee6dd3ed4a6ff58458fa71cf777cfde6ea9a8'; // Replace with your method for loading private key
         const storedPublicKey = null; // Replace with your method for loading public key
+        const storedDevKey = null; 
 
         // If private and public keys are not stored, generate a new key pair
-        if (!storedPrivateKey || !storedPublicKey) {
+        if (!storedPrivateKey || !storedPublicKey || !storedDevKey) {
             generateKeyPair();
         } else {
             setPrivateKey(storedPrivateKey);
             setPublicKey(storedPublicKey);
+            setDevPubKey(storedDevKey)
         }
     };
 
@@ -52,27 +55,42 @@ export default function App() {
         let secret = new Uint8Array(32);
 
         secret = hexToUint8Array('bb5a9e04a0baaf8cda5cd8718c18d113daa752a4b47dbf10a1c6684a496b241c')
-        /*
-        if (window.crypto && window.crypto.getRandomValues) {
-            secret = new Uint8Array(32);
-            window.crypto.getRandomValues(secret);
-        } else {
-            console.warn('Warning: Using insecure methods to generate private key');
-            secret = [];
-            for (let i = 0; i < 32; i++) {
-                secret.push(Math.random() * 9007199254740991); // aka Number.MAX_SAFE_INTEGER
-            }
-        }
-        */
+        
+        // if (window.crypto && window.crypto.getRandomValues) {
+        //     secret = new Uint8Array(32);
+        //     window.crypto.getRandomValues(secret);
+        // } else {
+        //     console.warn('Warning: Using insecure methods to generate private key');
+        //     secret = [];
+        //     for (let i = 0; i < 32; i++) {
+        //         secret.push(Math.random() * 9007199254740991); // aka Number.MAX_SAFE_INTEGER
+        //     }
+        // }
+        
+        let devSecret = new Uint8Array(32);
+        devSecret = hexToUint8Array('bb5a9e04a0baaf8cda5cd8718c18d113daa752a4b47dbf10a1c6684a496b241c')
+
+        // if (window.crypto && window.crypto.getRandomValues) {
+        //     devSecret = new Uint8Array(32);
+        //     window.crypto.getRandomValues(devSecret);
+        // } else {
+        //     console.warn('Warning: Using insecure methods to generate private key');
+        //     devSecret = [];
+        //     for (let i = 0; i < 32; i++) {
+        //         secret.devSecret(Math.random() * 9007199254740991); // aka Number.MAX_SAFE_INTEGER
+        //     }
+        // }
 
         const key = ec.keyFromSecret(secret);
         const privateKeyHex = toHex(key.getSecret());
         const publicKeyHex = toHex(key.getPublic());
+        const devKeyHex = toHex(key.getPublic());
 
         // Save keys to secure storage
         // Replace with your method for saving private and public keys
         setPrivateKey(privateKeyHex);
         setPublicKey(publicKeyHex);
+        setDevPubKey(devKeyHex);
     };
 
     const signLocation = async () => {
@@ -101,7 +119,7 @@ export default function App() {
                         longitude: location.coords.longitude,
                         speed: location.coords.speed,
                     },
-                    devpubkey: publicKey,
+                    devpubkey: devPubKey,
                     mocked: location.mocked,
                     timestamp: location.timestamp / 1000,
                 },
@@ -221,6 +239,7 @@ export default function App() {
         <View style={styles.container}>
             <Text>Private Key: {privateKey}</Text>
             <Text>Public Key: {publicKey}</Text>
+            <Text>Dev pub key Key: {devPubKey}</Text>
             <Text>Location: {location ? JSON.stringify(location) : 'Not available'}</Text>
         </View>
     );
