@@ -23,12 +23,14 @@ const Profile: React.FC = () => {
     }, [jwtToken]); // Add jwtToken to dependency array
 
     const fetchProfile = async (jwtToken: string) => { // Accept jwtToken as parameter
+        const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
         try {
             if (!jwtToken) {
                 throw new Error('JWT token not found');
             }
 
-            const response = await fetch('http://13.40.95.183:442/api/v1/users/profile', {
+            const response = await fetch(`${apiUrl}users/profile`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -48,8 +50,6 @@ const Profile: React.FC = () => {
             alert('Failed to fetch profile data');
         }
     }
-
-    // console.log(jwtToken)
 
     return (
         <SafeAreaView style={styles.safe}>
@@ -112,17 +112,19 @@ const Profile: React.FC = () => {
                                         <Text style={styles.value}>{profileData?.department}</Text>
                                     </View>
                                     : <></>}
+                                <View style={styles.detail}>
+                                    <Text style={styles.label}>Truck plate</Text>
+                                    <Text style={styles.value}>KZ411ABX15</Text>
+                                </View>
+                                <View style={styles.detail}>
+                                    <Text style={styles.label}>IoT devices</Text>
+                                    <Text style={styles.value}>x 12</Text>
+                                </View>
                             </View>
                         </>
                     </View>
                 </View>
             </ScrollView>
-            <Link href={'#'} asChild>
-                <Pressable style={styles.button}>
-                    <Text style={styles.buttonText}>Technical support</Text>
-                    <Image source={icons.arrow} style={styles.buttonIcon} />
-                </Pressable>
-            </Link>
         </SafeAreaView>
     );
 }
