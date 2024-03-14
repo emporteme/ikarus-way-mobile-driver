@@ -6,6 +6,7 @@ import * as Sharing from 'expo-sharing';
 import { icons } from '@/constants';
 import { useSession } from '@/components/core/Context';
 import { OrderType } from '@/types';
+import { orderDetailsStatusName } from '@/components/pages/orders/card/orderDetailsStatusName';
 import styles from '@/styles/orderDetails.style';
 
 const OrderDetail: React.FC<OrderType> = () => {
@@ -215,6 +216,9 @@ const OrderDetail: React.FC<OrderType> = () => {
         return extension;
     };
 
+    // Get the mapped status name
+    const statusName = orderDetailsStatusName[orderData?.status]?.name || 'Unknown Status';
+
     return (
         <SafeAreaView style={styles.body}>
             <Stack.Screen
@@ -224,7 +228,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                     headerTitleAlign: 'left',
                     headerRight: () => (
                         <View style={styles.status}>
-                            <Text style={styles.statusText}>{orderData?.status}</Text>
+                            <Text style={styles.statusText}>{statusName}</Text>
                         </View>
                     ),
                 }}
