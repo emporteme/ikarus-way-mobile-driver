@@ -18,21 +18,21 @@ export default () => {
                 headerShadowVisible: true,
                 title: 'Account',
                 headerTitleAlign: 'center',
-                headerLeft: () => (
-                    <View>
-                        <Image source={images.logo_dark} style={styles.logo} />
-                    </View>
-                ),
-                headerRight: () => (
-                    <TouchableOpacity onPress={toggleLanguage} style={styles.languages}>
-                        <View>
-                            <Text style={!isEnglish ? styles.active : styles.inActive}>Рус</Text>
-                        </View>
-                        <View>
-                            <Text style={isEnglish ? styles.active : styles.inActive}>Eng</Text>
-                        </View>
-                    </TouchableOpacity>
-                ),
+                // headerLeft: () => (
+                //     <View>
+                //         <Image source={images.logo_dark} style={styles.logo} />
+                //     </View>
+                // ),
+                // headerRight: () => (
+                //     <TouchableOpacity onPress={toggleLanguage} style={styles.languages}>
+                //         <View>
+                //             <Text style={!isEnglish ? styles.active : styles.inActive}>Рус</Text>
+                //         </View>
+                //         <View>
+                //             <Text style={isEnglish ? styles.active : styles.inActive}>Eng</Text>
+                //         </View>
+                //     </TouchableOpacity>
+                // ),
             }}
         />
     );
