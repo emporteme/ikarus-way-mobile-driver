@@ -114,9 +114,9 @@ const Auth = () => {
                             />
                         </TouchableOpacity>
                     </View>
-                    <Link href={'/auth/forgot'} style={styles.forgot}>
+                    {/* <Link href={'/auth/forgot'} style={styles.forgot}>
                         <Text style={styles.forgotText}>Do not remember password?</Text>
-                    </Link>
+                    </Link> */}
                 </View>
                 <View style={styles.bottom}>
                     {/* <Link href={'#'} asChild> */}
