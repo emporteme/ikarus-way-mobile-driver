@@ -24,8 +24,9 @@ const OrderDetail: React.FC<OrderType> = () => {
             if (!jwtToken) {
                 throw new Error('JWT token not found');
             }
+            const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
-            const response = await fetch(`http://13.40.95.183:442/api/v1/carrier/orders/${id}`, {
+            const response = await fetch(`${apiUrl}carrier/orders/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,8 +59,9 @@ const OrderDetail: React.FC<OrderType> = () => {
             if (!jwtToken) {
                 throw new Error('JWT token not found');
             }
+            const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
-            const response = await fetch(`http://13.40.95.183:442/api/v1/receipts/order/${id}`, {
+            const response = await fetch(`${apiUrl}receipts/order/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -136,7 +138,7 @@ const OrderDetail: React.FC<OrderType> = () => {
     const groupReceiptsByDate = (receiptsData: any[]) => {
         const groupedReceipts: { [date: string]: any[] } = {};
 
-        receiptsData.forEach((receipt) => {
+        receiptsData?.forEach((receipt) => {
             const date = new Date(receipt.timestamp).toLocaleDateString();
             if (!groupedReceipts[date]) {
                 groupedReceipts[date] = [];
