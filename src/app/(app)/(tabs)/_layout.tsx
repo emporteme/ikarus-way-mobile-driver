@@ -56,7 +56,7 @@ export default function TabsLayout() {
             />
 
             {/* IoT tab */}
-            <Tabs.Screen
+            {/* <Tabs.Screen
                 name="iot"
                 options={{
                     title: 'IoT',
@@ -68,10 +68,9 @@ export default function TabsLayout() {
                     tabBarLabelStyle: {
                         fontFamily: FONT.medium,
                         fontSize: 10,
-                    },
-                    tabBarItemStyle: {},
+                    }
                 }}
-            />
+            /> */}
 
             {/* Messages tab */}
             <Tabs.Screen
@@ -109,8 +108,7 @@ export default function TabsLayout() {
                     tabBarLabelStyle: {
                         fontFamily: FONT.medium,
                         fontSize: 10,
-                    },
-                    tabBarItemStyle: {}
+                    }
                 }}
             />
         </Tabs>
