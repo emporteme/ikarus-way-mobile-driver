@@ -70,7 +70,10 @@ const Func = () => (
                 <Text>QR scan (Just for now) </Text>
             </Link>
             <Link href={'/test'} style={{ marginTop: 20 }}>
-                <Text>Form (Just for now) </Text>
+                <Text>Test (Just for now) </Text>
+            </Link>
+            <Link href={'/privkey'} style={{ marginTop: 20 }}>
+                <Text>Privkey (Just for now) </Text>
             </Link>
 
             <Text style={{ marginTop: 40 }}>Testing API</Text>
