@@ -5,31 +5,32 @@ import OrderCard from '@/components/pages/orders/card/OrderCard'
 import EmptyOrders from '@/components/pages/orders/empty/Empty'
 import styles from './list.style'
 
-const OrderList: React.FC<{ status: string }> = ({ status }) => {
+const OrderList: React.FC<{ status: string[] }> = ({ status }) => {
     // Auth context
     const { jwtToken } = useSession(); // Destructure jwtToken from useSession
 
     // Data fetching
     const [orders, setOrders] = useState<any>([]);
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-    const apiURL = `${apiUrl}carrier/orders?filter=${status}&page=1&size=10`  // For now will be 10 orders
+    const apiURL = `${apiUrl}carrier/orders`  // For now will be 10 orders
 
     useEffect(() => {
-        fetchOrders(jwtToken); // Pass jwtToken as parameter
-    }, [jwtToken]); // Add jwtToken to dependency array
+        fetchOrders(jwtToken, status); // Pass jwtToken as parameter
+    }, [jwtToken, status]); // Add jwtToken to dependency array
 
-    const fetchOrders = async (jwtToken: string) => { // Accept jwtToken as parameter
+    const fetchOrders = async (jwtToken: string, status: string[]) => {
         try {
             if (!jwtToken) {
                 throw new Error('JWT token not found');
             }
-
+            console.log('status: ', JSON.stringify({ status_list: status }))
             const response = await fetch(apiURL, {
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + jwtToken
                 },
+                body: JSON.stringify({ status_list: status })
             });
 
             if (!response.ok) {
@@ -38,18 +39,12 @@ const OrderList: React.FC<{ status: string }> = ({ status }) => {
 
             const data = await response.json(); // Parse response data
 
-            // Check if orders exist in response
-            if (data && data.data && Array.isArray(data.data)) {
-                setOrders(data.data); // Update state with fetched data
-            } else {
-                console.warn('No orders found in response');
-            }
-
-            // setOrders(data.data); // Update state with fetched data
-            // console.log(data);
+            // Update state with fetched data
+            setOrders(data.data);
+            console.log(data);
         } catch (error) {
             console.error('Error fetching orders:', error);
-            alert('Failed to fetch orders data');
+            // Handle error
         }
     }
 
