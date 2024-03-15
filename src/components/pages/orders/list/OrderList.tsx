@@ -12,7 +12,7 @@ const OrderList: React.FC<{ status: string[] }> = ({ status }) => {
     // Data fetching
     const [orders, setOrders] = useState<any>([]);
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-    const apiURL = `${apiUrl}carrier/orders`  // For now will be 10 orders
+    const apiURL = `${apiUrl}carrier/orders/my-orders`  // For now will be 10 orders
 
     useEffect(() => {
         fetchOrders(jwtToken, status); // Pass jwtToken as parameter
@@ -33,9 +33,9 @@ const OrderList: React.FC<{ status: string[] }> = ({ status }) => {
                 body: JSON.stringify({ status_list: status })
             });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            // if (!response.ok) {
+            //     throw new Error('Network response was not ok');
+            // }
 
             const data = await response.json(); // Parse response data
 
