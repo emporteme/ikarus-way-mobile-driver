@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: COLORS.primary,
         position: 'absolute',
-        bottom: 20,
+        bottom: 0,
         left: 20,
         right: 20,
     },

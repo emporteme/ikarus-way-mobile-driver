@@ -1,28 +1,23 @@
 // Main imports
 import React, { useEffect, useState } from 'react';
-import { Text, View, SafeAreaView, ScrollView, Pressable, Image } from "react-native";
+import { Text, View, SafeAreaView, ScrollView, Pressable, Image, Alert } from "react-native";
 import { Link } from 'expo-router';
-
-// Import constants
 import { icons, images } from '@/constants';
-
-// Import styles
 import styles from './profile.style';
-
 import { useSession } from '@/components/core/Context';
+import * as SecureStore from 'expo-secure-store';
 
 const Profile: React.FC = () => {
-    // Auth context
-    const { signOut, jwtToken } = useSession(); // Destructure jwtToken from useSession
-
-    // Data fetching
+    const { signOut, jwtToken } = useSession();
     const [profileData, setProfileData] = useState<any>(null);
+    const [privateKey, setPrivateKey] = useState<string | null>(null);
 
     useEffect(() => {
-        fetchProfile(jwtToken); // Pass jwtToken as parameter
-    }, [jwtToken]); // Add jwtToken to dependency array
+        fetchProfile(jwtToken);
+        loadPrivateKey();
+    }, [jwtToken]);
 
-    const fetchProfile = async (jwtToken: string) => { // Accept jwtToken as parameter
+    const fetchProfile = async (jwtToken: string) => {
         const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
         try {
@@ -42,14 +37,32 @@ const Profile: React.FC = () => {
                 throw new Error('Network response was not ok');
             }
 
-            const data = await response.json(); // Parse response data
-            setProfileData(data.data); // Update state with fetched data
+            const data = await response.json();
+            setProfileData(data.data);
             console.log(data);
         } catch (error) {
             console.error('Error fetching profile:', error);
             alert('Failed to fetch profile data');
         }
     }
+
+    const loadPrivateKey = async () => {
+        const storedPrivateKey = await SecureStore.getItemAsync('privateKey');
+        if (storedPrivateKey) {
+            setPrivateKey(storedPrivateKey);
+        }
+    };
+
+    const clearPrivateKey = async () => {
+        try {
+            await SecureStore.deleteItemAsync('privateKey');
+            setPrivateKey(null);
+            Alert.alert('Success', 'Private key cleared successfully');
+        } catch (error) {
+            console.error('Error clearing private key:', error);
+            Alert.alert('Error', 'Failed to clear private key');
+        }
+    };
 
     return (
         <SafeAreaView style={styles.safe}>
@@ -116,6 +129,17 @@ const Profile: React.FC = () => {
                         </>
                     </View>
                 </View>
+                {/* Render link to Privkey page only if private key is not set */}
+                {!privateKey && (
+                    <Link href={'/privkey'} asChild>
+                        <Pressable style={styles.button}>
+                            <Text style={styles.buttonText}>Set Private Key</Text>
+                        </Pressable>
+                    </Link>
+                )}
+                {/* <Pressable onPress={clearPrivateKey}>
+                    <Text>Clear Private Key</Text>
+                </Pressable> */}
             </ScrollView>
         </SafeAreaView>
     );
