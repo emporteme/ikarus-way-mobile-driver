@@ -129,6 +129,13 @@ const styles = StyleSheet.create({
     },
 
     // Button
+    buttons: {
+        position: 'absolute',
+        bottom: 40,
+        left: 20,
+        right: 20,
+        gap: 10,
+    },
     button: {
         paddingHorizontal: 16,
         paddingVertical: 14,
@@ -138,10 +145,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: COLORS.primary,
-        position: 'absolute',
-        bottom: 40,
-        left: 20,
-        right: 20,
     },
     buttonText: {
         color: COLORS.white,
@@ -152,6 +155,27 @@ const styles = StyleSheet.create({
         width: 18,
         height: 18,
         tintColor: COLORS.white
+    },
+    button_p: {
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        borderRadius: 12,
+        gap: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: COLORS.primary,
+        borderWidth: 2
+    },
+    buttonText_p: {
+        color: COLORS.primary,
+        fontFamily: FONT.semiBold,
+        fontSize: SIZES.medium
+    },
+    buttonIcon_p: {
+        width: 18,
+        height: 18,
+        tintColor: COLORS.primary
     },
     navigationBtn: {
         padding: 10

@@ -2,6 +2,7 @@ import { View, Text, SafeAreaView, ScrollView, Image, Pressable, Linking, Button
 import React, { useState, useEffect } from 'react'
 import { useLocalSearchParams, Stack, Link } from 'expo-router';
 import * as FileSystem from 'expo-file-system';
+import * as DocumentPicker from 'expo-document-picker';
 import * as Sharing from 'expo-sharing';
 import { icons } from '@/constants';
 import { useSession } from '@/components/core/Context';
@@ -166,8 +167,31 @@ const OrderDetail: React.FC<OrderType> = () => {
             const { uri } = await downloadResumable.downloadAsync();
 
             console.log('File downloaded successfully:', uri);
+
+            // Read the downloaded file as a byte array
+            const fileByteArray = await FileSystem.readAsStringAsync(uri, {
+                encoding: FileSystem.EncodingType.Base64,
+            });
+
+            // Convert the byte array to a normal file
+            const convertedFileUri = FileSystem.cacheDirectory + fileName;
+            await FileSystem.writeAsStringAsync(convertedFileUri, fileByteArray, {
+                encoding: FileSystem.EncodingType.Base64,
+            });
+
+            // Open or share the converted file
+            openDownloadedFile(convertedFileUri);
         } catch (error) {
             console.error('Error downloading file:', error);
+        }
+    };
+
+    const openDownloadedFile = async (fileUri) => {
+        try {
+            await Sharing.shareAsync(fileUri);
+            // Or you can use other methods to open the file depending on your requirements
+        } catch (error) {
+            console.error('Error opening file:', error);
         }
     };
 
@@ -523,12 +547,43 @@ const OrderDetail: React.FC<OrderType> = () => {
                         </View>
                     </View>
                 </ScrollView>
-                <Link href={`/orders/${id}/expenses`} asChild>
-                    <Pressable style={styles.button}>
-                        <Text style={styles.buttonText}>Add expenses</Text>
-                        <Image source={icons.card} style={styles.buttonIcon} />
-                    </Pressable>
-                </Link>
+                <>
+                    {statusName === "Pending" && (
+                        <>
+                            <View style={styles.buttons}>
+                                <Link href={`/orders/${id}/otp`} asChild>
+                                    <Pressable style={styles.button}>
+                                        <Text style={styles.buttonText}>Start</Text>
+                                        {/* <Image source={icons.card} style={styles.buttonIcon} /> */}
+                                    </Pressable>
+                                </Link>
+                            </View>
+                        </>
+                    )}
+
+                    {statusName === "Tracking" && (
+                        <View style={styles.buttons}>
+                            <Link href={`/orders/${id}/expenses`} asChild>
+                                <Pressable style={styles.button}>
+                                    <Text style={styles.buttonText}>Add expenses</Text>
+                                    <Image source={icons.card} style={styles.buttonIcon} />
+                                </Pressable>
+                            </Link>
+                            <Link href={`/orders/${id}/otp`} asChild>
+                                <Pressable style={styles.button_p}>
+                                    <Text style={styles.buttonText_p}>Finish</Text>
+                                </Pressable>
+                            </Link>
+                        </View>
+                    )}
+
+                    {statusName === "Closed" && (
+                        <>
+                            {/* Render nothing for Closed status */}
+                        </>
+                    )}
+
+                </>
             </View>
         </SafeAreaView >
     );
