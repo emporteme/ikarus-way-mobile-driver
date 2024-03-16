@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
 import elliptic, { eddsa as EdDSA } from 'elliptic';
 import { hexToUint8Array } from '@/components/core/utils';
+import * as SecureStore from 'expo-secure-store';  // load from here the private key and then use it to store here the devpubkey 
 
 const ec = new EdDSA('ed25519');
 
@@ -17,9 +18,11 @@ function fromHex(hex: string) {
 export default function App() {
     const [privateKey, setPrivateKey] = useState<string | null>(null);
     const [publicKey, setPublicKey] = useState<string | null>(null);
-    const [devPubKey, setDevPubKey] = useState<string | null>(null);
+    // const [devPubKey, setDevPubKey] = useState<string | null>(null);
     const [isDevKeyRegistered, setIsDevKeyRegistered] = useState(false);
     const [location, setLocation] = useState<any>(null);
+    const devPubKey = SecureStore.getItemAsync('devPubKey');
+    console.log('DEV PUB KEY: ', devPubKey);
 
     useEffect(() => {
         // Load private key from secure storage when the component mounts
@@ -58,31 +61,31 @@ export default function App() {
 
         secret = hexToUint8Array('d1cbd84a79f3b9deea82548d80a96a98a4b6d837b2e5572984d8c40b80a97b46')
 
-        let devSecret;
-        function getRandomString(n: number): string {
-            const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
-            const charactersLength = characters.length;
-            for (let i = 0; i < n; i++) {
-                result += characters.charAt(Math.floor(Math.random() * charactersLength));
-            }
-            return result;
-        }
-        devSecret = getRandomString(64);
-        // Example usage:
-        console.log(getRandomString(64));
-        console.log('DEV PUB KEYYY: ', devSecret);
+        // let devSecret;
+        // function getRandomString(n: number): string {
+        //     const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        //     let result = '';
+        //     const charactersLength = characters.length;
+        //     for (let i = 0; i < n; i++) {
+        //         result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        //     }
+        //     return result;
+        // }
+        // devSecret = getRandomString(64);
+        // // Example usage:
+        // console.log(getRandomString(64));
+        // console.log('DEV PUB KEYYY: ', devSecret);
 
         const key = ec.keyFromSecret(secret);
         const privateKeyHex = toHex(key.getSecret());
         const publicKeyHex = toHex(key.getPublic());
-        const devKeyHex = devSecret;
+        // const devKeyHex = devSecret;
 
         // Save keys to secure storage
         // Replace with your method for saving private and public keys
         setPrivateKey(privateKeyHex);
         setPublicKey(publicKeyHex);
-        setDevPubKey(devKeyHex);
+        // setDevPubKey(devKeyHex);
     };
 
     const signDevkey = async (devpubkey, privateKey) => {
@@ -100,7 +103,7 @@ export default function App() {
 
         const DEVREG_SC = {
             data: {
-                name: "Если ты это читаешь... ты гей",
+                name: "Если ты это читаешь... ты Bcrfylth",
                 devpubkey: devpubkey,
                 pubkey: publicKey,
                 sw: 'true',
@@ -109,7 +112,7 @@ export default function App() {
             tx_type: "BB00"
         }
 
-        console.log('ONE TIME DATA: ', DEVREG_SC);
+        console.log('Initial data for register device: ', DEVREG_SC);
 
         try {
             // Sign the 'data' object
@@ -122,14 +125,14 @@ export default function App() {
             orderedData.signature = signature;
             DEVREG_SC.data = orderedData;
 
-            console.log('------------------ ORDEREDDATA: ', orderedData);
+            // console.log('------------------ ORDEREDDATA: ', orderedData);
             const data = {
                 pubkey: publicKey,
                 ...orderedData,
                 signature: signature
             }
 
-            console.log('------------------ data: ', data);
+            // console.log('------------------ data: ', data);
 
             const sendToPool = {
                 'tx': data,
@@ -137,7 +140,7 @@ export default function App() {
             }
 
             const strigify = JSON.stringify(sendToPool)
-            console.log('------------------ STRINGIFY: ', strigify);
+            console.log('Final data for register device: ', strigify);
 
             const response = await fetch(API_URL, {
                 method: 'POST',
@@ -147,7 +150,7 @@ export default function App() {
                 body: strigify
             });
 
-            console.log('RESPONSE: ', response);
+            // console.log('RESPONSE: ', response);
 
             if (!response.ok) {
                 throw new Error('Some error occurred');
@@ -192,7 +195,7 @@ export default function App() {
                 type: 'AA05',
             };
 
-            console.log('------------------ DATA BEFORE: ', dataToSend);
+            console.log('Initial data for location sending: ', dataToSend);
 
             // Sign the 'tx' object without pubkey and signature
             const { signature, orderedData } = signData(dataToSend.tx, privateKey);
@@ -201,14 +204,14 @@ export default function App() {
             orderedData.signature = signature;
             dataToSend.tx = orderedData;
 
-            console.log('------------------ ORDEREDDATA: ', orderedData);
+            // console.log('------------------ ORDEREDDATA: ', orderedData);
             const tx = {
                 pubkey: publicKey,
                 ...orderedData,
                 signature: signature
             }
 
-            console.log('------------------ TX: ', tx);
+            // console.log('------------------ TX: ', tx);
 
             const sendToPool = {
                 'tx': tx,
@@ -216,7 +219,7 @@ export default function App() {
             }
 
             const strigify = JSON.stringify(sendToPool)
-            console.log('------------------ STRINGIFY: ', strigify);
+            // console.log('------------------ STRINGIFY: ', strigify);
             // Send data to API
             await sendToAPI(strigify);
         } catch (error) {
@@ -229,7 +232,7 @@ export default function App() {
         // Replace API_URL with your actual API endpoint
         const API_URL = 'http://pool.prometeochain.io/node/get_from_ledger';
 
-        console.log('------------------ DATA TO SEND: ', dataToSend);
+        console.log('Final data for location sending', dataToSend);
 
         try {
             const response = await fetch(API_URL, {
@@ -240,7 +243,7 @@ export default function App() {
                 body: dataToSend
             });
 
-            console.log('RESPONSE: ', response);
+            // console.log('RESPONSE: ', response);
 
             if (!response.ok) {
                 throw new Error('Some shit gone wrong');
@@ -301,7 +304,6 @@ export default function App() {
         <View style={styles.container}>
             <Text>Private Key: {privateKey}</Text>
             <Text>Public Key: {publicKey}</Text>
-            <Text>Dev pub key Key: {devPubKey}</Text>
             <Text>Location: {location ? JSON.stringify(location) : 'Not available'}</Text>
         </View>
     );

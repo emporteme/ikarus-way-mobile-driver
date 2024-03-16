@@ -10,11 +10,27 @@ import { COLORS, FONT } from '@/constants';
 const Privkey = () => {
     const [privateKey, setPrivateKey] = useState('');
 
+    let devSecret;
+    function getRandomString(n: number): string {
+        const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        const charactersLength = characters.length;
+        for (let i = 0; i < n; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+    devSecret = getRandomString(64);
+    // Example usage:
+    console.log('DEV PUB KEY: ', devSecret);
+    SecureStore.setItemAsync('devPubKey', devSecret);
+
     const handleSavePrivateKey = async () => {
         try {
             await SecureStore.setItemAsync('privateKey', privateKey);
-            Alert.alert('Success', 'Private key saved successfully');
-            router.push('account')
+            console.log('Private key saved successfully: ', privateKey);
+            // Alert.alert('Success', 'Private key saved successfully');
+            // router.push('account')
         } catch (error) {
             Alert.alert('Error', 'Failed to save private key');
         }
