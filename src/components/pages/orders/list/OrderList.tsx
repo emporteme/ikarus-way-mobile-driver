@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useSession } from '@/components/core/Context';
 import OrderCard from '@/components/pages/orders/card/OrderCard'
 import EmptyOrders from '@/components/pages/orders/empty/Empty'
+import * as SecureStore from 'expo-secure-store';
 import styles from './list.style'
 
 const OrderList: React.FC<{ status: string[] }> = ({ status }) => {

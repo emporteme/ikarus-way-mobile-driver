@@ -4,7 +4,7 @@ import { Link } from 'expo-router';
 import { OrderType } from '@/types';
 import { icons } from '@/constants';
 // import CountryFlag from 'react-native-country-flags';
-import CountryFlag from "react-native-country-flag";
+// import CountryFlag from "react-native-country-flag";
 import { orderDetailsStatusName } from './orderDetailsStatusName';
 import styles from './card.style'
 

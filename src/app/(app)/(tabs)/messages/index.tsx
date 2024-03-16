@@ -72,6 +72,9 @@ const Func = () => (
             <Link href={'/test'} style={{ marginTop: 20 }}>
                 <Text>Test (Just for now) </Text>
             </Link>
+            <Link href={'/orders/2/otp'} style={{ marginTop: 20 }}>
+                <Text>OTP (Just for now) </Text>
+            </Link>
             <Link href={'/privkey'} style={{ marginTop: 20 }}>
                 <Text>Privkey (Just for now) </Text>
             </Link>
