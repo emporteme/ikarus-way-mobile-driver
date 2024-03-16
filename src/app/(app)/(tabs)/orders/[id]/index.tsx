@@ -30,6 +30,7 @@ const OrderDetail: React.FC<OrderType> = () => {
             }
             const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
+            // Fetch order data with {id} route
             const response = await fetch(`${apiUrl}carrier/orders/${id}`, {
                 method: 'GET',
                 headers: {
@@ -38,13 +39,31 @@ const OrderDetail: React.FC<OrderType> = () => {
                 },
             });
 
+
+            // // New logic with POST request
+            // const response = await fetch(`${apiUrl}carrier/orders`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Authorization': 'Bearer ' + jwtToken
+            //     },
+            //     body: JSON.stringify({ status_list: [] })
+            // });
+
             // if (!response.ok) {
             //     throw new Error('Network response was not ok');
             // }
 
+            // Old logic with {id} route
             const data = await response.json(); // Parse response data
             setOrderData(data.data); // Update state with fetched data
             console.log(data);
+
+            // // New logic with POST request
+            // const data = await response.json(); // Parse response data
+            // setOrderData(data.data[Number(id) - 1]); // Update state with fetched data
+            // console.log("All data: ", data)
+            // console.log(`Orders data ${id}: `, data.data[Number(id) - 1]);
         } catch (error) {
             console.error('Error fetching order:', error);
             alert('Failed to fetch order data');
@@ -502,10 +521,10 @@ const OrderDetail: React.FC<OrderType> = () => {
                         <View style={styles.lineH} />
                         <View style={styles.section}>
                             <Text style={styles.title}>Expenses</Text>
-                            {Object.entries(groupedReceipts).map(([date, receipts]) => (
+                            {Object.entries(groupedReceipts)?.map(([date, receipts]) => (
                                 <View key={date} style={styles.column2}>
                                     <Text style={styles.regSmall2}>{date}</Text>
-                                    {receipts.map((receipt) => (
+                                    {receipts?.map((receipt) => (
                                         <View key={receipt.receiptId} style={styles.column2}>
                                             <Text style={styles.row}>
                                                 <Text style={styles.regSemiMedium}>{receipt.receiptType}</Text>
@@ -513,7 +532,7 @@ const OrderDetail: React.FC<OrderType> = () => {
                                                 <Text style={styles.medSemiMedium2}>{receipt.price} {receipt.currency}</Text>
                                             </Text>
                                             <View style={styles.fileContainer}>
-                                                {receipt.filesInfo.map((file) => (
+                                                {receipt?.filesInfo.map((file) => (
                                                     <Pressable key={file.file_id} onPress={() => downloadFile(file.file_id, file.name)} style={styles.fileItem}>
                                                         <Image source={icons.attach} style={styles.fileIcon} />
                                                         <Text style={styles.fileText}>{file.name}</Text>
