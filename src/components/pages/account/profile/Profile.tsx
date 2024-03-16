@@ -107,7 +107,8 @@ const Profile: React.FC = () => {
                                     <Image source={images.profile} style={styles.image} />
                                     <View style={styles.column}>
                                         <Text style={styles.name}>{profileData?.first_name}</Text>
-                                        <Text style={styles.role}>{profileData?.currentRole?.name}</Text>
+                                        {/* <Text style={styles.role}>{profileData?.currentRole?.name}</Text> */}
+                                        <Text style={styles.role}>Driver</Text>
                                     </View>
                                 </View>
                                 <Link href={'/auth'} asChild>
