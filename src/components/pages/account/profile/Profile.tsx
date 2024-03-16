@@ -6,6 +6,7 @@ import { icons, images } from '@/constants';
 import styles from './profile.style';
 import { useSession } from '@/components/core/Context';
 import * as SecureStore from 'expo-secure-store';
+import axios from 'axios';
 
 const Profile: React.FC = () => {
     const { signOut, jwtToken } = useSession();
@@ -33,11 +34,42 @@ const Profile: React.FC = () => {
                 },
             });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            const data = await response.json();
+            console.log("REsponse: ", response);
+
+            if (data.status === 'UNAUTHORIZED' && data.code === 401) {
+                console.log('Unauthorized -----');
+                try {
+                    const formdata = new FormData();
+                    // const rtToken = await SecureStore.getItemAsync('rtToken');
+                    formdata.append('rtToken', await SecureStore.getItemAsync('rtToken'));
+                    console.log('RT Token: ', formdata);
+                    const refreshResponse = await axios.post(`${apiUrl}auth/refreshToken`, formdata, {
+                        headers: {
+                            Authorization: 'Bearer ' + jwtToken,
+                            'Content-type': 'multipart/form-data',
+                        },
+                    });
+
+                    if (refreshResponse.status === 200) {
+                        await SecureStore.setItemAsync('jwtToken', refreshResponse.data.data.jwt_token);
+                    }
+
+                } catch (error) {
+                    // Cookie.remove('token');
+                    // Cookie.remove('refresh');
+                    // window.location.replace('/login');
+                    console.error('Error refreshing token:', error);
+                    signOut(); // Sign out the user if the refresh token fails
+                    return null;
+                }
             }
 
-            const data = await response.json();
+            // if (!response.ok) {
+            //     throw new Error('Network response was not ok');
+            // }
+
+            // const data = await response.json();
             setProfileData(data.data);
             console.log(data);
         } catch (error) {
