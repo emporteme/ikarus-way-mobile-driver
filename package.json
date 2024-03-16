@@ -85,6 +85,7 @@
     "sharp": "^0.33.2",
     "stream-browserify": "^3.0.0",
     "string_decoder": "^0.10.31",
+    "styled-components": "^6.1.8",
     "timers-browserify": "^1.0.1",
     "tty-browserify": "^0.0.0",
     "tweet-nacl-react-native-expo": "^1.0.3",
