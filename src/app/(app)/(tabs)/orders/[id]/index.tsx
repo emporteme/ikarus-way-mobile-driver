@@ -1,16 +1,17 @@
-import { View, Text, SafeAreaView, ScrollView, Image, Pressable, Button, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, Image, Pressable, TouchableOpacity, Platform, Linking } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useLocalSearchParams, Stack, Link } from 'expo-router';
 import * as FileSystem from 'expo-file-system';
 import * as DocumentPicker from 'expo-document-picker';
-import * as Sharing from 'expo-sharing';
 import { icons } from '@/constants';
 import { useSession } from '@/components/core/Context';
 import { OrderType } from '@/types';
 import * as WebBrowser from 'expo-web-browser';
 import { orderDetailsStatusName } from '@/components/pages/orders/card/orderDetailsStatusName';
 import styles from '@/styles/orderDetails.style';
-import * as Linking from 'expo-linking';
+// import * as Linking from 'expo-linking';
+import * as IntentLauncher from 'expo-intent-launcher';
+import * as Sharing from 'expo-sharing';
 
 const OrderDetail: React.FC<OrderType> = () => {
     const { id } = useLocalSearchParams();
@@ -176,34 +177,54 @@ const OrderDetail: React.FC<OrderType> = () => {
 
     const groupedReceipts = receiptsData ? groupReceiptsByDate(receiptsData) : {};
 
-    const downloadFile = async (fileId, fileName) => {
+    // Function to handle file download
+    const downloadFile = async (fileId: string, fileName: string) => {
         try {
             const apiUrl = process.env.EXPO_PUBLIC_API_URL;
             const url = `${apiUrl}receipts/download/${id}/${fileId}`;
+            const fileUri = FileSystem.documentDirectory + fileName;
 
-            const response = await fetch(url, {
-                method: 'GET',
+            const downloadRes = await FileSystem.downloadAsync(url, fileUri, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + jwtToken,
+                    'Authorization': `Bearer ${jwtToken}`,
                 },
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error ${response.status}`);
+            console.log('Download response:', downloadRes)
+
+            if (downloadRes.status !== 200) {
+                throw new Error('Failed to download file');
             }
 
-            const fileData = await response.blob();
-            const fileUri = `${FileSystem.cacheDirectory}${fileName}`;
-
-            await FileSystem.writeAsStringAsync(fileUri, String(await convertBlobToBase64(fileData)));
-
-            console.log('File downloaded successfully:', fileUri);
-
-            // Open the downloaded file
-            openDownloadedFile(fileUri);
+            console.log('File downloaded to:', downloadRes.uri);
+            openDownloadedFile(downloadRes.uri);
+            // return downloadRes.uri;
         } catch (error) {
             console.error('Error downloading file:', error);
+            alert('Failed to download file');
+            return null;
+        }
+    };
+
+
+    // Function to open the downloaded file
+    const openDownloadedFile = async (fileUri: string) => {
+        try {
+            if (Platform.OS === 'ios') {
+                // For iOS, simply use the Sharing API to open the share dialog.
+                await Sharing.shareAsync(fileUri, { dialogTitle: 'Open file' });
+            } else {
+                // For Android, get the content URI for the file and open it using an Intent.
+                const contentUri = await FileSystem.getContentUriAsync(fileUri);
+                await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
+                    data: contentUri,
+                    flags: 1, // FLAG_GRANT_READ_URI_PERMISSION
+                    type: '*/*', // You could set specific MIME type here if necessary
+                });
+            }
+        } catch (error) {
+            console.error('Error opening file:', error);
+            alert('Failed to open file');
         }
     };
 
@@ -217,22 +238,6 @@ const OrderDetail: React.FC<OrderType> = () => {
         reader.onloadend = () => resolve((reader.result as string).split(',')[1]);
         reader.onerror = reject;
     });
-
-    const openDownloadedFile = async (fileUri) => {
-        try {
-            await Sharing.shareAsync(fileUri);
-            // Or you can use other methods to open the file depending on your requirements
-
-            // const supported = await Linking.canOpenURL(fileUri);
-            // if (supported) {
-            //     await Linking.openURL(fileUri);
-            // } else {
-            //     console.log("Can't open this file type");
-            // }
-        } catch (error) {
-            console.error('Error opening file:', error);
-        }
-    };
 
     // Get the mapped status name
     const statusName = orderDetailsStatusName[orderData?.status]?.name || 'Unknown Status';
@@ -553,7 +558,11 @@ const OrderDetail: React.FC<OrderType> = () => {
                                             </Text>
                                             <View style={styles.fileContainer}>
                                                 {receipt?.filesInfo.map((file) => (
-                                                    <Pressable key={file.file_id} onPress={() => downloadFile(file.file_id, file.name)} style={styles.fileItem}>
+                                                    <Pressable
+                                                        key={file.file_id}
+                                                        onPress={() => downloadFile(file.file_id, file.name)}
+                                                        style={styles.fileItem}
+                                                    >
                                                         <Image source={icons.attach} style={styles.fileIcon} />
                                                         <Text style={styles.fileText}>{file.name}</Text>
                                                     </Pressable>
