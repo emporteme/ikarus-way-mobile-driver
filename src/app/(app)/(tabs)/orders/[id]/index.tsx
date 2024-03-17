@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, Image, Pressable, Linking, Button, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, Image, Pressable, Button, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useLocalSearchParams, Stack, Link } from 'expo-router';
 import * as FileSystem from 'expo-file-system';
@@ -7,8 +7,10 @@ import * as Sharing from 'expo-sharing';
 import { icons } from '@/constants';
 import { useSession } from '@/components/core/Context';
 import { OrderType } from '@/types';
+import * as WebBrowser from 'expo-web-browser';
 import { orderDetailsStatusName } from '@/components/pages/orders/card/orderDetailsStatusName';
 import styles from '@/styles/orderDetails.style';
+import * as Linking from 'expo-linking';
 
 const OrderDetail: React.FC<OrderType> = () => {
     const { id } = useLocalSearchParams();
@@ -178,37 +180,55 @@ const OrderDetail: React.FC<OrderType> = () => {
         try {
             const apiUrl = process.env.EXPO_PUBLIC_API_URL;
             const url = `${apiUrl}receipts/download/${id}/${fileId}`;
-            const downloadResumable = FileSystem.createDownloadResumable(
-                url,
-                FileSystem.documentDirectory + fileName
-            );
 
-            const { uri } = await downloadResumable.downloadAsync();
-
-            console.log('File downloaded successfully:', uri);
-
-            // Read the downloaded file as a byte array
-            const fileByteArray = await FileSystem.readAsStringAsync(uri, {
-                encoding: FileSystem.EncodingType.Base64,
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + jwtToken,
+                },
             });
 
-            // Convert the byte array to a normal file
-            const convertedFileUri = FileSystem.cacheDirectory + fileName;
-            await FileSystem.writeAsStringAsync(convertedFileUri, fileByteArray, {
-                encoding: FileSystem.EncodingType.Base64,
-            });
+            if (!response.ok) {
+                throw new Error(`HTTP error ${response.status}`);
+            }
 
-            // Open or share the converted file
-            openDownloadedFile(convertedFileUri);
+            const fileData = await response.blob();
+            const fileUri = `${FileSystem.cacheDirectory}${fileName}`;
+
+            await FileSystem.writeAsStringAsync(fileUri, String(await convertBlobToBase64(fileData)));
+
+            console.log('File downloaded successfully:', fileUri);
+
+            // Open the downloaded file
+            openDownloadedFile(fileUri);
         } catch (error) {
             console.error('Error downloading file:', error);
         }
     };
 
+    const convertBlobToBase64 = async (blob) => {
+        return await blobToBase64(blob);
+    }
+
+    const blobToBase64 = (blob: Blob) => new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => resolve((reader.result as string).split(',')[1]);
+        reader.onerror = reject;
+    });
+
     const openDownloadedFile = async (fileUri) => {
         try {
             await Sharing.shareAsync(fileUri);
             // Or you can use other methods to open the file depending on your requirements
+
+            // const supported = await Linking.canOpenURL(fileUri);
+            // if (supported) {
+            //     await Linking.openURL(fileUri);
+            // } else {
+            //     console.log("Can't open this file type");
+            // }
         } catch (error) {
             console.error('Error opening file:', error);
         }
