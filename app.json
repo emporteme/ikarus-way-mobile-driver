@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Ikarus Way mobile ^ Driver",
+    "name": "Ikarus Smart Logistic",
     "slug": "ikarus-smart-logistic",
     "scheme": "tms-deeplink",
     "version": "1.0.0",
@@ -49,7 +49,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "6b2937be-8c51-4b93-92e6-77d3746afa26"
+        "projectId": "b11d28d4-b9b6-4e5f-9acb-785122071e45"
       }
     },
     "owner": "emporteme",
