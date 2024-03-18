@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Ikarus Way mobile ^ Driver",
-    "slug": "ikarus-way-mobile-driver",
+    "slug": "ikarus-smart-logistic",
     "scheme": "tms-deeplink",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -27,7 +27,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1B1B1B"
       },
-      "package": "com.emporteme.ikaruswaymobiledriver",
+      "package": "com.prometeo.prometeochain_app",
       "softwareKeyboardLayoutMode": "pan",
       "runtimeVersion": "1.0.0"
     },
@@ -49,7 +49,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "3786c1df-7dd8-43d7-98e6-97a2b2b80b77"
+        "projectId": "6b2937be-8c51-4b93-92e6-77d3746afa26"
       }
     },
     "owner": "emporteme",
