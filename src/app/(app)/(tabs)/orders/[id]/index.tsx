@@ -2,11 +2,9 @@ import { View, Text, SafeAreaView, ScrollView, Image, Pressable, TouchableOpacit
 import React, { useState, useEffect } from 'react'
 import { useLocalSearchParams, Stack, Link } from 'expo-router';
 import * as FileSystem from 'expo-file-system';
-import * as DocumentPicker from 'expo-document-picker';
 import { icons } from '@/constants';
 import { useSession } from '@/components/core/Context';
 import { OrderType } from '@/types';
-import * as WebBrowser from 'expo-web-browser';
 import { orderDetailsStatusName } from '@/components/pages/orders/card/orderDetailsStatusName';
 import styles from '@/styles/orderDetails.style';
 // import * as Linking from 'expo-linking';
@@ -206,7 +204,6 @@ const OrderDetail: React.FC<OrderType> = () => {
         }
     };
 
-
     // Function to open the downloaded file
     const openDownloadedFile = async (fileUri: string) => {
         try {
@@ -227,17 +224,6 @@ const OrderDetail: React.FC<OrderType> = () => {
             alert('Failed to open file');
         }
     };
-
-    const convertBlobToBase64 = async (blob) => {
-        return await blobToBase64(blob);
-    }
-
-    const blobToBase64 = (blob: Blob) => new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        reader.onloadend = () => resolve((reader.result as string).split(',')[1]);
-        reader.onerror = reject;
-    });
 
     // Get the mapped status name
     const statusName = orderDetailsStatusName[orderData?.status]?.name || 'Unknown Status';

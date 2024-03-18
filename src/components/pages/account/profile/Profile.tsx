@@ -50,9 +50,11 @@ const Profile: React.FC = () => {
                             'Content-type': 'multipart/form-data',
                         },
                     });
+                    console.log('Refresh Response: ', refreshResponse);
 
                     if (refreshResponse.status === 200) {
                         await SecureStore.setItemAsync('jwtToken', refreshResponse.data.data.jwt_token);
+                        jwtToken = refreshResponse.data.data.jwt_token;
                     }
 
                 } catch (error) {

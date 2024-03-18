@@ -106,7 +106,7 @@ const ExpensesPage: React.FC = () => {
             router.back()
         } catch (error) {
             console.error('Error submitting OTP: ', error);
-            Alert.alert('Error', 'Failed to submit OTP. Please try again later.');
+            Alert.alert('Error', 'Failed to submit OTP code');
         }
     };
 
