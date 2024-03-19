@@ -1,4 +1,4 @@
-package com.emporteme.ikaruswaymobiledriver
+package com.prometeo.prometeochain_app
 
 import android.os.Build
 import android.os.Bundle
