@@ -37,9 +37,9 @@ async function fetchAuth(email: string, password: string, signIn: (jwt: string, 
             },
             body: JSON.stringify(credentials)
         });
-        if (!response.ok) {
-            throw new Error('Failed to authenticate');
-        }
+        // if (!response.ok) {
+        //     throw new Error('Failed to authenticate');
+        // }
 
         const json = await response.json();
         if (json.status === 'OK') {
