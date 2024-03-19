@@ -12,7 +12,8 @@ import * as IntentLauncher from 'expo-intent-launcher';
 import * as Sharing from 'expo-sharing';
 
 const OrderDetail: React.FC<OrderType> = () => {
-    const { id } = useLocalSearchParams();
+    // const { id } = useLocalSearchParams();
+    const id = 10
 
     // Auth context
     const { jwtToken } = useSession(); // Destructure jwtToken from useSession

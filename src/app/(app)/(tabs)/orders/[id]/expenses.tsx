@@ -15,7 +15,8 @@ import Constants from 'expo-constants';
 
 
 const ExpensesPage: React.FC = () => {
-    const { id } = useLocalSearchParams();
+    // const { id } = useLocalSearchParams();
+    const id = 10
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
     // Auth context
