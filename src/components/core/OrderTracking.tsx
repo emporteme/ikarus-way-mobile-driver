@@ -26,7 +26,7 @@ function getRandomString(n: number): string {
 }
 // const myKey = SecureStore.getItemAsync('privateKey');
 
-export default function App() {
+export default function OrderTracking() {
     // console.log("MY KEY: ", myKey)
 
     const [privateKey, setPrivateKey] = useState<string | null>(null);
@@ -368,16 +368,6 @@ export default function App() {
         <></>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 50,
-        padding: 20,
-    },
-});
 
 const sortObjectKeys = (obj: any): any => {
     if (typeof obj !== 'object' || obj === null) {

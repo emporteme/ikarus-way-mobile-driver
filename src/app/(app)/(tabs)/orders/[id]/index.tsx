@@ -10,10 +10,11 @@ import styles from '@/styles/orderDetails.style';
 // import * as Linking from 'expo-linking';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as Sharing from 'expo-sharing';
+import OrderTracking from '@/components/core/OrderTracking';
 
 const OrderDetail: React.FC<OrderType> = () => {
     // const { id } = useLocalSearchParams();
-    const id = 10
+    const id = 33
 
     // Auth context
     const { jwtToken } = useSession(); // Destructure jwtToken from useSession
@@ -597,19 +598,22 @@ const OrderDetail: React.FC<OrderType> = () => {
                     )}
 
                     {statusName === "Tracking" && (
-                        <View style={styles.buttons}>
-                            <Link href={`/orders/${id}/expenses`} asChild>
-                                <Pressable style={styles.button}>
-                                    <Text style={styles.buttonText}>Add expenses</Text>
-                                    <Image source={icons.card} style={styles.buttonIcon} />
-                                </Pressable>
-                            </Link>
-                            <Link href={`/orders/${id}/otp`} asChild>
-                                <Pressable style={styles.button_p}>
-                                    <Text style={styles.buttonText_p}>Finish</Text>
-                                </Pressable>
-                            </Link>
-                        </View>
+                        <>
+                            <OrderTracking />
+                            <View style={styles.buttons}>
+                                <Link href={`/orders/${id}/expenses`} asChild>
+                                    <Pressable style={styles.button}>
+                                        <Text style={styles.buttonText}>Add expenses</Text>
+                                        <Image source={icons.card} style={styles.buttonIcon} />
+                                    </Pressable>
+                                </Link>
+                                <Link href={`/orders/${id}/otp-end`} asChild>
+                                    <Pressable style={styles.button_p}>
+                                        <Text style={styles.buttonText_p}>Finish</Text>
+                                    </Pressable>
+                                </Link>
+                            </View>
+                        </>
                     )}
 
                     {statusName === "Closed" && (

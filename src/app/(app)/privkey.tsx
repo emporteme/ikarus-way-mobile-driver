@@ -30,7 +30,7 @@ const Privkey = () => {
             await SecureStore.setItemAsync('privateKey', privateKey);
             console.log('Private key saved successfully: ', privateKey);
             // Alert.alert('Success', 'Private key saved successfully');
-            // router.push('account')
+            router.push('account')
         } catch (error) {
             Alert.alert('Error', 'Failed to save private key');
         }
