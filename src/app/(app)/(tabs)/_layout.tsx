@@ -73,7 +73,7 @@ export default function TabsLayout() {
             /> */}
 
             {/* Messages tab */}
-            <Tabs.Screen
+            {/* <Tabs.Screen
                 name="messages"
                 options={{
                     title: 'Messages',
@@ -93,7 +93,7 @@ export default function TabsLayout() {
                         display: segments[3] === '[id]' ? 'none' : 'flex'
                     }
                 }}
-            />
+            /> */}
 
             {/* Account tab */}
             <Tabs.Screen
