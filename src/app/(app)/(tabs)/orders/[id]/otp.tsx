@@ -8,8 +8,8 @@ import { useSession } from '@/components/core/Context';
 const ExpensesPage: React.FC = () => {
     // Auth context
     const { jwtToken } = useSession(); // Destructure jwtToken from useSession
-    // const { id } = useLocalSearchParams();
-    const id = 33
+    const { id } = useLocalSearchParams();
+    // const id = 33
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
     // State
