@@ -61,7 +61,7 @@ const ExpensesPage: React.FC = () => {
                 throw new Error('JWT token not found');
             }
 
-            const response = await fetch(`${apiUrl}carrier/orders/sendOTP/${offerId}?recipientType=SENDER`, {
+            const response = await fetch(`${apiUrl}carrier/orders/sendOTP/${offerId}?recipientType=RECEIVER`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -88,11 +88,9 @@ const ExpensesPage: React.FC = () => {
             if (!jwtToken) {
                 throw new Error('JWT token not found');
             }
-
-            console.log("ID:", JSON.stringify({ otp: otp }))
-            console.log("OTP:", otp)
-
-            const response = await fetch(`${apiUrl}carrier/orders/startDelivery/${offerId}`, {
+            console.log("OTP that will be send:", otp)
+            console.log("Another: ", JSON.stringify(otp))
+            const response = await fetch(`${apiUrl}carrier/orders/finishDelivery/${offerId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
