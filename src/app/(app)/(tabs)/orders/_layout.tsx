@@ -7,7 +7,7 @@ export default () => {
                 {
                     headerShown: true,
                     headerShadowVisible: true,
-                    title: 'Orders',
+                    title: 'My orders',
                     headerTitleAlign: 'center'
                 }
             }

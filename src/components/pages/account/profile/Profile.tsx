@@ -51,10 +51,13 @@ const Profile: React.FC = () => {
                         },
                     });
                     console.log('Refresh Response: ', refreshResponse);
+                    // console.log('Refresh Response RT: ', refreshResponse.data.data.jwt_token);
+
 
                     if (refreshResponse.status === 200) {
                         await SecureStore.setItemAsync('jwtToken', refreshResponse.data.data.jwt_token);
                         jwtToken = refreshResponse.data.data.jwt_token;
+                        console.log('New JWT Token: ', jwtToken);
                     }
 
                 } catch (error) {

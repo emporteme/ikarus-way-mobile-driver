@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     },
     scroll: {
         padding: 20,
-        paddingBottom: 90
+        paddingBottom: 150
     },
     section: {
         gap: 10,
@@ -165,7 +165,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderColor: COLORS.primary,
-        borderWidth: 2
+        borderWidth: 2,
+        backgroundColor: COLORS.white,
     },
     buttonText_p: {
         color: COLORS.primary,
