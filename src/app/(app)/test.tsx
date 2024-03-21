@@ -31,30 +31,44 @@ export default function App() {
 
     useEffect(() => {
         // Start sending location data every 10 seconds once privateKey is available
-        const intervalId = setInterval(signLocation, 10 * 1000);
-        
-        // Clear interval on component unmount
-        return () => clearInterval(intervalId);
+        if (privateKey && !isDevKeyRegistered) {
+            signDevkey(devPubKey, privateKey); // Fix: Pass both devPubKey and privateKey as arguments
+            setIsDevKeyRegistered(true);
+        } else if (privateKey) {
+            const intervalId = setInterval(signLocation, 10 * 1000);
+
+            // Clear interval on component unmount
+            return () => clearInterval(intervalId);
+        }
     }, [privateKey, isDevKeyRegistered, devPubKey]);
+
+    // useEffect(() => {
+    //     // Start sending location data every 10 seconds once privateKey is available
+    //     const intervalId = setInterval(signLocation, 10 * 1000);
+
+    //     // Clear interval on component unmount
+    //     return () => clearInterval(intervalId);
+    // }, [privateKey, isDevKeyRegistered, devPubKey]);
 
     const loadPrivateKey = async () => {
         // Load private key from secure storage
-        const storedPrivateKey = 'd1cbd84a79f3b9deea82548d80a96a98a4b6d837b2e5572984d8c40b80a97b46'; // Replace with your method for loading private key
+        const priv = await SecureStore.getItemAsync('privateKey');
+        const storedPrivateKey = priv // Replace with your method for loading private key
         const storedPublicKey = null; // Replace with your method for loading public key
 
         // If private and public keys are not stored, generate a new key pair
         if (!storedPrivateKey || !storedPublicKey) {
-            generateKeyPair();
+            generateKeyPair(priv);
         } else {
             setPrivateKey(storedPrivateKey);
             setPublicKey(storedPublicKey);
         }
     };
 
-    const generateKeyPair = () => {
+    const generateKeyPair = (priv) => {
         let secret = new Uint8Array(32);
-
-        secret = hexToUint8Array('d1cbd84a79f3b9deea82548d80a96a98a4b6d837b2e5572984d8c40b80a97b46')
+        
+        secret = hexToUint8Array(priv)
 
         // let devSecret;
         // function getRandomString(n: number): string {
@@ -83,79 +97,79 @@ export default function App() {
         // setDevPubKey(devKeyHex);
     };
 
-    // const signDevkey = async (devpubkey, privateKey) => {
-    //     const API_URL = 'http://pool.prometeochain.io/node/get_from_ledger';
+    const signDevkey = async (devpubkey, privateKey) => {
+        const API_URL = 'http://pool.prometeochain.io/node/get_from_ledger';
 
-    //     // Get current location
-    //     let { status } = await Location.requestForegroundPermissionsAsync();
-    //     if (status !== 'granted') {
-    //         console.error('Permission to access location was denied');
-    //         return;
-    //     }
+        // Get current location
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            console.error('Permission to access location was denied');
+            return;
+        }
 
-    //     let location = await Location.getCurrentPositionAsync({});
-    //     setLocation(location);
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
 
-    //     const DEVREG_SC = {
-    //         data: {
-    //             name: "Если ты это читаешь... ты Bcrfylth",
-    //             devpubkey: devpubkey,
-    //             pubkey: publicKey,
-    //             sw: 'true',
-    //             timestamp: location.timestamp / 1000,
-    //         },
-    //         tx_type: "BB00"
-    //     }
+        const DEVREG_SC = {
+            data: {
+                name: "Если ты это читаешь... ты Bcrfylth",
+                devpubkey: devpubkey,
+                pubkey: publicKey,
+                sw: 'true',
+                timestamp: location.timestamp / 1000,
+            },
+            tx_type: "BB00"
+        }
 
-    //     console.log('Initial data for register device: ', DEVREG_SC);
+        console.log('Initial data for register device: ', DEVREG_SC);
 
-    //     try {
-    //         // Sign the 'data' object
-    //         const { signature, orderedData } = signData(DEVREG_SC.data, privateKey);
+        try {
+            // Sign the 'data' object
+            const { signature, orderedData } = signData(DEVREG_SC.data, privateKey);
 
-    //         // Add the signature to the 'data' object
-    //         orderedData.signature = signature;
+            // Add the signature to the 'data' object
+            orderedData.signature = signature;
 
-    //         // Update the 'tx' object with the signature and public key
-    //         orderedData.signature = signature;
-    //         DEVREG_SC.data = orderedData;
+            // Update the 'tx' object with the signature and public key
+            orderedData.signature = signature;
+            DEVREG_SC.data = orderedData;
 
-    //         // console.log('------------------ ORDEREDDATA: ', orderedData);
-    //         const data = {
-    //             pubkey: publicKey,
-    //             ...orderedData,
-    //             signature: signature
-    //         }
+            // console.log('------------------ ORDEREDDATA: ', orderedData);
+            const data = {
+                pubkey: publicKey,
+                ...orderedData,
+                signature: signature
+            }
 
-    //         // console.log('------------------ data: ', data);
+            // console.log('------------------ data: ', data);
 
-    //         const sendToPool = {
-    //             'tx': data,
-    //             'type': 'BB00'
-    //         }
+            const sendToPool = {
+                'tx': data,
+                'type': 'BB00'
+            }
 
-    //         const strigify = JSON.stringify(sendToPool)
-    //         console.log('Final data for register device: ', strigify);
+            const strigify = JSON.stringify(sendToPool)
+            console.log('Final data for register device: ', strigify);
 
-    //         const response = await fetch(API_URL, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: strigify
-    //         });
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: strigify
+            });
 
-    //         // console.log('RESPONSE: ', response);
+            // console.log('RESPONSE: ', response);
 
-    //         if (!response.ok) {
-    //             throw new Error('Some error occurred');
-    //         }
+            if (!response.ok) {
+                throw new Error('Some error occurred');
+            }
 
-    //         console.log('Device key registered successfully');
-    //     } catch (error) {
-    //         console.error('Error registering device key:', error);
-    //     }
-    // }
+            console.log('Device key registered successfully');
+        } catch (error) {
+            console.error('Error registering device key:', error);
+        }
+    }
 
     const signLocation = async () => {
         try {
