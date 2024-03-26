@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, ScrollView, TextInput, TouchableOpacity, Image, Pressable, FlatList } from 'react-native';
 import { useLocalSearchParams, Stack, router } from 'expo-router';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { icons } from '@/constants';
-import styles from '@/styles/expenses.style';
-import { OuterDropdown, InnerDropdown } from '@/components';
-import { useSession } from '@/components/core/Context';
-import axios from 'axios';
+import Constants from 'expo-constants';
 import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as DocumentPicker from 'expo-document-picker';
-import Constants from 'expo-constants';
+import axios from 'axios';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { icons } from '@/constants';
+import { OuterDropdown, InnerDropdown } from '@/components';
+import { useSession } from '@/components/core/Context';
+import styles from '@/styles/expenses.style';
 
 
 const ExpensesPage: React.FC = () => {
     // const { id } = useLocalSearchParams();
-    const id = 33
+    const id = 35
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
     // Auth context
@@ -125,24 +125,6 @@ const ExpensesPage: React.FC = () => {
     };
 
 
-    // const pickSomething = async () => {
-    //     try {
-    //         const docRes = await DocumentPicker.getDocumentAsync({
-    //             type: "*/*",
-    //             multiple: true, // Allow selecting multiple files
-    //         });
-
-    //         if (!docRes.canceled) {
-    //             const assets = docRes.assets;
-    //             if (assets) {
-    //                 setSelectedFiles([...selectedFiles, ...assets]); // Update selectedFiles state
-    //             }
-    //         }
-    //     } catch (error) {
-    //         console.log("Error while selecting files: ", error);
-    //     }
-    // };
-
     const fetchSubmit = async () => {
         const date = new Date(selectedDate);
         date.setHours(selectedTime.getHours());
@@ -164,11 +146,6 @@ const ExpensesPage: React.FC = () => {
         formData.append('price', credentials.price);
         formData.append('currency', credentials.currency);
         formData.append('timestamp', credentials.timestamp.toString());
-
-        // // Append selected files to the form data
-        // selectedFiles.forEach((file) => {
-        //     formData.append('files', file as any);
-        // });
 
         // Append selected files to FormData
         credentials.files.forEach((uri, index) => {
@@ -194,18 +171,9 @@ const ExpensesPage: React.FC = () => {
                 data: formData
             });
 
-            // if (response.status === 201) {
-            //     console.log('Expenses submitted successfully');
-            //     router.push(`/orders/${id}`);
-            // } else {
-            //     console.error('Failed to submit expenses');
-            //     alert('Failed to submit expenses');
-            // }
-
             const json = response.data;
             console.log(json);
             console.log(json.status);
-
         } catch (error) {
             console.error(error);
             // alert('Failed to submit expenses');
@@ -304,18 +272,7 @@ const ExpensesPage: React.FC = () => {
                         />
                         <InnerDropdown
                             options={[
-                                'AUD', 'EUR', 'AZN', 'ALL', 'DZD', 'XCD', 'AOA', 'ARS', 'AMD', 'AWG', 'AFN', 'BSD', 'BDT', 'BBD', 'BHD', 'BYR',
-                                'BYN', 'BZD', 'XOF', 'BMD', 'BGN', 'BOB', 'BAM', 'BWP', 'BRL', 'BND', 'BIF', 'BTN', 'VUV', 'GBP', 'HUF', 'VEB',
-                                'IDR', 'VND', 'XAF', 'HTG', 'GYD', 'GMD', 'GHC', 'GTQ', 'GNF', 'GIP', 'HNL', 'HKD', 'GEL', 'DKK', 'DJF', 'DOP',
-                                'EGP', 'ZMK', 'ZWD', 'ILS', 'INR', 'JOD', 'IQD', 'IRR', 'ISK', 'YER', 'CVE', 'KZT', 'KYD', 'KHR', 'CAD', 'QAR',
-                                'KES', 'CYP', 'KGS', 'CNY', 'KPW', 'COP', 'KMF', 'CDF', 'CRC', 'CUP', 'KWD', 'LAK', 'LVL', 'LSL', 'ZAR', 'LRD',
-                                'LBP', 'LYD', 'LTL', 'CHF', 'MUR', 'MRO', 'MGA', 'MOP', 'MKD', 'MWK', 'MYR', 'MVR', 'MTL', 'MAD', 'XDR', 'MXN',
-                                'MZN', 'MDL', 'MNT', 'MMK', 'NAD', 'NPR', 'NGN', 'ANG', 'NIO', 'NZD', 'NOK', 'AED', 'OMR', 'SHP', 'PKR', 'PAB',
-                                'PGK', 'PYG', 'PEN', 'PLN', 'RUB', 'RWF', 'RON', 'WST', 'STD', 'SAR', 'SZL', 'SCR', 'CSD', 'SGD', 'SYP', 'SKK',
-                                'SIT', 'SBD', 'SOS', 'SDD', 'SRD', 'USD', 'SLL', 'TJS', 'THB', 'TWD', 'TZS', 'TOP', 'TTD', 'TND', 'TMM', 'TRY',
-                                'UGX', 'UZS', 'UAH', 'UYU', 'FJD', 'PHP', 'FKP', 'XPF', 'HRK', 'CZK', 'CLP', 'SEK', 'LKR', 'ERN', 'EEK', 'ETB',
-                                'YUM', 'KRW', 'JMD', 'JPY', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XFO', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX',
-                                'TOKEN', 'NONE'
+                                'AUD', 'EUR', 'AZN', 'ALL', 'DZD', 'XCD', 'AOA', 'ARS', 'AMD', 'AWG', 'AFN', 'BSD', 'BDT', 'BBD', 'BHD', 'BYR', 'BYN', 'BZD', 'XOF', 'BMD', 'BGN', 'BOB', 'BAM', 'BWP', 'BRL', 'BND', 'BIF', 'BTN', 'VUV', 'GBP', 'HUF', 'VEB', 'IDR', 'VND', 'XAF', 'HTG', 'GYD', 'GMD', 'GHC', 'GTQ', 'GNF', 'GIP', 'HNL', 'HKD', 'GEL', 'DKK', 'DJF', 'DOP', 'EGP', 'ZMK', 'ZWD', 'ILS', 'INR', 'JOD', 'IQD', 'IRR', 'ISK', 'YER', 'CVE', 'KZT', 'KYD', 'KHR', 'CAD', 'QAR', 'KES', 'CYP', 'KGS', 'CNY', 'KPW', 'COP', 'KMF', 'CDF', 'CRC', 'CUP', 'KWD', 'LAK', 'LVL', 'LSL', 'ZAR', 'LRD', 'LBP', 'LYD', 'LTL', 'CHF', 'MUR', 'MRO', 'MGA', 'MOP', 'MKD', 'MWK', 'MYR', 'MVR', 'MTL', 'MAD', 'XDR', 'MXN', 'MZN', 'MDL', 'MNT', 'MMK', 'NAD', 'NPR', 'NGN', 'ANG', 'NIO', 'NZD', 'NOK', 'AED', 'OMR', 'SHP', 'PKR', 'PAB', 'PGK', 'PYG', 'PEN', 'PLN', 'RUB', 'RWF', 'RON', 'WST', 'STD', 'SAR', 'SZL', 'SCR', 'CSD', 'SGD', 'SYP', 'SKK', 'SIT', 'SBD', 'SOS', 'SDD', 'SRD', 'USD', 'SLL', 'TJS', 'THB', 'TWD', 'TZS', 'TOP', 'TTD', 'TND', 'TMM', 'TRY', 'UGX', 'UZS', 'UAH', 'UYU', 'FJD', 'PHP', 'FKP', 'XPF', 'HRK', 'CZK', 'CLP', 'SEK', 'LKR', 'ERN', 'EEK', 'ETB', 'YUM', 'KRW', 'JMD', 'JPY', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XFO', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX', 'TOKEN', 'NONE'
                             ]}
                             selectedOption={selectedCurrency}
                             onSelect={setSelectedCurrency}
