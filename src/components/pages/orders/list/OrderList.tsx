@@ -45,12 +45,12 @@ const OrderList: React.FC<{ status: string[] }> = ({ status }) => {
         <View style={styles.body}>
             {orders.length > 0 ? (
                 <FlatList
-                    data={orders}
+                    data={[...orders].reverse()} // Create a reversed copy of the orders array
                     contentContainerStyle={styles.content}
                     renderItem={({ item }) => <OrderCard {...item} />}
-                    onEndReached={() => setPage(prevPage => prevPage + 1)} // Increment page number to fetch more items
+                    onEndReached={() => setPage(prevPage => prevPage + 1)}
                     onEndReachedThreshold={0.5}
-                    ListFooterComponent={loading ? <ActivityIndicator /> : null} // Show a loading indicator when fetching data
+                    ListFooterComponent={loading ? <ActivityIndicator /> : null}
                 />
             ) : (
                 <EmptyOrders />
