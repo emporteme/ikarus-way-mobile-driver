@@ -162,19 +162,22 @@ const OrderDetail: React.FC<OrderType> = () => {
     };
 
     const groupReceiptsByDate = (receiptsData: any[]) => {
+        // Sort receipts by timestamp in ascending order
+        const sortedReceipts = receiptsData.sort((a, b) => b.timestamp - a.timestamp);
+    
         const groupedReceipts: { [date: string]: any[] } = {};
-
-        receiptsData?.forEach((receipt) => {
+    
+        sortedReceipts.forEach((receipt) => {
             const date = new Date(receipt.timestamp).toLocaleDateString();
             if (!groupedReceipts[date]) {
                 groupedReceipts[date] = [];
             }
             groupedReceipts[date].push(receipt);
         });
-
+    
         return groupedReceipts;
     };
-
+    
     const groupedReceipts = receiptsData ? groupReceiptsByDate(receiptsData) : {};
 
     // Function to handle file download
