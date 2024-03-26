@@ -1,30 +1,28 @@
-import { View, FlatList } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { View, FlatList, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { useSession } from '@/components/core/Context';
-import OrderCard from '@/components/pages/orders/card/OrderCard'
-import EmptyOrders from '@/components/pages/orders/empty/Empty'
-import * as SecureStore from 'expo-secure-store';
-import styles from './list.style'
+import OrderCard from '@/components/pages/orders/card/OrderCard';
+import EmptyOrders from '@/components/pages/orders/empty/Empty';
+import styles from './list.style';
 
 const OrderList: React.FC<{ status: string[] }> = ({ status }) => {
-    // Auth context
-    const { jwtToken } = useSession(); // Destructure jwtToken from useSession
-
-    // Data fetching
+    const { jwtToken } = useSession();
     const [orders, setOrders] = useState<any>([]);
+    const [page, setPage] = useState(1); // New state for tracking the page
+    const [loading, setLoading] = useState(false); // State to track loading status
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-    const apiURL = `${apiUrl}carrier/orders`  // For now will be 10 orders
+    const apiURL = `${apiUrl}carrier/orders?page=${page}`; // Include the page in the API URL
 
     useEffect(() => {
-        fetchOrders(jwtToken, status); // Pass jwtToken as parameter
-    }, [jwtToken, status]); // Add jwtToken to dependency array
+        fetchOrders(jwtToken, status, page); // Include page in the dependencies
+    }, [jwtToken, status, page]);
 
-    const fetchOrders = async (jwtToken: string, status: string[]) => {
+    const fetchOrders = async (jwtToken: string, status: string[], page: number) => {
+        setLoading(true); // Set loading to true when fetch starts
         try {
             if (!jwtToken) {
                 throw new Error('JWT token not found');
             }
-            console.log('status: ', JSON.stringify({ status_list: status }))
             const response = await fetch(apiURL, {
                 method: 'POST',
                 headers: {
@@ -34,34 +32,31 @@ const OrderList: React.FC<{ status: string[] }> = ({ status }) => {
                 body: JSON.stringify({ status_list: status })
             });
 
-            // if (!response.ok) {
-            //     throw new Error('Network response was not ok');
-            // }
-
-            const data = await response.json(); // Parse response data
-
-            // Update state with fetched data
-            setOrders(data.data);
-            console.log(data);
+            const data = await response.json();
+            setOrders(prevOrders => [...prevOrders, ...data.data]); // Append new orders to existing orders
         } catch (error) {
             console.error('Error fetching orders:', error);
-            // Handle error
+        } finally {
+            setLoading(false); // Set loading to false when fetch completes
         }
     }
 
     return (
         <View style={styles.body}>
-            {orders?.length > 0 ? (
+            {orders.length > 0 ? (
                 <FlatList
                     data={orders}
                     contentContainerStyle={styles.content}
                     renderItem={({ item }) => <OrderCard {...item} />}
+                    onEndReached={() => setPage(prevPage => prevPage + 1)} // Increment page number to fetch more items
+                    onEndReachedThreshold={0.5}
+                    ListFooterComponent={loading ? <ActivityIndicator /> : null} // Show a loading indicator when fetching data
                 />
             ) : (
                 <EmptyOrders />
             )}
         </View>
-    )
+    );
 }
 
-export default OrderList
+export default OrderList;

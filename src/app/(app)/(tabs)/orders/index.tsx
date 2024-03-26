@@ -13,7 +13,7 @@ const FirstRoute = () => (
 );
 
 const SecondRoute = () => (
-    <OrderList status={["FINISHED_CARRIER_DEMO", "FINISHED_CARRIER"]} />
+    <OrderList status={["FINISHED_CARRIER"]} />
 );
 
 const ThirdRoute = () => (
