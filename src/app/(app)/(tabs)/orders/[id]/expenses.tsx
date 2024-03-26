@@ -14,8 +14,8 @@ import styles from '@/styles/expenses.style';
 
 
 const ExpensesPage: React.FC = () => {
-    // const { id } = useLocalSearchParams();
-    const id = 35
+    const { id } = useLocalSearchParams();
+    // const id = 35
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
     // Auth context
@@ -190,7 +190,7 @@ const ExpensesPage: React.FC = () => {
                 const shareResponse = await IntentLauncher.startActivityAsync(
                     'android.intent.action.VIEW',
                     {
-                        type: 'application/pdf', // Replace with the appropriate MIME type
+                        type: '*/*', // Replace with the appropriate MIME type
                         data: contentUri,
                         flags: 1,
                     }

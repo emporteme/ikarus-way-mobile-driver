@@ -13,8 +13,8 @@ import * as Sharing from 'expo-sharing';
 import OrderTracking from '@/components/core/OrderTracking';
 
 const OrderDetail: React.FC<OrderType> = () => {
-    // const { id } = useLocalSearchParams();
-    const id = 33
+    const { id } = useLocalSearchParams();
+    // const id = 35
 
     // Auth context
     const { jwtToken } = useSession(); // Destructure jwtToken from useSession
