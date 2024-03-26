@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
         fontSize: SIZES.semiMedium,
         color: COLORS.dark,
         lineHeight: 21,
+        flex: 1,
     },
     statusContainer: {
         flexDirection: 'row',
