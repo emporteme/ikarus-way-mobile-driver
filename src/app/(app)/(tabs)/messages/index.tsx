@@ -78,15 +78,9 @@ const Func = () => (
             <Link href={'/privkey'} style={{ marginTop: 20 }}>
                 <Text>Privkey (Just for now) </Text>
             </Link>
-
-            <Text style={{ marginTop: 40 }}>Testing API</Text>
-            <Button onPress={() => fetchHello()} title="Fetch hello" />
-
-            <Text style={{ marginTop: 40 }}>Testing API</Text>
-            <Button onPress={() => fetchProfile()} title="Fetch profile" />
-
-            <Text style={{ marginTop: 40 }}>Testing API</Text>
-            <Button onPress={() => fetchTest()} title="Fetch test" />
+            <Link href={'/messages/1'} style={{ marginTop: 20 }}>
+                <Text>Messages id: 1 (Just for now) </Text>
+            </Link>
 
             <Text style={{ marginTop: 40 }}>Text input below</Text>
             <TextInput
