@@ -13,8 +13,8 @@ import * as Sharing from 'expo-sharing';
 import OrderTracking from '@/components/core/OrderTracking';
 
 const OrderDetail: React.FC<OrderType> = () => {
-    const { id } = useLocalSearchParams();
-    // const id = 33
+    // const { id } = useLocalSearchParams();
+    const id = 33
 
     // Auth context
     const { jwtToken } = useSession(); // Destructure jwtToken from useSession
@@ -599,7 +599,7 @@ const OrderDetail: React.FC<OrderType> = () => {
 
                     {statusName === "Tracking" && (
                         <>
-                            <OrderTracking />
+                            {/* <OrderTracking /> */}
                             <View style={styles.buttons}>
                                 <Link href={`/orders/${id}/expenses`} asChild>
                                     <Pressable style={styles.button}>

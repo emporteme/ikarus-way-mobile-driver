@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, ScrollView, TextInput, TouchableOpacity, Platform, Button, Image, Pressable, FlatList } from 'react-native';
-import { useLocalSearchParams, Stack, Link, router } from 'expo-router';
+import { View, Text, SafeAreaView, ScrollView, TextInput, TouchableOpacity, Image, Pressable, FlatList } from 'react-native';
+import { useLocalSearchParams, Stack, router } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { icons } from '@/constants';
 import styles from '@/styles/expenses.style';
 import { OuterDropdown, InnerDropdown } from '@/components';
 import { useSession } from '@/components/core/Context';
-import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
@@ -15,8 +14,8 @@ import Constants from 'expo-constants';
 
 
 const ExpensesPage: React.FC = () => {
-    const { id } = useLocalSearchParams();
-    // const id = 33
+    // const { id } = useLocalSearchParams();
+    const id = 33
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
     // Auth context
@@ -61,7 +60,9 @@ const ExpensesPage: React.FC = () => {
     const [selectedCurrency, setSelectedCurrency] = useState<string>('USD');
     const [cost, setCost] = useState<string>('');
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedTime, setSelectedTime] = useState(new Date());
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
     const [selectedFiles, setSelectedFiles] = useState<any[]>([]); // State to store selected files
 
     const showDatePicker = () => {
@@ -72,11 +73,26 @@ const ExpensesPage: React.FC = () => {
         setDatePickerVisibility(false);
     };
 
+
+    const showTimePicker = () => {
+        setTimePickerVisibility(true);
+    };
+
+    const hideTimePicker = () => {
+        setTimePickerVisibility(false);
+    };
+
     const handleDateChange = (event: any, selectedDate: Date) => {
         if (selectedDate) {
             setSelectedDate(selectedDate);
         }
         hideDatePicker();
+    };
+
+    const handleTimeChange = (event: any, selectedTime: Date | undefined) => {
+        const currentTime = selectedTime || new Date();
+        setSelectedTime(currentTime);
+        hideTimePicker();
     };
 
     const pickSomething = async () => {
@@ -127,43 +143,12 @@ const ExpensesPage: React.FC = () => {
     //     }
     // };
 
-    const uploadFilesToServer = async (files: any[]) => {
-        const uploadedFiles = [];
-
-        for (const file of files) {
-            try {
-                const formData = new FormData();
-                formData.append('file', {
-                    uri: file.uri,
-                    name: file.name,
-                    type: file.mimeType,
-                } as any);
-                const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-
-                const response = await axios.post(`${apiUrl}carrier/orders/${id}`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        'Authorization': 'Bearer ' + jwtToken,
-                    },
-                });
-
-                if (response.status === 201) {
-                    const serverFileUrl = response.data.fileUrl; // Assuming the server returns the file URL
-                    uploadedFiles.push(serverFileUrl);
-                } else {
-                    console.error(`Error uploading file ${file.name}: ${response.status}`);
-                }
-            } catch (error) {
-                console.error(`Error uploading file ${file.name}: ${error}`);
-            }
-        }
-
-        return uploadedFiles;
-    };
-
     const fetchSubmit = async () => {
-        const timestamp = new Date(selectedDate).getTime();
-        console.log('Timestamp:', timestamp, selectedDate);
+        const date = new Date(selectedDate);
+        date.setHours(selectedTime.getHours());
+        date.setMinutes(selectedTime.getMinutes());
+        const timestamp = date.getTime();
+        console.log('Combined Timestamp:', timestamp);
 
         const credentials = {
             receiptType: selectedOption,
@@ -312,6 +297,7 @@ const ExpensesPage: React.FC = () => {
                     <View style={styles.costContainer}>
                         <TextInput
                             placeholder="Cost..."
+                            keyboardType="numeric"
                             value={cost}
                             onChangeText={(text) => setCost(text)}
                             style={styles.costText}
@@ -352,7 +338,7 @@ const ExpensesPage: React.FC = () => {
                             />
                         )}
                         {/* Time input */}
-                        {/* <TouchableOpacity onPress={showTimePicker} style={styles.dateContainer}>
+                        <TouchableOpacity onPress={showTimePicker} style={styles.dateContainer}>
                             <Text style={styles.dateText}>{selectedTime.toLocaleTimeString()}</Text>
                             <Image source={icons.time} style={styles.icon} />
                         </TouchableOpacity>
@@ -365,7 +351,7 @@ const ExpensesPage: React.FC = () => {
                                 display="default"
                                 onChange={handleTimeChange}
                             />
-                        )} */}
+                        )}
                         {/* File input */}
                         <TouchableOpacity onPress={pickSomething} style={styles.fileContainer}>
                             <Text style={styles.dateText}>Select File</Text>
