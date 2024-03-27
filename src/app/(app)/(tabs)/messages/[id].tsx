@@ -1,48 +1,57 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
-import axios from 'axios';
 import { useSession } from '@/components/core/Context';
 
 const ChatPage = ({ route }) => {
-    const { jwtToken } = useSession(); // Destructure jwtToken from useSession
-    // const { receiverId } = route.params;
-    const receiverId = 3; // Replace with the receiver ID from the route params
+    const { jwtToken } = useSession();
+    const receiverId = 4; // Example receiver ID, replace with actual data from route.params
     const [messages, setMessages] = useState([]);
+    const [ws, setWs] = useState(null);
 
     useEffect(() => {
-        const fetchMessages = async () => {
-            try {
-                const response = await axios.get('https://support-test.prometeochain.io/v1/company/chat/chats/all', {
-                    params: { token: jwtToken, reciverid: receiverId },
-                });
-                const fetchedMessages = response.data.result.map((msg) => ({
-                    _id: msg.message_id,
-                    text: msg.message,
-                    createdAt: new Date(msg.timestamp),
-                    user: {
-                        _id: msg.sender_id,
-                    },
-                }));
-                setMessages(fetchedMessages);
-            } catch (error) {
-                console.error(error);
-            }
+        // WebSocket connection initialization
+        const socket = new WebSocket(`wss://support-test.prometeochain.io/v1/company/chat/ws?token=${jwtToken}&reciverid=${receiverId}`);
+
+        socket.onopen = () => {
+            console.log('WebSocket Connected');
         };
 
-        fetchMessages();
-    }, [receiverId]);
+        socket.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+            // Process the message and update state as needed
+        };
+
+        socket.onerror = (error) => {
+            console.log('WebSocket Error: ', error);
+        };
+
+        socket.onclose = () => {
+            console.log('WebSocket Disconnected');
+        };
+
+        setWs(socket);
+
+        // Clean up function to close the WebSocket connection when the component unmounts
+        return () => {
+            socket.close();
+        };
+    }, [jwtToken, receiverId]);
 
     const onSend = useCallback((messages = []) => {
         setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
-        // Here you would also send the message to your backend
-    }, []);
+        // Send the message through WebSocket
+        if (ws) {
+            const messageToSend = JSON.stringify(messages[0].text); // Adjust based on how your API expects the message
+            ws.send(messageToSend);
+        }
+    }, [ws]);
 
     return (
         <GiftedChat
             messages={messages}
             onSend={(messages) => onSend(messages)}
             user={{
-                _id: 1, // Your sender ID here
+                _id: 453, // Your sender ID
             }}
         />
     );

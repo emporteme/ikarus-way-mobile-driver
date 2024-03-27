@@ -164,9 +164,9 @@ const OrderDetail: React.FC<OrderType> = () => {
     const groupReceiptsByDate = (receiptsData: any[]) => {
         // Sort receipts by timestamp in ascending order
         const sortedReceipts = receiptsData.sort((a, b) => b.timestamp - a.timestamp);
-    
+
         const groupedReceipts: { [date: string]: any[] } = {};
-    
+
         sortedReceipts.forEach((receipt) => {
             const date = new Date(receipt.timestamp).toLocaleDateString();
             if (!groupedReceipts[date]) {
@@ -174,10 +174,10 @@ const OrderDetail: React.FC<OrderType> = () => {
             }
             groupedReceipts[date].push(receipt);
         });
-    
+
         return groupedReceipts;
     };
-    
+
     const groupedReceipts = receiptsData ? groupReceiptsByDate(receiptsData) : {};
 
     // Function to handle file download
@@ -602,7 +602,7 @@ const OrderDetail: React.FC<OrderType> = () => {
 
                     {statusName === "Tracking" && (
                         <>
-                            {/* <OrderTracking /> */}
+                            <OrderTracking />
                             <View style={styles.buttons}>
                                 <Link href={`/orders/${id}/expenses`} asChild>
                                     <Pressable style={styles.button}>
