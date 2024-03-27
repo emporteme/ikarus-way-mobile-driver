@@ -41,16 +41,16 @@ const MessageList: React.FC = () => {
 
     return (
         <View style={styles.body}>
-            {/* {messages.length >= 0 ? ( */}
-            <FlatList
-                data={messages}
-                contentContainerStyle={styles.content}
-                renderItem={({ item }) => <MessageSingle {...item} />}
+            {messages.length >= 0 ? (
+                <FlatList
+                    data={messages}
+                    contentContainerStyle={styles.content}
+                    renderItem={({ item }) => <MessageSingle {...item} />}
                 // keyExtractor={item => item.id.toString()} // Ensure your messages have a unique 'id' property
-            />
-            {/* ) : (
+                />
+            ) : (
                 <Empty />
-            )} */}
+            )}
         </View>
     );
 };

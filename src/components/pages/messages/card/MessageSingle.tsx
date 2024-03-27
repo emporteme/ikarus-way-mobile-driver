@@ -27,7 +27,7 @@ const MessageSingle: React.FC<any> = ({ id, Messages, Created, content }) => {
                     <View style={styles.top}>
                         <Text style={styles.name}>Name</Text>
                         <View style={styles.statusContainer}>
-                            <Image source={icons.check} style={styles.statusIcon} />
+                            {/* <Image source={icons.check} style={styles.statusIcon} /> */}
                             <Text style={styles.statusTime}>{formatDate(Created)}</Text>
                         </View>
                     </View>
