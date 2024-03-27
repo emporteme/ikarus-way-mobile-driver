@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView, Alert, View, TextInput, TouchableOpacity, Text } from 'react-native';
 import { useLocalSearchParams, Stack, Link, router } from 'expo-router';
 import styles from '@/styles/otp.style';
-import { useSession } from '@/components/core/Context';
+import { useSession } from '@/components/core/AuthContext';
 
 
 const ExpensesPage: React.FC = () => {

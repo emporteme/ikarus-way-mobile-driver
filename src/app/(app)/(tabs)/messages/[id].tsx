@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
-import { useSession } from '@/components/core/Context';
+import { useSession } from '@/components/core/AuthContext';
 
 const ChatPage = ({ route }) => {
     const { jwtToken } = useSession();

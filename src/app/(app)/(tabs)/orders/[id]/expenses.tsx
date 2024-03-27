@@ -9,7 +9,7 @@ import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { icons } from '@/constants';
 import { OuterDropdown, InnerDropdown } from '@/components';
-import { useSession } from '@/components/core/Context';
+import { useSession } from '@/components/core/AuthContext';
 import styles from '@/styles/expenses.style';
 
 

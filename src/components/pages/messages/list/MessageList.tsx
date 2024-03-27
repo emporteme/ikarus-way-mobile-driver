@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
 import MessageSingle from '@/components/pages/messages/card/MessageSingle';
 import Empty from '@/components/pages/messages/empty/Empty';
-import { useSession } from '@/components/core/Context';
+import { useSession } from '@/components/core/AuthContext';
 import styles from './list.style';
 
 const MessageList: React.FC = () => {

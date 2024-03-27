@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useLocalSearchParams, Stack, Link } from 'expo-router';
 import * as FileSystem from 'expo-file-system';
 import { icons } from '@/constants';
-import { useSession } from '@/components/core/Context';
+import { useSession } from '@/components/core/AuthContext';
 import { OrderType } from '@/types';
 import { orderDetailsStatusName } from '@/components/pages/orders/card/orderDetailsStatusName';
 import styles from '@/styles/orderDetails.style';

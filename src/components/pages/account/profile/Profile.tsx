@@ -4,7 +4,7 @@ import { Text, View, SafeAreaView, ScrollView, Pressable, Image, Alert } from "r
 import { Link } from 'expo-router';
 import { icons, images } from '@/constants';
 import styles from './profile.style';
-import { useSession } from '@/components/core/Context';
+import { useSession } from '@/components/core/AuthContext';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 

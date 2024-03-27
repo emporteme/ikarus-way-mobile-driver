@@ -1,7 +1,7 @@
 import { Tabs, Redirect, useSegments } from "expo-router";
 import { Image, Text } from "react-native";
 import { FONT, COLORS, icons } from "@/constants";
-import { useSession } from "@/components/core/Context";
+import { useSession } from "@/components/core/AuthContext";
 
 export default function TabsLayout() {
     const { session, isLoading } = useSession();

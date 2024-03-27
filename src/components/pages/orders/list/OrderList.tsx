@@ -1,6 +1,6 @@
 import { View, FlatList, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { useSession } from '@/components/core/Context';
+import { useSession } from '@/components/core/AuthContext';
 import OrderCard from '@/components/pages/orders/card/OrderCard';
 import EmptyOrders from '@/components/pages/orders/empty/Empty';
 import styles from './list.style';

@@ -18,7 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '@/styles/auth.style';
 import { FONT, icons } from '@/constants';
 
-import { useSession } from '@/components/core/Context';
+import { useSession } from '@/components/core/AuthContext';
 
 
 async function fetchAuth(email: string, password: string, signIn: (jwt: string, rt: string) => void) {
