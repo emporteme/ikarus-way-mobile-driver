@@ -42,7 +42,7 @@ const MessageList: React.FC = () => {
 
     return (
         <View style={styles.body}>
-            {messages.length >= 0 ? (
+            {messages.length > 0 ? (
                 <FlatList
                     data={messages}
                     contentContainerStyle={styles.content}
