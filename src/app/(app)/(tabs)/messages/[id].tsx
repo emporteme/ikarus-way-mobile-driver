@@ -42,16 +42,6 @@ const ChatPage = ({ route }) => {
             const message = JSON.parse(e.data);
             console.log("Received message:", message);
 
-            // setMessages((previousMessages) => GiftedChat.append(previousMessages, [{
-            //     _id: message.Id,
-            //     text: message.Messages,
-            //     createdAt: new Date(message.Created * 1000),
-            //     user: {
-            //         _id: message.SenderId,
-            //         // _id: message.from ? message.SenderId : message.ReciverId,
-            //     },
-            // }]));
-
             setMessages((previousMessages) => {
                 // Remove the pending message if it exists
                 const messagesWithoutPending = previousMessages.filter(m => !m.pending);
@@ -88,22 +78,6 @@ const ChatPage = ({ route }) => {
             ws.close();
         };
     }, []);
-
-
-    // const onSend = (newMessages = []) => {
-    //     ws.send(JSON.stringify(newMessages[0])); // Adjust as needed for your API
-    //     setMessages((previousMessages) => GiftedChat.append(previousMessages, newMessages));
-    // };
-
-    // const onSend = useCallback((messages = []) => {
-    //     setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
-    //     // Send the message through WebSocket
-    //     if (ws) {
-    //         const messageToSend = JSON.stringify({ message: messages[0].text });
-    //         console.log("Sending message: ", messageToSend);
-    //         ws.send(messageToSend);
-    //     }
-    // }, [ws]);
 
     const onSend = useCallback((messages = []) => {
         // Add a temporary local ID and a "pending" flag to the message
