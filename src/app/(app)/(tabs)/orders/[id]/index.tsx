@@ -577,7 +577,12 @@ const OrderDetail: React.FC<OrderType> = () => {
                                             <Text style={styles.regSmall2}>{member.role}</Text>
                                         </View>
                                     </View>
-                                    {/* If you want to add a phone icon and functionality */}
+                                    {/* Call and chat links */}
+                                    <Link href={`/messages/${member?.id}`} asChild>
+                                        <Pressable style={styles.row2}>
+                                            <Image source={icons.message} style={styles.iconFlag} />
+                                        </Pressable>
+                                    </Link>
                                     <TouchableOpacity onPress={() => handlePhoneCall(member?.phone)} style={styles.row2}>
                                         <Image source={icons.phone} style={styles.iconFlag} />
                                     </TouchableOpacity>
