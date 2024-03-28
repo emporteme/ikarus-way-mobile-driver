@@ -29,7 +29,8 @@ const MessageList: React.FC = () => {
 
                 const data = await response.json();
                 console.log("DATA: ", data);
-                setMessages(data.result); // Adjust this path based on your actual API response
+                setMessages([...data.result].reverse()); // Reverse the array before setting the state
+                // setMessages(data.result); // Adjust this path based on your actual API response
             } catch (error) {
                 console.error('Failed to fetch messages:', error);
                 // Optionally, handle errors more gracefully in your UI
