@@ -1,40 +1,75 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Text } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
+import { useLocalSearchParams, Stack, Link } from 'expo-router';
 import { useSession } from '@/components/core/AuthContext';
 
 const ChatPage = ({ route }) => {
     const { jwtToken } = useSession();
-    const receiverId = 9; // For now mock data, then replace to props --> route.params
+    const { id } = useLocalSearchParams();
+    console.log("ID: ", id);
+    const receiverId = id; // For now mock data, then replace to props --> route.params
     const [messages, setMessages] = useState([]);
     const [ws, setWs] = useState(null);
+    const [profileData, setProfileData] = useState<any>(null);
 
-    const fetchPreviousMessages = async (token, receiverId) => {
+    // Getting sender profile data --> ID
+    useEffect(() => {
+        fetchProfile(jwtToken);
+    }, [jwtToken]);
+
+    const fetchProfile = async (jwtToken: string) => {
+        const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+        try {
+            if (!jwtToken) {
+                throw new Error('JWT token not found');
+            }
+
+            const response = await fetch(`${apiUrl}users/profile`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + jwtToken
+                },
+            });
+
+            const data = await response.json();
+            setProfileData(data.data);
+        } catch (error) {
+            console.error('Error fetching profile:', error);
+            alert('Failed to fetch profile data');
+        }
+    }
+
+    // Getting previous messages list
+    useEffect(() => {
+        if (profileData) {
+            fetchPreviousMessages(jwtToken, receiverId, profileData.id)
+                .then((fetchedMessages) => {
+                    setMessages(fetchedMessages.reverse());
+                })
+                .catch((error) => console.error(error));
+        }
+    }, [jwtToken, receiverId, profileData]);
+
+    const fetchPreviousMessages = async (token, receiverId, senderId) => {
         const response = await fetch(`https://support-test.prometeochain.io/v1/company/chat/chats/all?token=${token}&reciverid=${receiverId}`);
         if (!response.ok) {
             throw new Error('Failed to fetch messages');
         }
         const data = await response.json();
-        console.log("Prev data: ", data);
         return data.result.map((msg) => ({
             _id: msg.Id,
             text: msg.Messages,
             createdAt: new Date(msg.Created * 1000),
             user: {
-                _id: msg.SenderId,
-                // _id: msg.from ? msg.ReciverId : msg.SenderId,
-                // name: msg.from ? msg.SenderId :  msg.ReciverId,
+                _id: msg.SenderId === senderId ? senderId : receiverId,
             },
         }));
     };
 
-    useEffect(() => {
-        fetchPreviousMessages(jwtToken, receiverId)
-            .then((fetchedMessages) => {
-                setMessages(fetchedMessages.reverse());
-            })
-            .catch((error) => console.error(error));
-    }, []);
-
+    // Web Socket logic.
     useEffect(() => {
         const webSocket = new WebSocket(`wss://support-test.prometeochain.io/v1/company/chat/ws?token=${jwtToken}&reciverid=${receiverId}`);
 
@@ -79,6 +114,7 @@ const ChatPage = ({ route }) => {
         };
     }, []);
 
+    // Gifted chat function for sending messages
     const onSend = useCallback((messages = []) => {
         // Add a temporary local ID and a "pending" flag to the message
         const messageWithTemporaryId = {
@@ -98,13 +134,16 @@ const ChatPage = ({ route }) => {
 
 
     return (
-        <GiftedChat
-            messages={messages}
-            onSend={(messages) => onSend(messages)}
-            user={{
-                _id: 453, // Your sender ID
-            }}
-        />
+        <>
+            <GiftedChat
+                messages={messages}
+                onSend={(messages) => onSend(messages)}
+                user={{
+                    _id: profileData?.id, // Your sender ID
+                    // _id: 453, // Your sender ID
+                }}
+            />
+        </>
     );
 };
 

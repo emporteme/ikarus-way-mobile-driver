@@ -5,7 +5,7 @@ import { MessageType } from '@/types';
 import { icons, images } from '@/constants';
 import styles from './single.style';
 
-const MessageSingle: React.FC<any> = ({ id, Messages, Created, content, ReciverId }) => {
+const MessageSingle: React.FC<any> = ({ Messages, Created, ReciverId }) => {
     // Function to truncate message content
     const truncateMessage = (text) => {
         if (!text) return ''; // Handle undefined or null values
@@ -20,7 +20,7 @@ const MessageSingle: React.FC<any> = ({ id, Messages, Created, content, ReciverI
     };
 
     return (
-        <Link href={`/messages/${id}`} asChild>
+        <Link href={`/messages/${ReciverId}`} asChild>
             <Pressable style={styles.card}>
                 <Image source={images.profile} style={styles.photo} />
                 <View style={styles.content}>
