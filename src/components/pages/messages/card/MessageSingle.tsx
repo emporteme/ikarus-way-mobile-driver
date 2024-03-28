@@ -28,7 +28,7 @@ const MessageSingle: React.FC<any> = ({ id, Messages, Created, content, ReciverI
                         <Text style={styles.name}>Receiver id: {ReciverId}</Text>
                         <View style={styles.statusContainer}>
                             {/* <Image source={icons.check} style={styles.statusIcon} /> */}
-                            <Text style={styles.statusTime}>{formatDate(Created)}</Text>
+                            <Text style={styles.statusTime}>{formatDate(Created * 1000)}</Text>
                         </View>
                     </View>
                     <Text style={styles.contentText}>{truncateMessage(Messages)}</Text>
