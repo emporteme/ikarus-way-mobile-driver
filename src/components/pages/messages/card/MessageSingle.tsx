@@ -5,7 +5,7 @@ import { MessageType } from '@/types';
 import { icons, images } from '@/constants';
 import styles from './single.style';
 
-const MessageSingle: React.FC<any> = ({ id, Messages, Created, content }) => {
+const MessageSingle: React.FC<any> = ({ id, Messages, Created, content, ReciverId }) => {
     // Function to truncate message content
     const truncateMessage = (text) => {
         if (!text) return ''; // Handle undefined or null values
@@ -25,7 +25,7 @@ const MessageSingle: React.FC<any> = ({ id, Messages, Created, content }) => {
                 <Image source={images.profile} style={styles.photo} />
                 <View style={styles.content}>
                     <View style={styles.top}>
-                        <Text style={styles.name}>Name</Text>
+                        <Text style={styles.name}>Receiver id: {ReciverId}</Text>
                         <View style={styles.statusContainer}>
                             {/* <Image source={icons.check} style={styles.statusIcon} /> */}
                             <Text style={styles.statusTime}>{formatDate(Created)}</Text>
