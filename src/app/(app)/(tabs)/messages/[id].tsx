@@ -155,6 +155,37 @@ const ChatPage = () => {
         />
     );
 
+    // File handling
+    const [selectedFiles, setSelectedFiles] = useState<any[]>([]); // State to store selected files
+    const pickSomething = async () => {
+        try {
+            const docRes = await DocumentPicker.getDocumentAsync({
+                type: "*/*",
+                multiple: true, // Allow selecting multiple files
+            });
+
+            const formData = new FormData();
+            const assets = docRes.assets;
+            if (!assets) return;
+
+            assets.forEach(file => {
+                const audioFile: any = {
+                    name: file.name.split(".")[0],
+                    uri: file.uri,
+                    type: file.mimeType,
+                    size: file.size,
+                };
+                formData.append("audioFiles[]", audioFile); // Append each file to FormData array
+            });
+
+            console.log("NICEEE: FILES SELECTED", formData.getAll('audioFiles[]'));
+            setSelectedFiles([...selectedFiles, ...assets]); // Update selectedFiles state
+
+        } catch (error) {
+            console.log("Error while selecting files: ", error);
+        }
+    };
+
     const renderInputToolbar = (props) => (
         <InputToolbar
             {...props}
@@ -162,8 +193,16 @@ const ChatPage = () => {
                 backgroundColor: COLORS.white,
                 paddingHorizontal: 10,
                 fontSize: 16,
+                // paddingBottom: 20
             }}
             primaryStyle={{ alignItems: 'center' }}
+            renderActions={() => (
+                <TouchableOpacity onPress={() => pickSomething()}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', left: 5 }}>
+                        <Ionicons name="attach" color={COLORS.primary} size={28} />
+                    </View>
+                </TouchableOpacity>
+            )}
         />
     );
 
@@ -187,7 +226,6 @@ const ChatPage = () => {
                 renderInputToolbar={renderInputToolbar}
                 renderSend={renderSend}
                 renderAvatar={null}
-                bottomOffset={insets.bottom}
                 scrollToBottom
             />
         </>
