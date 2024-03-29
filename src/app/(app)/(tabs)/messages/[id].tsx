@@ -1,17 +1,25 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Text } from 'react-native';
-import { GiftedChat } from 'react-native-gifted-chat';
-import { useLocalSearchParams, Stack, Link } from 'expo-router';
+import React, { useState, useCallback, useEffect } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { useLocalSearchParams, Stack } from 'expo-router';
+import { GiftedChat, IMessage, User, MessageText, Bubble, InputToolbar, Send, SystemMessage } from 'react-native-gifted-chat';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { COLORS, FONT } from '@/constants';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { InChatFileTransfer } from '@/components';
+import * as DocumentPicker from 'expo-document-picker';
+import * as FileSystem from 'expo-file-system';
+import * as IntentLauncher from 'expo-intent-launcher';
 import { useSession } from '@/components/core/AuthContext';
+
 
 const ChatPage = () => {
     const { jwtToken } = useSession();
     const { id } = useLocalSearchParams();
-    console.log("ID: ", id);
     const receiverId = id; // For now mock data, then replace to props --> route.params
     const [messages, setMessages] = useState([]);
     const [ws, setWs] = useState(null);
     const [profileData, setProfileData] = useState<any>(null);
+    const insets = useSafeAreaInsets();
 
     // Getting sender profile data --> ID
     useEffect(() => {
@@ -132,9 +140,42 @@ const ChatPage = () => {
         }
     }, [ws]);
 
+    // Styling messages Bubble
+    const renderBubble = (props) => (
+        <Bubble
+            {...props}
+            textStyle={{
+                left: { color: COLORS.dark, fontFamily: FONT.medium, fontSize: 14 },
+                right: { color: COLORS.white, fontFamily: FONT.medium, fontSize: 14 },
+            }}
+            wrapperStyle={{
+                left: { backgroundColor: COLORS.secondary, padding: 10, borderRadius: 16 },
+                right: { backgroundColor: COLORS.dark, padding: 10, borderRadius: 16 },
+            }}
+        />
+    );
+
+    const renderInputToolbar = (props) => (
+        <InputToolbar
+            {...props}
+            containerStyle={{
+                backgroundColor: COLORS.white,
+                paddingHorizontal: 10,
+                fontSize: 16,
+            }}
+            primaryStyle={{ alignItems: 'center' }}
+        />
+    );
+
+    const renderSend = (props) => (
+        <Send {...props} containerStyle={{ justifyContent: 'center', alignItems: 'center', marginRight: 10 }}>
+            <Ionicons name="send" color={COLORS.primary} size={24} />
+        </Send>
+    );
 
     return (
         <>
+            <Stack.Screen options={{ title: 'Chat ID: ' + id }} />
             <GiftedChat
                 messages={messages}
                 onSend={(messages) => onSend(messages)}
@@ -142,6 +183,12 @@ const ChatPage = () => {
                     _id: profileData?.id, // Your sender ID
                     // _id: 453, // Your sender ID
                 }}
+                renderBubble={renderBubble}
+                renderInputToolbar={renderInputToolbar}
+                renderSend={renderSend}
+                renderAvatar={null}
+                bottomOffset={insets.bottom}
+                scrollToBottom
             />
         </>
     );
