@@ -38,6 +38,10 @@ const MessageList: React.FC = () => {
         };
 
         fetchMessages();
+
+        const intervalId = setInterval(fetchMessages, 1 * 60 * 1000); // Refresh messages every 15 seconds
+
+        return () => clearInterval(intervalId);
     }, []);
 
     return (

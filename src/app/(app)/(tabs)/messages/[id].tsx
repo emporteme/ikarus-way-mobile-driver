@@ -4,7 +4,7 @@ import { GiftedChat } from 'react-native-gifted-chat';
 import { useLocalSearchParams, Stack, Link } from 'expo-router';
 import { useSession } from '@/components/core/AuthContext';
 
-const ChatPage = ({ route }) => {
+const ChatPage = () => {
     const { jwtToken } = useSession();
     const { id } = useLocalSearchParams();
     console.log("ID: ", id);
