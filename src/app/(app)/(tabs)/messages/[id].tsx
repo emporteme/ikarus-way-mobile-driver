@@ -63,21 +63,30 @@ const ChatPage = () => {
             throw new Error('Failed to fetch messages');
         }
         const data = await response.json();
-        console.log('Fetched messages:', data.result);
-        return data.result.map((msg) => {
-            // Default text message or file name if available
-            const textMessage = msg.Messages || (msg.Files && msg.Files.length > 0 ? msg.Files[0].FileName : '');
     
-            return {
+        return data.result.map((msg) => {
+            let message = {
                 _id: msg.Id,
-                text: textMessage,
+                text: msg.Messages || 'File', // Default text or indication of a file
                 createdAt: new Date(msg.Created * 1000),
                 user: {
                     _id: msg.SenderId === senderId ? senderId : receiverId,
                 },
             };
+    
+            // If the message includes file information, add a 'file' property
+            if (msg.Files && msg.Files.length > 0) {
+                const file = msg.Files[0];
+                message.file = {
+                    name: file.FileName,
+                    uri: `https://support-test.prometeochain.io/v1/support/getfile?filepath=${encodeURIComponent(file.FilePath)}`,
+                };
+            }
+    
+            return message;
         });
     };
+    
 
     useEffect(() => {
         const webSocket = new WebSocket(`wss://support-test.prometeochain.io/v1/company/chat/ws?token=${jwtToken}&reciverid=${receiverId}`);
@@ -199,17 +208,41 @@ const ChatPage = () => {
     };
 
     const handleFileOpening = async (fileUri) => {
-        console.log(`Opening file at: ${fileUri}`);
-        if (Platform.OS === 'android') {
-            const contentUri = await FileSystem.getContentUriAsync(fileUri);
-            await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
-                data: contentUri,
-                flags: 1,
-            });
+        console.log(`Attempting to open file at: ${fileUri}`);
+    
+        // Check if the URI is valid and accessible
+        const response = await fetch(fileUri, { method: 'HEAD' });
+        if (response.ok) {
+            // Proceed with downloading and opening the file
+            const localUri = `${FileSystem.documentDirectory}${encodeURIComponent(fileUri.split('/').pop())}`;
+    
+            try {
+                const { uri: downloadedUri } = await FileSystem.downloadAsync(fileUri, localUri);
+                console.log(`File downloaded to: ${downloadedUri}`);
+    
+                // Open the file based on the platform
+                if (Platform.OS === 'android') {
+                    const contentUri = await FileSystem.getContentUriAsync(downloadedUri);
+                    await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
+                        data: contentUri,
+                        flags: 1,
+                    });
+                } else {
+                    // For iOS, open the document directly
+                    await FileSystem.openDocumentAsync(downloadedUri);
+                }
+            } catch (error) {
+                console.error('Error downloading or opening the file:', error);
+                alert('Unable to download or open the file.');
+            }
         } else {
-            await FileSystem.openDocumentAsync(fileUri);
+            // Handle the case where the file is not found or the URI is invalid
+            alert('File not found or the link is invalid.');
         }
     };
+    
+    
+    
 
     const renderMessageText = (props) => {
         const { currentMessage } = props;
@@ -218,7 +251,7 @@ const ChatPage = () => {
             return (
                 <TouchableOpacity onPress={() => handleFileOpening(currentMessage.file.uri)}>
                     <View style={styles.fileMessageContainer}>
-                        <Text style={styles.fileMessageText}>{currentMessage.file.name} {currentMessage.file.uri} {currentMessage.file.name}</Text>
+                        <Text style={styles.fileMessageText}>{currentMessage.file.uri}</Text>
                     </View>
                 </TouchableOpacity>
             );
