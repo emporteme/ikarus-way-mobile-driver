@@ -133,7 +133,7 @@ const Auth = () => {
                     {/* </Link> */}
                     <Text style={styles.bottomTextWrapper}>
                         <Text style={styles.bottomText}>By clicking on the "Login" button, you accept the terms of the </Text>
-                        <Link href={'https://www.iubenda.com/privacy-policy/18698273'}>
+                        <Link href={'auth/privacy'}>
                             <Text style={styles.privacyText}> privacy policy</Text>
                         </Link>
                     </Text>

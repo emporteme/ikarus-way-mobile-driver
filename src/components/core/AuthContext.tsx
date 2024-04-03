@@ -67,8 +67,8 @@ const setJwtTokenRef = useRef(null);
 const AuthContext = React.createContext<{
     signIn: (jwt: string, rt: string) => void;
     signOut: () => void;
-    // session?: string | null;
-    // isLoading: boolean;
+    session?: string | null;
+    isLoading: boolean;
     jwtToken?: string | null;
     rtToken?: string | null;
     isLoadingJwtToken?: boolean;
@@ -77,8 +77,8 @@ const AuthContext = React.createContext<{
 }>({
     signIn: () => null,
     signOut: () => null,
-    // session: null,
-    // isLoading: false,
+    session: null,
+    isLoading: false,
     jwtToken: null,
     rtToken: null,
     isLoadingJwtToken: false,
@@ -93,14 +93,14 @@ export function useSession() {
     return {
         signIn: value.signIn,
         signOut: value.signOut,
-        // session: value.session,
+        session: value.session,
         jwtToken: value.jwtToken,
-        // isLoading: value.isLoading,
+        isLoading: value.isLoading,
     };
 }
 
 export function SessionProvider(props: React.PropsWithChildren) {
-    // const [[isLoading, session], setSession] = useStorageState('session');
+    const [[isLoading, session], setSession] = useStorageState('session');
     const [[isLoadingJwtToken, jwtToken], setJwtToken] = useStorageState('jwtToken');
     const [[isLoadingRtToken, rtToken], setRtToken] = useStorageState('rtToken');
 
@@ -115,17 +115,17 @@ export function SessionProvider(props: React.PropsWithChildren) {
                 signIn: async (jwt: string, rt: string) => {
                     await setJwtToken(jwt);
                     await setRtToken(rt);
-                    // setSession('xxx');
+                    setSession('xxx');
                 },
                 signOut: async () => {
                     await AsyncStorage.removeItem('jwtToken');
                     await AsyncStorage.removeItem('rtToken');
-                    // setSession(null);
+                    setSession(null);
                 },
-                // session,
+                session,
                 jwtToken,
                 rtToken,
-                // isLoading,
+                isLoading,
                 isLoadingJwtToken,
                 isLoadingRtToken,
                 setJwtToken,
