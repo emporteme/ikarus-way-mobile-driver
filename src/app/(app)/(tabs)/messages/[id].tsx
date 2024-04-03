@@ -131,6 +131,14 @@ const ChatPage = () => {
             pending: true, // Mark the message as pending until confirmed by the server
         };
 
+        messages.forEach((message) => {
+            if (ws) {
+                const messageToSend = JSON.stringify({ message: message.text, file: message.file });
+                console.log("Sending message: ", messageToSend);
+                ws.send(messageToSend);
+            }
+        });
+
         setMessages((previousMessages) => GiftedChat.append(previousMessages, [messageWithTemporaryId]));
 
         if (ws) {
@@ -155,37 +163,6 @@ const ChatPage = () => {
         />
     );
 
-    // File handling
-    const [selectedFiles, setSelectedFiles] = useState<any[]>([]); // State to store selected files
-    const pickSomething = async () => {
-        try {
-            const docRes = await DocumentPicker.getDocumentAsync({
-                type: "*/*",
-                multiple: true, // Allow selecting multiple files
-            });
-
-            const formData = new FormData();
-            const assets = docRes.assets;
-            if (!assets) return;
-
-            assets.forEach(file => {
-                const audioFile: any = {
-                    name: file.name.split(".")[0],
-                    uri: file.uri,
-                    type: file.mimeType,
-                    size: file.size,
-                };
-                formData.append("audioFiles[]", audioFile); // Append each file to FormData array
-            });
-
-            console.log("NICEEE: FILES SELECTED", formData.getAll('audioFiles[]'));
-            setSelectedFiles([...selectedFiles, ...assets]); // Update selectedFiles state
-
-        } catch (error) {
-            console.log("Error while selecting files: ", error);
-        }
-    };
-
     const renderInputToolbar = (props) => (
         <InputToolbar
             {...props}
@@ -197,7 +174,7 @@ const ChatPage = () => {
             }}
             primaryStyle={{ alignItems: 'center' }}
             renderActions={() => (
-                <TouchableOpacity onPress={() => pickSomething()}>
+                <TouchableOpacity onPress={() => pickAndUploadFile()}>
                     <View style={{ justifyContent: 'center', alignItems: 'center', left: 5 }}>
                         <Ionicons name="attach" color={COLORS.primary} size={28} />
                     </View>
@@ -211,6 +188,85 @@ const ChatPage = () => {
             <Ionicons name="send" color={COLORS.primary} size={24} />
         </Send>
     );
+
+    // File handling
+    const [selectedFiles, setSelectedFiles] = useState<any[]>([]); // State to store selected files
+    const pickAndUploadFile = async () => {
+        try {
+            const docRes = await DocumentPicker.getDocumentAsync({
+                type: "*/*",
+                multiple: true,
+                copyToCacheDirectory: true
+            });
+
+            if (!docRes.canceled && docRes.assets) {
+                docRes.assets.forEach(async (file) => {
+                    const fileUri = file.uri;
+                    const fileName = file.name;
+                    const fileType = file.mimeType;
+
+                    const formData = new FormData();
+                    formData.append('files', { uri: fileUri, name: fileName, type: fileType });
+                    formData.append('token', jwtToken);
+                    formData.append('reciverid', String(receiverId));
+
+                    try {
+                        const response = await fetch('https://support-test.prometeochain.io/v1/company/chat/upload', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                            },
+                            body: formData,
+                        });
+
+                        const responseData = await response.json();
+
+                        console.log('File uploaded:', responseData);
+
+                        const fileMessage = {
+                            _id: Math.round(Math.random() * 1000000),
+                            text: fileName, // Showing the file name as text
+                            createdAt: new Date(),
+                            user: {
+                                _id: profileData?.id,
+                            },
+                            file: {
+                                url: responseData.fileUrl, // The URL to access the uploaded file
+                                name: fileName,
+                                type: fileType,
+                            }
+                        };
+
+                        setMessages((previousMessages) => GiftedChat.append(previousMessages, [fileMessage]));
+                    } catch (error) {
+                        console.error('Upload error:', error);
+                    }
+                });
+            }
+        } catch (error) {
+            console.error("Error while selecting files:", error);
+        }
+    };
+
+    const renderCustomMessage = (props) => {
+        const { currentMessage } = props;
+
+        if (currentMessage.file) {
+            return (
+                <View style={styles.fileMessageContainer}>
+                    <Text style={styles.fileMessageText}>{currentMessage.file.name}</Text>
+                    {/* Add a button or link to download/view the file */}
+                </View>
+            );
+        }
+
+        return null; // For non-file messages, default rendering is used
+    };
+
+    const downloadFile = (file) => {
+        // Implement file download logic here...
+        console.log("Downloading file:", file);
+    };
 
     return (
         <>
@@ -226,10 +282,45 @@ const ChatPage = () => {
                 renderInputToolbar={renderInputToolbar}
                 renderSend={renderSend}
                 renderAvatar={null}
+                renderMessage={renderCustomMessage}
                 scrollToBottom
             />
         </>
     );
 };
+
+const styles = StyleSheet.create({
+    // Your existing styles...
+
+    fileMessageContainer: {
+        margin: 10,
+        padding: 10,
+        backgroundColor: '#f0f0f0',
+        borderRadius: 5,
+        alignItems: 'center',
+    },
+    fileMessageText: {
+        marginBottom: 5,
+        fontSize: 16,
+        color: COLORS.dark,
+    },
+    image: {
+        width: 200, // Adjust based on your needs
+        height: 200, // Adjust based on your needs
+        resizeMode: 'cover',
+    },
+    downloadButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: COLORS.primary,
+        padding: 10,
+        borderRadius: 5,
+    },
+    downloadButtonText: {
+        marginLeft: 5,
+        color: '#fff',
+        fontSize: 16,
+    },
+});
 
 export default ChatPage;
