@@ -4,16 +4,14 @@ import { Text, View, SafeAreaView, ScrollView, Pressable, Image, Alert } from "r
 import { Link } from 'expo-router';
 import { icons, images } from '@/constants';
 import styles from './profile.style';
-import {useAuth, useSession} from '@/components/core/AuthContext';
+import { useSession } from '@/components/core/AuthContext';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
-import {fetchWithAuth} from "@/helpers/api";
 
 const Profile: React.FC = () => {
     const { signOut, jwtToken } = useSession();
     const [profileData, setProfileData] = useState<any>(null);
     const [privateKey, setPrivateKey] = useState<string | null>(null);
-    const {rtToken, setJwtToken} = useAuth()
 
     useEffect(() => {
         fetchProfile(jwtToken);
@@ -28,17 +26,49 @@ const Profile: React.FC = () => {
                 throw new Error('JWT token not found');
             }
 
-            const response = await fetchWithAuth(`${apiUrl}users/profile`, {
+            const response = await fetch(`${apiUrl}users/profile`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + jwtToken
                 },
-            }, rtToken, setJwtToken);
+            });
 
             const data = await response.json();
-            console.log("Response: ", response);
+            console.log("REsponse: ", response);
 
+            if (data.status === 'UNAUTHORIZED' && data.code === 401) {
+                console.log('Unauthorized -----');
+                try {
+                    const formdata = new FormData();
+                    // const rtToken = await SecureStore.getItemAsync('rtToken');
+                    formdata.append('rtToken', await SecureStore.getItemAsync('rtToken'));
+                    console.log('RT Token: ', formdata);
+                    const refreshResponse = await axios.post(`${apiUrl}auth/refreshToken`, formdata, {
+                        headers: {
+                            Authorization: 'Bearer ' + jwtToken,
+                            'Content-type': 'multipart/form-data',
+                        },
+                    });
+                    console.log('Refresh Response: ', refreshResponse);
+                    // console.log('Refresh Response RT: ', refreshResponse.data.data.jwt_token);
+
+
+                    if (refreshResponse.status === 200) {
+                        await SecureStore.setItemAsync('jwtToken', refreshResponse.data.data.jwt_token);
+                        jwtToken = refreshResponse.data.data.jwt_token;
+                        console.log('New JWT Token: ', jwtToken);
+                    }
+
+                } catch (error) {
+                    // Cookie.remove('token');
+                    // Cookie.remove('refresh');
+                    // window.location.replace('/login');
+                    console.error('Error refreshing token:', error);
+                    signOut(); // Sign out the user if the refresh token fails
+                    return null;
+                }
+            }
 
             // if (!response.ok) {
             //     throw new Error('Network response was not ok');
