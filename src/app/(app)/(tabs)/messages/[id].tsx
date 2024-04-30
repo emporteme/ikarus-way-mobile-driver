@@ -9,7 +9,10 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
 import { useSession } from '@/components/core/AuthContext';
-import { ScrollView } from 'react-native-gesture-handler';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
+
+AndroidKeyboardAdjust.setAdjustResize();
 
 const ChatPage = () => {
     const { jwtToken } = useSession();
@@ -296,7 +299,7 @@ const ChatPage = () => {
                             {...props}
                             containerStyle={{
                                 backgroundColor: COLORS.white,
-                                paddingHorizontal: 10,
+                                paddingHorizontal: 10,                                
                             }}
                             primaryStyle={{ alignItems: 'center' }}
                             renderActions={() => (
@@ -318,6 +321,7 @@ const ChatPage = () => {
                     scrollToBottom
                     renderMessageText={renderMessageText}
                 />
+                {Platform.OS == 'android' && <KeyboardSpacer />}
             </SafeAreaView>
         </>
     );
