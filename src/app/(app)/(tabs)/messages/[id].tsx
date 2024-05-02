@@ -159,6 +159,50 @@ const ChatPage = () => {
             pending: true,
         };
 
+        //TODO: upload file before sending message
+         // const formData = new FormData();
+        // formData.append('files', file.file);
+        // formData.append('token', jwtToken);
+        // formData.append('reciver_id', receiverId);
+
+        // try {
+        //     const response = await fetch('https://support-test.prometeochain.io/v1/company/chat/upload', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'multipart/form-data',
+        //         },
+        //         body: formData,
+        //     });
+
+        //     const responseData = await response.json();
+
+        //     // Handle if status code is not 200
+        //     if(!response.ok){
+        //         console.error(responseData.message)
+        //         throw Error("failed upload file")
+        //     }
+
+        //     console.log('File uploaded:', responseData);
+
+        //     const fileMessage = {
+        //         _id: Math.round(Math.random() * 1000000),
+        //         text: fileName,
+        //         createdAt: new Date(),
+        //         user: {
+        //             _id: profileData?.id,
+        //         },
+        //         file: {
+        //             uri: `https://support-test.prometeochain.io/v1/support/getfile?filepath=${encodeURIComponent(fileName)}`, // Assuming the fileName is enough to construct the filePath
+        //             name: fileName,
+        //             type: fileType,
+        //         },
+        //     };
+
+        //     setMessages((previousMessages) => GiftedChat.append(previousMessages, [fileMessage]));
+        // } catch (error) {
+        //     console.error('Upload error:', error);
+        // }
+
         if (fileToUpload) {
             messageWithTemporaryId.file = {
                 name: fileToUpload.name,
@@ -193,52 +237,8 @@ const ChatPage = () => {
                 const fileName = file.name;
                 const fileType = file.mimeType;
 
-        
-                
                 setFileToUpload({file:file.file, uri: fileUri, name: fileName, type: fileType});
 
-                // const formData = new FormData();
-                // formData.append('files', file.file);
-                // formData.append('token', jwtToken);
-                // formData.append('reciver_id', receiverId);
-
-                // try {
-                //     const response = await fetch('https://support-test.prometeochain.io/v1/company/chat/upload', {
-                //         method: 'POST',
-                //         headers: {
-                //             'Content-Type': 'multipart/form-data',
-                //         },
-                //         body: formData,
-                //     });
-
-                //     const responseData = await response.json();
-
-                //     // Handle if status code is not 200
-                //     if(!response.ok){
-                //         console.error(responseData.message)
-                //         throw Error("failed upload file")
-                //     }
-
-                //     console.log('File uploaded:', responseData);
-
-                //     const fileMessage = {
-                //         _id: Math.round(Math.random() * 1000000),
-                //         text: fileName,
-                //         createdAt: new Date(),
-                //         user: {
-                //             _id: profileData?.id,
-                //         },
-                //         file: {
-                //             uri: `https://support-test.prometeochain.io/v1/support/getfile?filepath=${encodeURIComponent(fileName)}`, // Assuming the fileName is enough to construct the filePath
-                //             name: fileName,
-                //             type: fileType,
-                //         },
-                //     };
-
-                //     setMessages((previousMessages) => GiftedChat.append(previousMessages, [fileMessage]));
-                // } catch (error) {
-                //     console.error('Upload error:', error);
-                // }
             }
         }
     };
