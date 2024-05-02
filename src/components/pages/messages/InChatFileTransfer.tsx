@@ -2,13 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { images } from '@/constants';
 
-const InChatFileTransfer = ({ filePath }) => {
-    var fileType = '';
-    var name = '';
-    if (filePath !== undefined) {
-        name = filePath.split('/').pop();
-        fileType = filePath.split('.').pop();
-    }
+const InChatFileTransfer = ( file ) => {    
     return (
         <View style={styles.container}>
             <View
@@ -16,7 +10,7 @@ const InChatFileTransfer = ({ filePath }) => {
             >
                 <Image
                     source={
-                        fileType === 'pdf'
+                        file.type === 'pdf'
                             ? images.chat_file
                             : images.unknowFile
                     }
@@ -24,9 +18,8 @@ const InChatFileTransfer = ({ filePath }) => {
                 />
                 <View>
                     <Text style={styles.text}>
-                        {name.replace('%20', '').replace(' ', '')}
+                        {file.file.name}
                     </Text>
-                    <Text style={styles.textType}>{fileType.toUpperCase()}</Text>
                 </View>
             </View>
         </View>
