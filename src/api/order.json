@@ -1,0 +1,178 @@
+{
+    "status": "OK",
+    "message": "Order retrieved successfully",
+    "data": {
+        "order_number": 4,
+        "order_id": 9,
+        "departure_date": 1708783500000,
+        "arrival_date": 1709921400000,
+        "cargo_details_list": [
+            {
+                "cargo_name": "Potato",
+                "nature_of_goods": "Biological Substances",
+                "id_number": "DSA 123456790",
+                "hscode": "01063190",
+                "bar_code": "5901234123457",
+                "packaging_type": "Protective Mailers",
+                "length": "2.02",
+                "width": "1.14",
+                "height": "0.98",
+                "quantity": "10",
+                "value_of_cargo": "99.99",
+                "currency": "AUD",
+                "weight": "10.17",
+                "volume": 2.26,
+                "stackable_cargo": false,
+                "special_instruction": "Special instructions Special instructions Special instructions"
+            }
+        ],
+        "cargo_condition": {
+            "temperature": {},
+            "humidity": {},
+            "pressure": {},
+            "freight_trucking": false
+        },
+        "checkpoints": [
+            {
+                "id": 39,
+                "address": {
+                    "lat": "38.10915344710062",
+                    "lon": "13.357694128667903",
+                    "name": "Via San Giovanni di Cristina",
+                    "type": "residential",
+                    "osm_id": 477208364,
+                    "address": {
+                        "city": "Palermo",
+                        "road": "Via San Giovanni di Cristina",
+                        "state": "Sicily",
+                        "county": "Palermo",
+                        "suburb": "I Circoscrizione",
+                        "country": "Italy",
+                        "postcode": "90127",
+                        "country_code": "it",
+                        "neighbourhood": "Albergheria",
+                        "ISO3166-2-lvl4": "IT-82",
+                        "ISO3166-2-lvl6": "IT-PA"
+                    },
+                    "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+                    "category": "highway",
+                    "osm_type": "way",
+                    "place_id": 78210655,
+                    "importance": 0.10000999999999993,
+                    "place_rank": 26,
+                    "addresstype": "road",
+                    "boundingbox": [
+                        "38.1088506",
+                        "38.1093361",
+                        "13.3575783",
+                        "13.3578828"
+                    ],
+                    "display_name": "Via San Giovanni di Cristina, Albergheria, I Circoscrizione, Palermo, Sicily, 90127, Italy"
+                },
+                "time": 1708783500000
+            },
+            {
+                "id": 40,
+                "address": {
+                    "lat": "45.7343766",
+                    "lon": "4.834762553913034",
+                    "name": "",
+                    "type": "pitch",
+                    "osm_id": 128727843,
+                    "address": {
+                        "city": "Lyon",
+                        "road": "Rue André Bollier",
+                        "state": "Auvergne-Rhône-Alpes",
+                        "county": "Métropole de Lyon",
+                        "region": "Metropolitan France",
+                        "suburb": "Gerland",
+                        "country": "France",
+                        "quarter": "Le Bon Lait",
+                        "postcode": "69007",
+                        "country_code": "fr",
+                        "municipality": "Lyon",
+                        "ISO3166-2-lvl4": "FR-ARA",
+                        "ISO3166-2-lvl6": "FR-69M",
+                        "state_district": "Rhône"
+                    },
+                    "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+                    "category": "leisure",
+                    "osm_type": "way",
+                    "place_id": 110581441,
+                    "importance": 9.99999999995449E-6,
+                    "place_rank": 30,
+                    "addresstype": "leisure",
+                    "boundingbox": [
+                        "45.7342222",
+                        "45.7345304",
+                        "4.8346474",
+                        "4.8348780"
+                    ],
+                    "display_name": "Rue André Bollier, Le Bon Lait, Gerland, 7th Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, Metropolitan France, 69007, France"
+                },
+                "time": 1709921400000
+            }
+        ],
+        "status": "IN_WORK_CARRIER",
+        "client_name": "ТОО \"ОКНА КОМФОРТА\"",
+        "marketplaceType": "DIRECT",
+        "incoterm_type": "FCA",
+        "loading_type": "REAR",
+        "unloading_type": "FULL",
+        "payment_condition": [
+            {
+                "type": "DGP",
+                "fine": 13.0,
+                "time": null,
+                "id": 3
+            }
+        ],
+        "blacklist_companies": [],
+        "users_access": [
+            {
+                "id": 3,
+                "email": "CARRIERsuperadmin@prometeo.io",
+                "name": "CARRIER CARRIER",
+                "role": "ADMIN"
+            }
+        ],
+        "sender": {
+            "company_name": "ГазоДобыча",
+            "company_id_number": "1234567890",
+            "full_address": "Via San Giovanni di Cristina, Albergheria, I Circoscrizione, Palermo, Sicily, 90127, Italy",
+            "email": "gaz@mail.ru",
+            "phone": "+7 777 123 45 67",
+            "department": "Логистика",
+            "contact_person": {
+                "full_name": "Иван Иванов",
+                "phone": "+7 777 123 45 67"
+            }
+        },
+        "receiver": {
+            "company_name": "НефтеРазведка",
+            "company_id_number": "0987654321",
+            "full_address": "Rue André Bollier, Le Bon Lait, Gerland, 7th Arrondissement, Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, Metropolitan France, 69007, France",
+            "email": "oil@mail.ru",
+            "phone": "+7 777 987 65 43",
+            "department": "Логистика",
+            "contact_person": {
+                "full_name": "Петр Петрович",
+                "phone": "+7 777 987 65 43"
+            }
+        },
+        "budget": {
+            "value": 1000.0,
+            "currency": "AUD"
+        },
+        "transport_info": [],
+        "transactions": [
+            {
+                "publicKey": "3e41f1d2110a6c6cb4fa70f0d384a83a467f8e910901145f0b060107be1b7775",
+                "timestampActivation": 1709321439797,
+                "timestampTransaction": 1709321420596,
+                "tx_hash": "SC99f240e165f8d817e8622317a17499ec27fb4c144ff3c2aae69a2fc8f802149b91"
+            }
+        ]
+    },
+    "code": 200
+}
