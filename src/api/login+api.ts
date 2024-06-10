@@ -32,7 +32,7 @@ export async function GET(request: ExpoRequest) {
 }
 
 export async function POST(request: ExpoRequest): Promise<ExpoResponse> {
-    const url = 'https://app-test.prometeochain.io/api/v1/auth/authenticate';
+    const url = 'http://13.40.95.183:442/api/v1/auth/authenticate';
     const body = await request.json();
     const credentials = {
         email: body.email,

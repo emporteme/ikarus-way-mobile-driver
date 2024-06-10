@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { Stack, Slot } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from 'expo-splash-screen';
-import { AuthProvider } from '@/components/core/AuthContext';
 
 export {
     // Catch any errors thrown by the Layout component.
@@ -12,7 +11,7 @@ export {
 
 export const unstable_settings = {
     // Ensure that reloading on `/modal` keeps a back button present.
-    initialRouteName: 'tabs',
+    initialRouteName: '(tabs)/orders',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -64,11 +63,7 @@ export default function AppLayout() {
     }
 
 
-    return (
-        // <AuthProvider>
-        <RootLayoutNav />
-        // </AuthProvider>
-    );
+    return <RootLayoutNav />
 
 }
 
@@ -80,11 +75,11 @@ function RootLayoutNav() {
             screenOptions={{
                 headerTintColor: "#13161C",
                 statusBarColor: 'transparent',
-                navigationBarColor: 'transparent'
+                navigationBarColor: 'white'
             }}
         >
             {/* Main pages screen  */}
-            <Stack.Screen name="tabs" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
             {/* Auth screen */}
             <Stack.Screen name="auth" options={{ headerShown: false }} />
@@ -92,12 +87,5 @@ function RootLayoutNav() {
             {/* Onboarding screen */}
             <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         </Stack>
-        // <Slot
-        //     screenOptions={{
-        //         headerTintColor: "#13161C",
-        //         statusBarColor: '#F2F2F2',
-        //         navigationBarColor: 'transparent'
-        //     }}
-        // />
     )
 }

@@ -1,0 +1,222 @@
+import { StyleSheet } from "react-native";
+import { FONT, COLORS, SIZES } from "@/constants";
+
+const styles = StyleSheet.create({
+    status: {
+        backgroundColor: COLORS.primary,
+        paddingVertical: 4,
+        paddingHorizontal: 10,
+        borderRadius: 8
+    },
+    statusText: {
+        color: COLORS.white,
+        fontSize: SIZES.semiMedium,
+        fontFamily: FONT.medium,
+        // paddingTop: 2
+    },
+    body: {
+        flex: 1,
+        backgroundColor: COLORS.white,
+    },
+    scroll: {
+        padding: 20,
+        paddingBottom: 150
+    },
+    section: {
+        gap: 10,
+        marginBottom: 20,
+    },
+    title: {
+        fontSize: SIZES.semiMedium,
+        fontFamily: FONT.semiBold,
+        color: COLORS.dark,
+        paddingBottom: 6
+    },
+    title2: {
+        fontSize: SIZES.semiMedium,
+        fontFamily: FONT.semiBold,
+        color: COLORS.dark,
+        marginBottom: 0
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        gap: 12,
+        flex: 1,
+    },
+    row2: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        gap: 12,
+        // flex: 1,
+    },
+    column: {
+        flexDirection: 'column',
+        gap: 0,
+        flex: 1
+    },
+    column2: {
+        flexDirection: 'column',
+        gap: 4,
+        flex: 1
+    },
+    medSemiMedium: {
+        fontSize: SIZES.semiMedium,  // 14
+        lineHeight: (SIZES.semiMedium * 3 / 2),
+        fontFamily: FONT.medium,
+        color: COLORS.dark,
+        textAlignVertical: 'center',
+        padding: 0
+    },
+    regSemiMedium: {
+        fontSize: SIZES.semiMedium,
+        lineHeight: (SIZES.semiMedium * 3 / 2),
+        fontFamily: FONT.regular,
+        color: COLORS.dark,
+    },
+    medSmall: {
+        fontSize: SIZES.small,
+        lineHeight: (SIZES.small * 3 / 2),
+        fontFamily: FONT.medium,
+        color: COLORS.dark,
+    },
+    regSmall: {
+        fontSize: SIZES.small,
+        lineHeight: (SIZES.small * 3 / 2),
+        fontFamily: FONT.regular,
+        color: COLORS.dark,
+    },
+    medSemiMedium2: {
+        fontSize: SIZES.semiMedium,
+        lineHeight: (SIZES.semiMedium * 3 / 2),
+        fontFamily: FONT.medium,
+        color: COLORS.gray,
+    },
+    regSemiMedium2: {
+        fontSize: SIZES.semiMedium,
+        lineHeight: (SIZES.semiMedium * 3 / 2),
+        fontFamily: FONT.regular,
+        color: COLORS.gray,
+    },
+    medSmall2: {
+        fontSize: SIZES.small,
+        lineHeight: (SIZES.small * 3 / 2),
+        fontFamily: FONT.medium,
+        color: COLORS.gray,
+    },
+    regSmall2: {
+        fontSize: SIZES.small,
+        lineHeight: (SIZES.small * 3 / 2),
+        fontFamily: FONT.regular,
+        color: COLORS.gray,
+    },
+    rowFull: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        gap: 10,
+        // width: '100%'
+    },
+    iconFlag: {
+        width: 22,
+        height: 22,
+    },
+    lineH: {
+        height: 1,
+        backgroundColor: COLORS.gray,
+        opacity: 0.2,
+        marginBottom: 20
+    },
+
+    // Button
+    buttons: {
+        position: 'absolute',
+        bottom: 40,
+        left: 20,
+        right: 20,
+        gap: 10,
+    },
+    button: {
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        borderRadius: 12,
+        gap: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: COLORS.primary,
+    },
+    buttonText: {
+        color: COLORS.white,
+        fontFamily: FONT.semiBold,
+        fontSize: SIZES.medium
+    },
+    buttonIcon: {
+        width: 18,
+        height: 18,
+        tintColor: COLORS.white
+    },
+    button_p: {
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        borderRadius: 12,
+        gap: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: COLORS.primary,
+        borderWidth: 2,
+        backgroundColor: COLORS.white,
+    },
+    buttonText_p: {
+        color: COLORS.primary,
+        fontFamily: FONT.semiBold,
+        fontSize: SIZES.medium
+    },
+    buttonIcon_p: {
+        width: 18,
+        height: 18,
+        tintColor: COLORS.primary
+    },
+    navigationBtn: {
+        padding: 10
+    },
+    navigationText: {
+        alignSelf: 'center',
+        color: COLORS.primary,
+        textDecorationLine: 'underline',
+        fontSize: SIZES.semiMedium,
+        lineHeight: (SIZES.semiMedium * 3 / 2),
+        fontFamily: FONT.regular,
+    },
+    fileContainer: {
+        flexDirection: 'row',
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        flexWrap: 'wrap',
+        gap: 10,
+    },
+    fileItem: {
+        backgroundColor: '#A0A3BD80',
+        borderRadius: 8,
+        paddingHorizontal: 14,
+        paddingVertical: 8,
+        flexDirection: 'row',
+        alignItems: 'center',
+        // marginBottom: 10,
+        // flex: 1
+    },
+    fileIcon: {
+        tintColor: COLORS.white,
+        height: 14,
+        width: 14
+    },
+    fileText: {
+        color: COLORS.white,
+        fontFamily: FONT.medium,
+        fontSize: SIZES.semiMedium,
+        marginLeft: 10,
+    },
+})
+
+export default styles

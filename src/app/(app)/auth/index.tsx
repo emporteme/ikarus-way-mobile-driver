@@ -15,83 +15,56 @@ import { Link, Stack, useRouter, Redirect, router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Styles
-import styles from '@/style/auth.style';
+import styles from '@/styles/auth.style';
 import { FONT, icons } from '@/constants';
 
-import { useSession } from '@/components/core/Context';
-
-// async function fetchHello() {
-//     const response = await fetch('/auth/login');
-//     const data = await response.json();
-//     alert('Hello ' + data.hello);
-//     console.log(data);
-// }
+import { useSession } from '@/components/core/AuthContext';
 
 
+async function fetchAuth(email: string, password: string, signIn: (jwt: string, rt: string) => void) {
+    const credentials = {
+        email: email,
+        password: password
+    };
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
-// const saveTokens = async (jwtToken: string, rtToken: string) => {
-//     try {
-//         // Save tokens to AsyncStorage
-//         await AsyncStorage.setItem('jwtToken', jwtToken);
-//         await AsyncStorage.setItem('rtToken', rtToken);
-//         console.log('Tokens saved successfully');
-//     } catch (error) {
-//         // Handle error while saving tokens
-//         console.error('Error saving tokens:', error);
-//     }
-// };
+    try {
+        const url = `${apiUrl}auth/authenticate`;
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(credentials)
+        });
+        // if (!response.ok) {
+        //     throw new Error('Failed to authenticate');
+        // }
 
-// async function fetchAuth(email: string, password: string) {
-//     const credentials = {
-//         email: email,
-//         password: password
-//     };
+        const json = await response.json();
+        if (json.status === 'OK') {
+            // Extract tokens from response and save
+            const { jwt_token, rt_token } = json.data;
 
-//     // const response = await fetch("/api/login", {
-//     //     method: "POST",
-//     //     body: JSON.stringify(credentials),
-//     // });
-//     // console.log(response);
-//     // return response.json();
+            // Call signIn function passed as parameter
+            signIn(jwt_token, rt_token);
+        }
+        console.log(json);
+        console.log(json.status);
 
-//     try {
-//         const url = 'https://app-test.prometeochain.io/api/v1/auth/authenticate';
-//         const response = await fetch(url, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify(credentials)
-//         });
-//         if (!response.ok) {
-//             throw new Error('Failed to authenticate');
-//         }
-
-//         const json = await response.json();
-//         if (json.status === 'OK') {
-//             // Extract tokens from response and save
-//             const { jwt_token, rt_token } = json.data;
-//             await saveTokens(jwt_token, rt_token);
-//         }
-//         console.log(json);
-//         console.log(json.status);
-
-//         router.push('/tabs');
-//     } catch (error) {
-//         console.error(error);
-//         alert('Failed to authenticate');
-//     }
-// }
-
-
-
+        router.push('/orders');
+    } catch (error) {
+        console.error(error);
+        alert('Failed to authenticate');
+    }
+}
 
 // Main component
 const Auth = () => {
     const { signIn } = useSession();
 
     // const router = useRouter();
-    
+
     // useState constants for login page
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -141,20 +114,17 @@ const Auth = () => {
                             />
                         </TouchableOpacity>
                     </View>
-                    <Link href={'/auth/forgot'} style={styles.forgot}>
+                    {/* <Link href={'/auth/forgot'} style={styles.forgot}>
                         <Text style={styles.forgotText}>Do not remember password?</Text>
-                    </Link>
+                    </Link> */}
                 </View>
                 <View style={styles.bottom}>
                     {/* <Link href={'#'} asChild> */}
                     <Pressable
                         style={styles.button}
-                        // onPress={() => fetchAuth(email, password)}
-                        onPress={() => {
-                            signIn();
-                            // Navigate after signing in. You may want to tweak this to ensure sign-in is
-                            // successful before navigating.
-                            router.replace('/tabs');
+                        onPress={async () => {
+                            await fetchAuth(email, password, signIn); // Call fetchAuth to get jwt and rt tokens
+                            router.replace('/orders');
                         }}
                     >
                         <Text style={styles.buttonText}>LOGIN</Text>
