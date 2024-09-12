@@ -1,14 +1,18 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Platform, KeyboardAvoidingView } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { GiftedChat, IMessage, Bubble, InputToolbar, Send, MessageText } from 'react-native-gifted-chat';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets, SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, FONT } from '@/constants';
 import { Ionicons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
 import { useSession } from '@/components/core/AuthContext';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
+
+AndroidKeyboardAdjust.setAdjustResize();
 
 const ChatPage = () => {
     const { jwtToken } = useSession();
@@ -63,7 +67,7 @@ const ChatPage = () => {
             throw new Error('Failed to fetch messages');
         }
         const data = await response.json();
-    
+
         return data.result.map((msg) => {
             let message = {
                 _id: msg.Id,
@@ -73,7 +77,7 @@ const ChatPage = () => {
                     _id: msg.SenderId === senderId ? senderId : receiverId,
                 },
             };
-    
+
             // If the message includes file information, add a 'file' property
             if (msg.Files && msg.Files.length > 0) {
                 const file = msg.Files[0];
@@ -82,11 +86,11 @@ const ChatPage = () => {
                     uri: `https://support-test.prometeochain.io/v1/support/getfile?filepath=${encodeURIComponent(file.FilePath)}`,
                 };
             }
-    
+
             return message;
         });
     };
-    
+
 
     useEffect(() => {
         const webSocket = new WebSocket(`wss://support-test.prometeochain.io/v1/company/chat/ws?token=${jwtToken}&reciverid=${receiverId}`);
@@ -162,13 +166,13 @@ const ChatPage = () => {
         });
 
         if (!docRes.canceled && docRes.assets) {
-            docRes.assets.forEach(async (file) => {
+            for (const file of docRes.assets) {
                 const fileUri = file.uri;
                 const fileName = file.name;
                 const fileType = file.mimeType;
 
                 const formData = new FormData();
-                formData.append('files', { uri: fileUri, name: fileName, type: fileType });
+                formData.append('files', file.file);
                 formData.append('token', jwtToken);
                 formData.append('reciverid', String(receiverId));
 
@@ -182,6 +186,12 @@ const ChatPage = () => {
                     });
 
                     const responseData = await response.json();
+
+                    // Handle if status code is not 200
+                    if(!response.ok){
+                        console.error(responseData.message)
+                        throw Error("failed upload file")
+                    }
 
                     console.log('File uploaded:', responseData);
 
@@ -203,23 +213,23 @@ const ChatPage = () => {
                 } catch (error) {
                     console.error('Upload error:', error);
                 }
-            });
+            }
         }
     };
 
     const handleFileOpening = async (fileUri) => {
         console.log(`Attempting to open file at: ${fileUri}`);
-    
+
         // Check if the URI is valid and accessible
         const response = await fetch(fileUri, { method: 'HEAD' });
         if (response.ok) {
             // Proceed with downloading and opening the file
             const localUri = `${FileSystem.documentDirectory}${encodeURIComponent(fileUri.split('/').pop())}`;
-    
+
             try {
                 const { uri: downloadedUri } = await FileSystem.downloadAsync(fileUri, localUri);
                 console.log(`File downloaded to: ${downloadedUri}`);
-    
+
                 // Open the file based on the platform
                 if (Platform.OS === 'android') {
                     const contentUri = await FileSystem.getContentUriAsync(downloadedUri);
@@ -240,9 +250,9 @@ const ChatPage = () => {
             alert('File not found or the link is invalid.');
         }
     };
-    
-    
-    
+
+
+
 
     const renderMessageText = (props) => {
         const { currentMessage } = props;
@@ -263,51 +273,56 @@ const ChatPage = () => {
     return (
         <>
             <Stack.Screen options={{ title: 'Chat ID: ' + id }} />
-            <GiftedChat
-                messages={messages}
-                onSend={(messages) => onSend(messages)}
-                user={{
-                    _id: profileData?.id,
-                }}
-                renderBubble={props => (
-                    <Bubble
-                        {...props}
-                        textStyle={{
-                            left: { color: COLORS.dark, fontFamily: FONT.medium, fontSize: 14 },
-                            right: { color: COLORS.white, fontFamily: FONT.medium, fontSize: 14 },
-                        }}
-                        wrapperStyle={{
-                            left: { backgroundColor: COLORS.secondary, padding: 10, borderRadius: 16 },
-                            right: { backgroundColor: COLORS.dark, padding: 10, borderRadius: 16 },
-                        }}
-                    />
-                )}
-                renderInputToolbar={props => (
-                    <InputToolbar
-                        {...props}
-                        containerStyle={{
-                            backgroundColor: COLORS.white,
-                            paddingHorizontal: 10,
-                        }}
-                        primaryStyle={{ alignItems: 'center' }}
-                        renderActions={() => (
-                            <TouchableOpacity onPress={pickAndUploadFile}>
-                                <View style={{ justifyContent: 'center', alignItems: 'center', left: 5 }}>
-                                    <Ionicons name="attach" color={COLORS.primary} size={28} />
-                                </View>
-                            </TouchableOpacity>
-                        )}
-                    />
-                )}
-                renderSend={props => (
-                    <Send {...props} containerStyle={{ justifyContent: 'center', alignItems: 'center', marginRight: 10 }}>
-                        <Ionicons name="send" color={COLORS.primary} size={24} />
-                    </Send>
-                )}
-                renderAvatar={null}
-                scrollToBottom
-                renderMessageText={renderMessageText}
-            />
+            {/* SafeAreaView is used to avoid the status bar and bottom navigation bar */}
+            <SafeAreaView style={{ flex: 1 }} edges={['right', 'bottom', 'left']} >
+                <GiftedChat
+                    messages={messages}
+                    onSend={(messages) => onSend(messages)}
+                    user={{
+                        _id: profileData?.id,
+                    }}
+                    renderBubble={props => (
+                        <Bubble
+                            {...props}
+                            textStyle={{
+                                left: { color: COLORS.dark, fontFamily: FONT.medium, fontSize: 14 },
+                                right: { color: COLORS.white, fontFamily: FONT.medium, fontSize: 14 },
+                            }}
+                            wrapperStyle={{
+                                left: { backgroundColor: COLORS.secondary, padding: 10, borderRadius: 16 },
+                                right: { backgroundColor: COLORS.dark, padding: 10, borderRadius: 16 },
+                            }}
+                        />
+                    )}
+                    renderInputToolbar={props => (
+                        <InputToolbar
+                            {...props}
+                            containerStyle={{
+                                backgroundColor: COLORS.white,
+                                paddingHorizontal: 10,                                
+                            }}
+                            primaryStyle={{ alignItems: 'center' }}
+                            renderActions={() => (
+                                <TouchableOpacity onPress={pickAndUploadFile}>
+                                    <View style={{ justifyContent: 'center', alignItems: 'center', left: 5 }}>
+                                        <Ionicons name="attach" color={COLORS.primary} size={28} />
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        }
+                        />
+                    )}
+                    renderSend={props => (
+                        <Send {...props} containerStyle={{ justifyContent: 'center', alignItems: 'center', marginRight: 10 }}>
+                            <Ionicons name="send" color={COLORS.primary} size={24} />
+                        </Send>
+                    )}
+                    renderAvatar={null}
+                    scrollToBottom
+                    renderMessageText={renderMessageText}
+                />
+                {Platform.OS == 'android' && <KeyboardSpacer />}
+            </SafeAreaView>
         </>
     );
 };
