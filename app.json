@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Ikarus Way mobile ^ Driver",
-    "slug": "ikarus-way-mobile-driver",
+    "name": "Ikarus Smart Logistic",
+    "slug": "ikarus-smart-logistic",
     "scheme": "tms-deeplink",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,12 +17,9 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "config": {
-        "infoPlist": {
-          "NSAppTransportSecurity": {
-            "NSAllowsArbitraryLoads": true
-          }
-        }
+      "bundleIdentifier": "com.emporteme.ikaruswaymobiledriver",
+      "runtimeVersion": {
+        "policy": "appVersion"
       }
     },
     "android": {
@@ -30,10 +27,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1B1B1B"
       },
-      "package": "com.emporteme.ikaruswaymobiledriver",
-      "config": {
-        "usesCleartextTraffic": true
-      }
+      "package": "com.prometeo.prometeochain_app",
+      "softwareKeyboardLayoutMode": "pan",
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -53,9 +49,12 @@
         "origin": false
       },
       "eas": {
-        "projectId": "3786c1df-7dd8-43d7-98e6-97a2b2b80b77"
+        "projectId": "b11d28d4-b9b6-4e5f-9acb-785122071e45"
       }
     },
-    "owner": "emporteme"
+    "owner": "emporteme",
+    "updates": {
+      "url": "https://u.expo.dev/b11d28d4-b9b6-4e5f-9acb-785122071e45"
+    }
   }
 }

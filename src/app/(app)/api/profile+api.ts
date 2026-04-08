@@ -3,7 +3,7 @@ import { ExpoRequest, ExpoResponse } from 'expo-router/server';
 export async function GET(request: ExpoRequest) {
     const jwt = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjMsInN1YiI6IkNBUlJJRVJzdXBlcmFkbWluQHByb21ldGVvLmlvIiwiaWF0IjoxNzA4NjAwNTc3LCJleHAiOjE3MDg2MDQxNzcsInRva2VuX3R5cGUiOiJqd3QifQ.u7WVObeAFgUoHZ25uCwg7JYCJCyZLf5O970o7ipq8q4'
     try {
-        const url = 'https://app-test.prometeochain.io/api/v1/users/profile';
+        const url = 'http://13.40.95.183:442/api/v1/users/profile';
         const response = await fetch(url, {
             method: 'GET',
             headers: {

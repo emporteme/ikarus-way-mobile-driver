@@ -12,7 +12,7 @@ import {
 import { Link } from 'expo-router';
 
 // Import styles
-import styles from '@/style/onboarding.style';
+import styles from '@/styles/onboarding.style';
 import { images, icons } from '@/constants';
 
 

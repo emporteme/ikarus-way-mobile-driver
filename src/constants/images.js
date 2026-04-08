@@ -6,6 +6,8 @@ import profile from "../../assets/images/profile.png"
 import logo_light from "../../assets/images/logo_light.png"
 import logo_dark from "../../assets/images/logo_dark.png"
 import truck from "../../assets/images/truck.jpg"
+import chat_file from "../../assets/images/chat_file.png"
+import unknowFile from "../../assets/images/unknowFile.png"
 
 export default {
     notFound,
@@ -16,4 +18,6 @@ export default {
     logo_light,
     logo_dark,
     truck,
+    chat_file,
+    unknowFile
 }

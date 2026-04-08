@@ -14,7 +14,7 @@ import {
 import { Link, Stack, useRouter } from 'expo-router';
 
 // Styles
-import styles from '@/style/newPassword.style';
+import styles from '@/styles/newPassword.style';
 import { icons } from '@/constants';
 
 // Main component

@@ -1,60 +1,137 @@
-// AuthContext.tsx
-
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { useStorageState } from './useStorageState';
+import * as SecureStore from 'expo-secure-store';
 
-// Define the shape of the context
-interface AuthContextType {
-    isAuthenticated: boolean;
-    login: () => Promise<void>;
-    logout: () => Promise<void>;
+// Custom API Client with Interceptor
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
+
+const axiosInstance = axios.create({
+    baseURL: API_URL,
+});
+
+axiosInstance.interceptors.response.use(
+    response => response,
+    async (error) => {
+        const originalRequest = error.config;
+
+        // Check if we should attempt to refresh token
+        if (error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            try {
+                const rtToken = await SecureStore.getItemAsync('rtToken');
+                const refreshTokenResponse = await axiosInstance.post('auth/refreshToken', { rtToken });
+
+                if (refreshTokenResponse.status === 200) {
+                    const newJwtToken = refreshTokenResponse.data.data.jwt_token;
+
+                    // Store the new tokens securely
+                    await SecureStore.setItemAsync('jwtToken', newJwtToken);
+                    await SecureStore.setItemAsync('rtToken', refreshTokenResponse.data.data.rt_token);
+
+                    // Update JWT token for the current Axios instance
+                    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newJwtToken}`;
+
+                    // Update the JWT token in the app's state
+                    if (setJwtTokenRef.current) {
+                        setJwtTokenRef.current(newJwtToken);
+                    }
+
+                    // Retry the original request with the new JWT token
+                    originalRequest.headers['Authorization'] = `Bearer ${newJwtToken}`;
+                    return axiosInstance(originalRequest);
+                }
+            } catch (refreshError) {
+                console.error('Error refreshing token:', refreshError);
+
+                // If refresh also fails, sign out the user
+                if (setJwtTokenRef.current) {
+                    setJwtTokenRef.current(null);
+                }
+                await SecureStore.deleteItemAsync('jwtToken');
+                await SecureStore.deleteItemAsync('rtToken');
+
+                // Redirect or update state to sign out
+                // e.g., signOut() if you have this function in the context or navigate to sign in page
+            }
+        }
+
+        // Return any error which is not related to authentication
+        return Promise.reject(error);
+    }
+);
+
+const setJwtTokenRef = useRef(null);
+
+const AuthContext = React.createContext<{
+    signIn: (jwt: string, rt: string) => void;
+    signOut: () => void;
+    session?: string | null;
+    isLoading: boolean;
+    jwtToken?: string | null;
+    rtToken?: string | null;
+    isLoadingJwtToken?: boolean;
+    isLoadingRtToken?: boolean;
+    setJwtToken: (token: string) => void;
+}>({
+    signIn: () => null,
+    signOut: () => null,
+    session: null,
+    isLoading: false,
+    jwtToken: null,
+    rtToken: null,
+    isLoadingJwtToken: false,
+    isLoadingRtToken: false,
+    setJwtToken: () => null,
+});
+
+export const useAuth = () => React.useContext(AuthContext);
+
+export function useSession() {
+    const value = React.useContext(AuthContext);
+    return {
+        signIn: value.signIn,
+        signOut: value.signOut,
+        session: value.session,
+        jwtToken: value.jwtToken,
+        isLoading: value.isLoading,
+    };
 }
 
-// Create the AuthContext
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export function SessionProvider(props: React.PropsWithChildren) {
+    const [[isLoading, session], setSession] = useStorageState('session');
+    const [[isLoadingJwtToken, jwtToken], setJwtToken] = useStorageState('jwtToken');
+    const [[isLoadingRtToken, rtToken], setRtToken] = useStorageState('rtToken');
 
-// Create the AuthProvider component
-export const AuthProvider: React.FC = ({ children }: any) => {              // Later put normal type
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-
+    // Update the ref whenever the setJwtToken function changes
     useEffect(() => {
-        // Check if user is authenticated
-        checkAuthentication();
-    }, []);
-
-    // Function to check authentication status
-    const checkAuthentication = async () => {
-        const jwtToken = await AsyncStorage.getItem('jwtToken');
-        setIsAuthenticated(!!jwtToken); // Set isAuthenticated based on presence of jwtToken
-    };
-
-    // Function to handle user login
-    const login = async () => {
-        // Perform login logic here
-        // For example, if login is successful, set isAuthenticated to true
-        setIsAuthenticated(true);
-    };
-
-    // Function to handle user logout
-    const logout = async () => {
-        // Perform logout logic here
-        // For example, clear AsyncStorage and set isAuthenticated to false
-        await AsyncStorage.removeItem('jwtToken');
-        setIsAuthenticated(false);
-    };
+        setJwtTokenRef.current = setJwtToken;
+    }, [setJwtToken]);
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
-            {children}
+        <AuthContext.Provider
+            value={{
+                signIn: async (jwt: string, rt: string) => {
+                    await setJwtToken(jwt);
+                    await setRtToken(rt);
+                    setSession('xxx');
+                },
+                signOut: async () => {
+                    await AsyncStorage.removeItem('jwtToken');
+                    await AsyncStorage.removeItem('rtToken');
+                    setSession(null);
+                },
+                session,
+                jwtToken,
+                rtToken,
+                isLoading,
+                isLoadingJwtToken,
+                isLoadingRtToken,
+                setJwtToken,
+            }}
+        >
+            {props.children}
         </AuthContext.Provider>
     );
-};
-
-// Custom hook to access the AuthContext
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
-    return context;
-};
+}

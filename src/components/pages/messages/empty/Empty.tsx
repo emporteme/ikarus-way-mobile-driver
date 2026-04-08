@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import { Circle } from '@/components'
+import Circle from '@/components/pages/messages/circle/Circle'
 import styles from './empty.style'
 
 const Empty: React.FC = () => {

@@ -1,6 +1,6 @@
 import { View, FlatList } from 'react-native'
 import React from 'react'
-import { IotCard } from '@/components'
+import IotCard from '@/components/pages/iot/card/IotCard'
 import { iots } from '@/api/iot'
 import styles from './list.style'
 
