@@ -6,7 +6,6 @@ import guides from "../../assets/icons/guides.png";
 import home from "../../assets/icons/home.png";
 import map from "../../assets/icons/map.png";
 import messages from "../../assets/icons/messages.png";
-import notification from "../../assets/icons/notification.svg"; // THis one still in svg format
 import orders from "../../assets/icons/orders.png";
 import products from "../../assets/icons/products.png";
 import profile from "../../assets/icons/profile.png";
@@ -29,6 +28,17 @@ import phone from "../../assets/icons/phone.png";
 import company from "../../assets/icons/company.png";
 import user from "../../assets/icons/user.png";
 import iot from "../../assets/icons/iot.png";
+import speed from "../../assets/icons/speed.png";
+import order from "../../assets/icons/order.png"
+import logOut from "../../assets/icons/logOut.png"
+import card from "../../assets/icons/card.png"
+import time from "../../assets/icons/time.png"
+import attach from "../../assets/icons/attach.png"
+import camera from "../../assets/icons/camera.png"
+import document from "../../assets/icons/document.png"
+import photo from "../../assets/icons/photo.png"
+import check from "../../assets/icons/check.png";
+import location from "../../assets/icons/location.png";
 
 export default {
 
@@ -43,6 +53,18 @@ export default {
     company,
     user,
     iot,
+    speed,
+    order,
+    logOut,
+    card,
+    time,
+    attach,
+    camera,
+    document,
+    photo,
+    check,
+    location,
+    
 
     // Old icons
     back,
@@ -52,7 +74,6 @@ export default {
     home,
     map,
     messages,
-    notification,
     orders,
     products,
     profile,
